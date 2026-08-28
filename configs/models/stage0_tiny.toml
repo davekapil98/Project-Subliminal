@@ -1,0 +1,50 @@
+[common]
+bus_dim = 64
+num_joints = 6
+dropout = 0.0
+
+[jepa_encoder]
+d_model = 192
+depth = 4
+num_heads = 6
+world_tokens = 16
+patch_size = 8
+
+[jepa_world]
+d_model = 192
+depth = 4
+num_heads = 6
+
+[motor_cortex]
+d_model = 256
+depth = 4
+num_heads = 8
+horizon = 16
+candidates = 4
+flow_steps = 8
+
+[body_dynamics]
+d_model = 192
+depth = 3
+num_heads = 6
+
+[executive]
+d_model = 256
+depth = 6
+num_heads = 8
+vocab_size = 4096
+
+[language_speech]
+d_model = 192
+conformer_depth = 2
+semantic_depth = 4
+num_heads = 6
+vocab_size = 4096
+
+[memory]
+d_model = 128
+depth = 2
+num_heads = 4
+
+[orchestrator]
+d_model = 64
