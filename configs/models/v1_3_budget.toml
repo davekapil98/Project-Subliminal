@@ -1,0 +1,38 @@
+# Full-size target budgets from the authoritative v1.3 specification.
+
+[system]
+total_parameters_m = 1024
+bus_dim = 512
+world_tokens = 32
+
+[jepa_encoder]
+parameters_m = 280
+role = "multimodal context encoder and resampler"
+
+[jepa_world]
+parameters_m = 160
+role = "action-conditioned latent world predictor"
+
+[motor_cortex]
+parameters_m = 128
+role = "flow-matching SO-101 action expert"
+
+[body_dynamics]
+parameters_m = 32
+role = "SO-101-specific numeric dynamics and uncertainty"
+
+[executive]
+parameters_m = 330
+role = "decoder planner/critic with Stage-JEPA head"
+
+[language_speech]
+parameters_m = 80
+role = "local speech/text task semantics"
+
+[memory]
+parameters_m = 12
+role = "external-memory retrieval/write/compression controller"
+
+[orchestrator]
+parameters_m = 2
+role = "small learned router plus deterministic schema guard"

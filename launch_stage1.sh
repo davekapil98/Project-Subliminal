@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -euo pipefail
 
-# Keep the public entry point tiny and initialize the container-only interpreter
-# path before the strict implementation expands it under `set -u`.
-PROJECT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-export ISAAC_PYTHON=/workspace/isaaclab/_isaac_sim/python.sh
-exec "${PROJECT_DIR}/.launch_stage1_impl.sh" "$@"
+cat >&2 <<'MESSAGE'
+This launcher belongs to the superseded v1.2 paid-GB100/custom-Isaac plan.
+Master spec v1.3 defines Stage 1 as public dataset acquisition, validation and
+canonicalization. The legacy launcher is intentionally disabled. See:
+  docs/legacy_v12_isaac.md
+MESSAGE
+exit 2

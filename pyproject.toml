@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "subliminal-robot-brain"
 version = "0.1.0"
-description = "Stage 0 foundation for the modular SO-101 robot brain"
+description = "Stage 0 foundation for the v1.3 public-dataset-first modular SO-101 robot brain"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -24,7 +24,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+exclude = ["sim.stage1", "sim.stage1.*"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
+norecursedirs = ["tests/stage1"]

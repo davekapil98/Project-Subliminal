@@ -1,11 +1,11 @@
-# Stage 0 baseline report
+# Stage 0 v1.3 baseline report
 
 Date: 28 August 2026
-Environment: Python 3.12.3, PyTorch 2.13.0 CPU
+Environment: Python 3.12.3, PyTorch 2.13.0+cpu
 
 ## Result
 
-`23 passed in 1.64s`
+`33 passed in 1.47s`
 
 The suite proves the Stage 0 code baseline currently covers:
 
@@ -16,9 +16,13 @@ The suite proves the Stage 0 code baseline currently covers:
 - body uncertainty and Gaussian NLL;
 - bus schema validation, serialization, staleness, sequence, and correlation;
 - deterministic safety filtering and model-predictive candidate selection;
-- canonical episode validation and stable episode-level splitting;
-- checkpoint save/load with config, data, normalization, precision, and commit
-  metadata;
+- explicit camera validity masking and the text/audio language path;
+- the fixed 512-dimensional bus in a complete mocked control loop;
+- multi-embodiment canonical episode validation, pinned source-manifest rules,
+  write-once manifests, and stable episode-level splitting;
+- checkpoint round trips for all eight modules with config, data,
+  normalization, precision, and commit metadata;
+- the exact v1.3 1.024B parameter allocation configuration;
 - CPU mixed-precision fallback and deterministic seeded cycles; and
 - one complete synthetic language-to-execution-to-memory loop.
 

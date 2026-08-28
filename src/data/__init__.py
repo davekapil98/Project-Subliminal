@@ -1,3 +1,4 @@
-from data.canonical_schema import CanonicalEpisode, EpisodeMetadata, Observation
+from data.canonical_schema import Action, CanonicalEpisode, EpisodeMetadata, Observation
+from data.manifests import DatasetManifest
 
-__all__ = ["CanonicalEpisode", "EpisodeMetadata", "Observation"]
+__all__ = ["Action", "CanonicalEpisode", "DatasetManifest", "EpisodeMetadata", "Observation"]

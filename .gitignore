@@ -19,12 +19,14 @@ secrets*.json
 *.pem
 *.key
 
-# All generated datasets and training artifacts. Only documentation and empty
-# directory placeholders below these two roots are admitted to Git.
+# Generated datasets and training artifacts. Only documentation, placeholders,
+# and small reviewed metadata under manifests/splits are admitted to Git.
 /data/**
 !/data/**/
 !/data/**/.gitkeep
 !/data/**/README.md
+!/data/manifests/**
+!/data/splits/**
 /artifacts/**
 !/artifacts/**/
 !/artifacts/**/.gitkeep

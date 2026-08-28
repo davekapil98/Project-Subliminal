@@ -1,5 +1,5 @@
 [common]
-bus_dim = 64
+bus_dim = 512
 num_joints = 6
 dropout = 0.0
 

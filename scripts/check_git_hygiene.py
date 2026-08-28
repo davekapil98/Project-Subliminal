@@ -11,7 +11,10 @@ import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MAX_SOURCE_FILE_BYTES = 25 * 1024 * 1024
-PLACEHOLDERS = {".gitkeep", "README.md"}
+MAX_METADATA_FILE_BYTES = 5 * 1024 * 1024
+PLACEHOLDERS = {".gitkeep", "readme.md"}
+VERSIONED_METADATA_ROOTS = {("data", "manifests"), ("data", "splits")}
+VERSIONED_METADATA_SUFFIXES = {".csv", ".json", ".jsonl", ".md", ".toml", ".txt", ".yaml", ".yml"}
 GENERATED_ROOTS = {
     "artifacts",
     "checkpoints",
@@ -59,7 +62,17 @@ def violation_reason(path_text: str, size: int = 0) -> str | None:
         return "environment/secret file"
     if name.endswith((".pem", ".key")) or name.startswith(("credentials", "secrets")):
         return "credential material"
-    if path.parts and path.parts[0].lower() in GENERATED_ROOTS and path.name not in PLACEHOLDERS:
+    lowered_parts = tuple(part.lower() for part in path.parts)
+    if lowered_parts and lowered_parts[0] in GENERATED_ROOTS:
+        if name in PLACEHOLDERS:
+            return None
+        metadata_root = lowered_parts[:2]
+        if metadata_root in VERSIONED_METADATA_ROOTS:
+            if path.suffix.lower() not in VERSIONED_METADATA_SUFFIXES:
+                return "versioned metadata must use a reviewable text format"
+            if size > MAX_METADATA_FILE_BYTES:
+                return f"metadata exceeds the {MAX_METADATA_FILE_BYTES // 1024 // 1024} MiB limit"
+            return None
         return "generated data/training artifact path"
     if path.suffix.lower() in GENERATED_SUFFIXES:
         return "generated model/data/media file type"

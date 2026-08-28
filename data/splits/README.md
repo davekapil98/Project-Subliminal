@@ -1,4 +1,6 @@
 # Frozen data splits
 
-Version train/validation/test episode IDs here. Split by episode, scene, or task
-rather than adjacent frames to prevent temporal leakage.
+Small train/validation/test selectors are versioned here. Split by episode and,
+where possible, scene/task/source session; never split adjacent frames from one
+episode. Large ID tables remain external and are represented by deterministic
+selectors plus hashes.

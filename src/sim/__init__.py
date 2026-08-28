@@ -1,7 +1,7 @@
-"""Simulation package with lazy Stage 0 exports.
+"""Simulation-independent Stage 0 mock environment exports.
 
-Keeping the package initializer dependency-free lets host-side Stage 1 config
-checks run before the pinned Isaac container (and its PyTorch install) exists.
+The production baseline is public-dataset-first. This package contains only the
+small deterministic plant used to prove integration and safety ordering.
 """
 
 from __future__ import annotations

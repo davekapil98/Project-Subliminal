@@ -1,39 +1,41 @@
 # Project Subliminal
 
 Project Subliminal is a modular, fully local robot brain for the LeRobot SO-101
-arm. The authoritative architecture and development plan is
-[`Modular_Robot_Brain_Functional_Master_Spec_v1.2.docx`](./Modular_Robot_Brain_Functional_Master_Spec_v1.2.docx).
+arm. The authoritative architecture and methodology are defined by
+[`Modular_Robot_Brain_Functional_Master_Spec_v1.3.docx`](./Modular_Robot_Brain_Functional_Master_Spec_v1.3.docx).
 
-Stage 0 provides small, readable models and synthetic integration tests for the
-neural, tensor, checkpoint, bus, safety, and closed-loop contracts. Stage 1 adds
-a pinned, resumable Isaac Lab data generator intended for a rented GB100.
+The v1.3 baseline is public-dataset-first and requires **no paid cloud
+compute**. The RTX 3050 laptop is used for tiny correctness/learning models;
+the RTX 3060 12 GB machine is the sequential specialist trainer. Public
+synthetic and real multi-embodiment datasets provide broad pretraining before
+public and self-collected SO-101 specialization.
 
-## Stage 1 GB100 launch
+## Current project phase
 
-Copy the entire folder to the GB100 server and run:
+Stage 0 contains small, readable implementations of all eight neural modules,
+typed bus interfaces, deterministic safety/MPC primitives, checkpoint/data
+contracts, educational reimplementations, tiny-overfit tests, and a complete
+mocked closed loop. Its purpose is code correctness, not robotic competence.
 
-```bash
-./launch_stage1.sh
-```
+Stage 1 under v1.3 is **public dataset acquisition, validation and
+canonicalization**. It begins only after the Stage 0 gate is green. The first
+Stage 1 deliverable is a pinned dataset registry and small-subset validation for
+Priority-A public SO-101 sources—not custom Isaac generation.
 
-The launcher validates the host and container, boots all prebuilt worlds with
-multiple SO-101 instances, checks the one rear camera and one gripper IMU per
-robot, writes preview images, and waits for Enter before recording anything.
-
-Read [`docs/stage1_gb100.md`](docs/stage1_gb100.md) before renting the server.
-The exact episode arrays are listed in
-[`docs/stage1_data_contract.md`](docs/stage1_data_contract.md).
+The former v1.2 GB100/Isaac generator is retained only as excluded historical
+reference. Its launch entry points are deliberately disabled; see
+[`docs/legacy_v12_isaac.md`](docs/legacy_v12_isaac.md).
 
 ## Stage 0 quick start
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev]'
-.venv/bin/python -m pytest
+.venv/bin/python scripts/run_stage0_gate.py
 .venv/bin/python scripts/run_stage0_demo.py
 ```
 
-The demo runs this local synthetic path:
+The demo runs this synthetic path:
 
 ```text
 text -> Language -> TASK_GOAL -> Executive -> MOTOR_GOAL
@@ -42,19 +44,27 @@ text -> Language -> TASK_GOAL -> Executive -> MOTOR_GOAL
      -> EXECUTION_RESULT -> memory
 ```
 
-It does not control physical hardware and it does not claim task performance.
-Its purpose is code correctness and architectural learning.
+It does not control physical hardware and does not claim task performance.
 
-## Repository rules
+## Repository and data rules
 
-- Raw datasets under `data/raw/` are immutable and append-only.
-- Derived data is regenerated through versioned code and manifests.
-- Physical values remain typed numeric tensors; they are never encoded as prose.
-- Learned output is always wrapped by deterministic safety checks.
-- Model architecture, trainers, data conversion, control, and evaluation stay
-  separate.
-- Every important neural concept receives a small readable implementation and
-  test before an optimized production implementation is introduced.
+- Public sources are registered with exact revision, URL, license, domain,
+  embodiment, modalities, action semantics and checksums before training use.
+- `data/raw/` is immutable and separates `public_sim`, `public_real`, and
+  `own_real` sources.
+- Cleaned, normalized, split and model-specific shard tiers are reproducible
+  from source revisions, manifests and code.
+- Raw datasets, training shards, checkpoints, recordings and `.env` files are
+  never committed; small versioned registry/split/preprocessing metadata is.
+- Native actions are preserved. Cross-embodiment actions are normalized only
+  when units, kinematics and coordinate frames are proven.
+- Physical fields remain typed numeric tensors and learned output is always
+  wrapped by deterministic safety checks.
+- Model architecture, trainers, data conversion, control, evaluation and
+  deployment remain separate.
+- Every important neural concept receives a readable implementation and test
+  before an optimized production implementation.
 
-See [`docs/stage0.md`](docs/stage0.md) for the Stage 0 gate and
-[`docs/tensor_shapes.md`](docs/tensor_shapes.md) for interface shapes.
+See [`docs/stage0.md`](docs/stage0.md),
+[`docs/v1.3_alignment_report.md`](docs/v1.3_alignment_report.md), and
+[`docs/tensor_shapes.md`](docs/tensor_shapes.md).
