@@ -1,0 +1,95 @@
+# Project Subliminal Stage 1: one-day GB100 Isaac Sim generation plan.
+# Jobs are executed in priority order and resume from immutable committed episodes.
+
+[runtime]
+image = "project-subliminal-stage1:isaaclab-2.3.2"
+isaac_lab_version = "2.3.2"
+workshop_repository = "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop.git"
+workshop_commit = "ce807d99724cb65671abec01f908a2fcb4a6eab7"
+lerobot_commit = "e670ac5daf9b76"
+num_envs = 64
+preflight_num_envs = 2
+physics_hz = 240
+control_hz = 30
+device = "cuda:0"
+seed = 1701
+
+[camera]
+name = "rear_camera"
+width = 224
+height = 224
+fps = 30
+video_backend = "pyav"
+codec = "libx264"
+crf = 23
+preset = "fast"
+
+[imu]
+name = "gripper_imu"
+prim_path = "{ENV_REGEX_NS}/Robot/gripper"
+include_gravity = true
+
+[dataset]
+output_root = "data/raw/isaac_so101"
+max_output_gib = 350.0
+min_free_disk_gib = 40.0
+writer_threads = 8
+source_dataset = "project_subliminal_isaac_so101"
+source_version = "stage1-v1"
+source_url = "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop"
+license = "project-private; upstream workshop Apache-2.0"
+redistribution_terms = "Review NVIDIA workshop THIRD_PARTY_NOTICES and asset licenses before redistribution."
+robot_id = "so101_sim"
+embodiment = "SO-101"
+
+[[jobs]]
+name = "p01_body_safe_random"
+world = "motor_bench"
+policy = "smooth_random"
+episodes = 4096
+steps = 96
+priority = 1
+record_rgb = true
+record_segmentation = false
+task = "safe_joint_dynamics"
+instruction = "Move through safe random SO-101 joint targets."
+quality = 0.9
+
+[[jobs]]
+name = "p02_motor_goal_sweeps"
+world = "randomized_objects"
+policy = "motor_sweep"
+episodes = 4096
+steps = 128
+priority = 2
+record_rgb = true
+record_segmentation = false
+task = "motor_goal_tracking"
+instruction = "Track smooth randomized motor goals without crossing limits."
+quality = 0.9
+
+[[jobs]]
+name = "p03_vials_to_rack"
+world = "rack_task"
+policy = "task_attempt"
+episodes = 2048
+steps = 180
+priority = 3
+record_rgb = true
+record_segmentation = true
+task = "vials_to_rack"
+instruction = "Pick up a vial and place it in the rack."
+quality = 0.75
+
+[[jobs]]
+name = "p04_failure_recovery"
+world = "recovery_states"
+policy = "failure_recovery"
+episodes = 2048
+steps = 128
+priority = 4
+record_rgb = true
+record_segmentation = true
+task = "recover_to_safe_configuration"
+instruction = "Recover the arm safely after a disturbed or failed vial attempt."
+quality = 0.8

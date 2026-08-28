@@ -1,0 +1,68 @@
+# Fast end-to-end smoke configuration. It has the same strict sensor contract as production.
+
+[runtime]
+image = "project-subliminal-stage1:isaaclab-2.3.2"
+isaac_lab_version = "2.3.2"
+workshop_repository = "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop.git"
+workshop_commit = "ce807d99724cb65671abec01f908a2fcb4a6eab7"
+lerobot_commit = "e670ac5daf9b76"
+num_envs = 2
+preflight_num_envs = 2
+physics_hz = 240
+control_hz = 30
+device = "cuda:0"
+seed = 1701
+
+[camera]
+name = "rear_camera"
+width = 128
+height = 128
+fps = 30
+video_backend = "pyav"
+codec = "libx264"
+crf = 23
+preset = "fast"
+
+[imu]
+name = "gripper_imu"
+prim_path = "{ENV_REGEX_NS}/Robot/gripper"
+include_gravity = true
+
+[dataset]
+output_root = "data/raw/isaac_so101"
+max_output_gib = 5.0
+min_free_disk_gib = 2.0
+writer_threads = 2
+source_dataset = "project_subliminal_isaac_so101"
+source_version = "stage1-smoke-v1"
+source_url = "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop"
+license = "project-private; upstream workshop Apache-2.0"
+redistribution_terms = "Review NVIDIA workshop THIRD_PARTY_NOTICES and asset licenses before redistribution."
+robot_id = "so101_sim"
+embodiment = "SO-101"
+
+[[jobs]]
+name = "smoke_motor"
+world = "motor_bench"
+policy = "smooth_random"
+episodes = 2
+steps = 8
+priority = 1
+record_rgb = true
+record_segmentation = false
+task = "safe_joint_dynamics"
+instruction = "Move through safe random SO-101 joint targets."
+quality = 0.9
+
+[[jobs]]
+name = "smoke_recovery"
+world = "recovery_states"
+policy = "failure_recovery"
+episodes = 2
+steps = 8
+priority = 2
+record_rgb = true
+record_segmentation = true
+task = "recover_to_safe_configuration"
+instruction = "Recover the arm safely after a disturbed or failed vial attempt."
+quality = 0.8
