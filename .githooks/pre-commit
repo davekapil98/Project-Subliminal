@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_DIR="$(git rev-parse --show-toplevel)"
+exec python3 "${PROJECT_DIR}/scripts/check_git_hygiene.py" --mode staged

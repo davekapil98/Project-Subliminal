@@ -8,29 +8,65 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
-# Generated datasets and training outputs. Manifests and README files stay tracked.
-data/raw/*
-!data/raw/.gitkeep
-data/cleaned/*
-!data/cleaned/.gitkeep
-data/normalized/*
-!data/normalized/.gitkeep
-data/shards/*
-!data/shards/.gitkeep
-data/cache/*
-!data/cache/.gitkeep
-artifacts/runs/*
-!artifacts/runs/.gitkeep
-artifacts/pretrained/*
-!artifacts/pretrained/.gitkeep
-artifacts/integrated/*
-!artifacts/integrated/.gitkeep
-artifacts/nvfp4/*
-!artifacts/nvfp4/.gitkeep
-artifacts/reports/*
-!artifacts/reports/.gitkeep
+# Secrets and machine-local environment configuration.
+.env
+.env.*
+*.env
+.envrc
+.direnv/
+credentials*.json
+secrets*.json
+*.pem
+*.key
 
-# Local editor and operating-system files.
+# All generated datasets and training artifacts. Only documentation and empty
+# directory placeholders below these two roots are admitted to Git.
+/data/**
+!/data/**/
+!/data/**/.gitkeep
+!/data/**/README.md
+/artifacts/**
+!/artifacts/**/
+!/artifacts/**/.gitkeep
+!/artifacts/**/README.md
+
+# Alternate output roots used by common training and experiment tools.
+/dataset/
+/datasets/
+/output/
+/outputs/
+/runs/
+/checkpoints/
+/recordings/
+/wandb/
+/mlruns/
+/lightning_logs/
+/tensorboard/
+
+# Model weights, array dumps, dataset containers, and recorded media are never
+# source-controlled, even if they are written outside the standard roots.
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.engine
+*.pkl
+*.pickle
+*.joblib
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.parquet
+*.arrow
+*.tfrecord
+*.mp4
+*.avi
+*.mkv
+
+# Local editor, operating-system, and runtime files.
 .idea/
 .vscode/
 .DS_Store
+*.log
