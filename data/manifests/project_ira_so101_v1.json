@@ -1,0 +1,56 @@
+{
+  "camera_names": [
+    "desk_view",
+    "wrist_left"
+  ],
+  "checksum": "sha256:48ec81a4c0977c57f13f85a9dec285de186416eabd873c9bf4cb7bd637805a25",
+  "coordinate_frames": {
+    "desk_view": "camera-local pixels; calibration not published",
+    "joint_position": "source-calibrated SO-101 motor-local coordinates",
+    "task_space": "not provided; no task-space action may be inferred",
+    "wrist_left": "camera-local pixels; calibration not published"
+  },
+  "data_format": "LeRobot v3.0 Parquet plus H.264 MP4",
+  "dataset_id": "project_ira_so101_v1",
+  "domain": "real",
+  "embodiment": "SO-101 single arm, six actuators",
+  "fps": 30.0,
+  "known_limitations": [
+    "Single desk, lighting setup, camera geometry and object collection.",
+    "Teleoperation quality and speed vary; task success and per-episode quality labels are absent.",
+    "Recovery behavior is incidental and uneven rather than deliberately scripted.",
+    "The source publishes only a train split; project splits must be frozen independently.",
+    "Camera intrinsics/extrinsics and a common task-space frame are not published."
+  ],
+  "license": "CC-BY-SA-4.0",
+  "modalities": [
+    "rgb",
+    "joint_position",
+    "action",
+    "language"
+  ],
+  "native_action_semantics": "Absolute calibrated SO-101 position command: five revolute joints in degrees and gripper in normalized 0..100 range.",
+  "priority": "A",
+  "redistribution_terms": "Attribution and CC-BY-SA-4.0 share-alike apply to redistributed adaptations; preserve source attribution and license notices.",
+  "revision": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+  "robot_id": "so_follower",
+  "simulator_family": null,
+  "simulator_version": null,
+  "source_url": "https://huggingface.co/datasets/Project-IRA/TPSoSe2026_Dataset_Full_Merged_Final_LeRobot_SO101_V1",
+  "status": "validated",
+  "task_families": [
+    "sort_lego_color",
+    "desk_cleanup",
+    "dice_throw",
+    "fetch_ball"
+  ],
+  "unit_conventions": {
+    "elbow_flex": "degree",
+    "gripper": "normalized_percent_0_100",
+    "shoulder_lift": "degree",
+    "shoulder_pan": "degree",
+    "timestamp": "second",
+    "wrist_flex": "degree",
+    "wrist_roll": "degree"
+  }
+}

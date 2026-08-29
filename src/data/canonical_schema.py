@@ -33,7 +33,7 @@ class EpisodeMetadata:
     embodiment: str
     task: str
     success: bool | None
-    quality: float
+    quality: float | None
     collection_method: str
     native_action_semantics: str
     source_policy: str | None = None
@@ -64,8 +64,8 @@ class EpisodeMetadata:
             raise ValueError("domain must be explicitly 'sim' or 'real'")
         if self.domain == "sim" and not self.simulator_family:
             raise ValueError("sim episodes require simulator_family")
-        if not 0.0 <= self.quality <= 1.0:
-            raise ValueError("quality must be in [0, 1]")
+        if self.quality is not None and not 0.0 <= self.quality <= 1.0:
+            raise ValueError("quality must be in [0, 1] when provided")
         if self.fps is not None and (not math.isfinite(self.fps) or self.fps <= 0):
             raise ValueError("fps must be finite and positive when provided")
         if len(set(self.camera_names)) != len(self.camera_names):

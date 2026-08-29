@@ -16,3 +16,8 @@ camera schema, native action semantics, units/frames, checksum and limitations.
 Stage 1 starts subset-first. No bulk download is allowed until the source card,
 license, schema, sample decoding, alignment, disk estimate and target-model
 value have been reviewed.
+
+`project_ira_so101_v1.toml` is the first validated Priority-A source. Its
+source-specific cleaning policy, immutable file pins, qualification report and
+prompt-group split complete Stage 1.1 without admitting the source to training
+before the later held-out model-improvement gate.

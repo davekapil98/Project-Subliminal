@@ -1,0 +1,47 @@
+schema_version = 1
+dataset_id = "project_ira_so101_v1"
+source_revision = "bf6f568e9ec218fff838fb266e161724ec4f7e2c"
+
+[integrity]
+require_exact_file_size_and_sha256 = true
+require_no_nulls = true
+require_finite_state_and_action = true
+require_unique_global_index = true
+require_contiguous_episode_ranges = true
+require_monotonic_episode_timestamps = true
+require_frame_index_from_zero = true
+require_task_text_index_agreement = true
+expected_state_width = 6
+expected_action_width = 6
+expected_fps = 30.0
+timestamp_absolute_tolerance_seconds = 0.00001
+
+[video]
+require_both_cameras = true
+require_h264 = true
+require_yuv420p = true
+require_30_fps = true
+require_segment_duration_coverage = true
+decode_sample_frames = true
+
+[native_actions]
+preserve_without_conversion = true
+semantics = "absolute calibrated position command"
+revolute_joint_unit = "degree"
+gripper_unit = "normalized_percent_0_100"
+task_space_conversion = "forbidden until kinematics and camera/world frames are supplied and validated"
+nonfinite_policy = "reject episode"
+outlier_policy = "flag for review; do not invent a physical threshold or silently drop difficult behavior"
+
+[canonicalization]
+qdot_method = "finite difference in source-native position units per second"
+previous_command_method = "initial observation state, then previous source action"
+terminal_action_policy = "drop final same-frame action so N observations form N-1 validated transitions"
+success = "unknown"
+quality = "unknown"
+camera_policy = "retain source timestamps and names; decode on demand; do not claim calibration"
+
+[splitting]
+group_key = "task_index"
+stratify_key = "task_family"
+reason = "Keep each exact prompt template wholly within one split while representing every task family in validation and test."

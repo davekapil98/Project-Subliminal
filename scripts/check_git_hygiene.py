@@ -12,7 +12,7 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MAX_SOURCE_FILE_BYTES = 25 * 1024 * 1024
 MAX_METADATA_FILE_BYTES = 5 * 1024 * 1024
-PLACEHOLDERS = {".gitkeep", "readme.md"}
+PLACEHOLDERS = {".gitkeep"}
 VERSIONED_METADATA_ROOTS = {("data", "manifests"), ("data", "splits")}
 VERSIONED_METADATA_SUFFIXES = {".csv", ".json", ".jsonl", ".md", ".toml", ".txt", ".yaml", ".yml"}
 GENERATED_ROOTS = {
@@ -72,6 +72,8 @@ def violation_reason(path_text: str, size: int = 0) -> str | None:
                 return "versioned metadata must use a reviewable text format"
             if size > MAX_METADATA_FILE_BYTES:
                 return f"metadata exceeds the {MAX_METADATA_FILE_BYTES // 1024 // 1024} MiB limit"
+            return None
+        if metadata_root == ("artifacts", "reports") and name == "readme.md":
             return None
         return "generated data/training artifact path"
     if path.suffix.lower() in GENERATED_SUFFIXES:

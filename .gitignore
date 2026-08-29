@@ -24,7 +24,6 @@ secrets*.json
 /data/**
 !/data/**/
 !/data/**/.gitkeep
-!/data/**/README.md
 !/data/manifests/**
 !/data/splits/**
 /artifacts/**

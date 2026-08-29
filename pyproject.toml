@@ -14,9 +14,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+data = [
+  "av>=18,<19",
+  "pyarrow>=25,<26",
+]
 dev = [
+  "av>=18,<19",
   "pytest>=8,<9",
   "pytest-cov>=5,<8",
+  "pyarrow>=25,<26",
 ]
 
 [tool.setuptools]

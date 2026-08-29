@@ -18,9 +18,13 @@ contracts, educational reimplementations, tiny-overfit tests, and a complete
 mocked closed loop. Its purpose is code correctness, not robotic competence.
 
 Stage 1 under v1.3 is **public dataset acquisition, validation and
-canonicalization**. It begins only after the Stage 0 gate is green. The first
-Stage 1 deliverable is a pinned dataset registry and small-subset validation for
-Priority-A public SO-101 sources—not custom Isaac generation.
+canonicalization**. Stage 1.1 is complete: the Priority-A Project IRA SO-101
+source is pinned at an immutable revision, its license/schema and all 844,208
+numeric trajectory rows are validated, one dual-camera episode subset is
+checksum-verified and decoded, and a canonical sample plus leakage-resistant
+prompt-group split is reproducible. The source is `validated`, not yet admitted
+to training; held-out model improvement belongs to the later public-data gate.
+See [`docs/stage1_1_project_ira_report.md`](docs/stage1_1_project_ira_report.md).
 
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
@@ -33,6 +37,13 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/python scripts/run_stage0_gate.py
 .venv/bin/python scripts/run_stage0_demo.py
+```
+
+Reproduce the Stage 1.1 qualification (about 435 MB of ignored raw data):
+
+```bash
+.venv/bin/python -m pip install -e '.[dev]'
+.venv/bin/python scripts/qualify_project_ira_so101.py --download
 ```
 
 The demo runs this synthetic path:

@@ -1,0 +1,311 @@
+{
+  "admission_blockers": [
+    "No target-model held-out improvement result yet; that is part of the later public-data gate.",
+    "No camera calibration or task-space frame is published, so task-space actions must not be inferred.",
+    "Task success and per-episode quality labels are absent and remain unknown."
+  ],
+  "admission_decision": "validated_for_stage1; not_yet_admitted_to_training",
+  "canonical_sample": {
+    "actions": 2,
+    "camera_names": [
+      "desk_view",
+      "wrist_left"
+    ],
+    "decoded_rgb_frames": 6,
+    "observations": 3,
+    "path": "data/cleaned/public_real/project_ira_so101/bf6f568e9ec218fff838fb266e161724ec4f7e2c/episode_000000_first_2_transitions.json",
+    "sha256": "de54b4c3414e3a66cde1dbcc4247b749129e3a961f76d303d37073f1ca13f557"
+  },
+  "dataset_id": "project_ira_so101_v1",
+  "full_repository_bytes": 9329617621,
+  "gate": "stage1.1_source_qualification",
+  "passed": true,
+  "qualified_episode_indices": [
+    0
+  ],
+  "qualified_subset_bytes": 435441545,
+  "schema_version": 1,
+  "source_revision": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+  "source_status": "validated",
+  "source_validation": {
+    "action_max": [
+      95.16483306884766,
+      92.83516693115234,
+      97.010986328125,
+      102.5934066772461,
+      70.72527313232422,
+      100.0
+    ],
+    "action_min": [
+      -108.43955993652344,
+      -104.79120635986328,
+      -96.65933990478516,
+      -102.5054931640625,
+      -167.25274658203125,
+      0.15360982716083527
+    ],
+    "action_width": 6,
+    "episodes": 930,
+    "fps": 30.0,
+    "frames": 844208,
+    "max_abs_action_step": [
+      4.571430206298828,
+      4.659339904785156,
+      6.857142448425293,
+      6.15384578704834,
+      6.24176025390625,
+      10.82949447631836
+    ],
+    "nonfinite_values": 0,
+    "null_values": 0,
+    "prompt_episode_counts": [
+      10
+    ],
+    "state_max": [
+      95.12088012695312,
+      92.65933990478516,
+      98.06593322753906,
+      102.02198028564453,
+      70.54945373535156,
+      96.78068542480469
+    ],
+    "state_min": [
+      -106.28571319580078,
+      -106.46154022216797,
+      -94.10989379882812,
+      -101.75823974609375,
+      -165.84616088867188,
+      1.7437961101531982
+    ],
+    "state_width": 6,
+    "tasks": 93
+  },
+  "split_record": {
+    "dataset_id": "project_ira_so101_v1",
+    "episode_counts": {
+      "test": 90,
+      "train": 750,
+      "validation": 90
+    },
+    "group_key": "task_index",
+    "leakage_rule": "all ten episodes for an exact prompt stay in one split",
+    "schema_version": 1,
+    "source_revision": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+    "strategy": "family-stratified SHA-256 ranking with approximately 0.1 validation and 0.1 test per family",
+    "task_family_prompt_counts": {
+      "desk_cleanup": {
+        "test": 2,
+        "train": 21,
+        "validation": 2
+      },
+      "dice_throw": {
+        "test": 1,
+        "train": 10,
+        "validation": 1
+      },
+      "fetch_ball": {
+        "test": 1,
+        "train": 8,
+        "validation": 1
+      },
+      "sort_lego_color": {
+        "test": 5,
+        "train": 36,
+        "validation": 5
+      }
+    },
+    "task_family_ranges_inclusive": {
+      "desk_cleanup": [
+        0,
+        24
+      ],
+      "dice_throw": [
+        25,
+        36
+      ],
+      "fetch_ball": [
+        37,
+        46
+      ],
+      "sort_lego_color": [
+        47,
+        92
+      ]
+    },
+    "task_indices": {
+      "test": [
+        21,
+        23,
+        25,
+        38,
+        55,
+        56,
+        76,
+        86,
+        88
+      ],
+      "train": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        16,
+        17,
+        18,
+        20,
+        22,
+        24,
+        26,
+        27,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        54,
+        57,
+        58,
+        59,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        77,
+        78,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        87,
+        89,
+        90,
+        92
+      ],
+      "validation": [
+        15,
+        19,
+        28,
+        42,
+        53,
+        60,
+        61,
+        79,
+        91
+      ]
+    }
+  },
+  "verified_files": [
+    {
+      "path": "README.md",
+      "role": "source_card",
+      "sha256": "594b7b96a50137f372b0c95bb4cc5f7556e97b61b979a1d5d9ce9834f3864aeb",
+      "size": 12459
+    },
+    {
+      "path": "meta/info.json",
+      "role": "schema",
+      "sha256": "cc85c635462b5df78e158462bc633bc088923cf28e168d1491b8352981515738",
+      "size": 3240
+    },
+    {
+      "path": "meta/stats.json",
+      "role": "source_statistics",
+      "sha256": "0c2a763f7b62a3e0bf8cd8a9f7b5f13a041fcb325b28b7735b412575b6f36f47",
+      "size": 13042
+    },
+    {
+      "path": "meta/tasks.parquet",
+      "role": "task_index",
+      "sha256": "4ca7f6392f74a219af16fd781de3f202eb095a1092475220ed555b72a47064cb",
+      "size": 5002
+    },
+    {
+      "path": "meta/episodes/chunk-000/file-000.parquet",
+      "role": "episode_index",
+      "sha256": "6cf43250223555f9be9e90cb1841dbb1c008387b917ea1042545b1cf25943009",
+      "size": 1361114
+    },
+    {
+      "path": "data/chunk-000/file-000.parquet",
+      "role": "trajectory_table",
+      "sha256": "48ec81a4c0977c57f13f85a9dec285de186416eabd873c9bf4cb7bd637805a25",
+      "size": 20596943
+    },
+    {
+      "path": "videos/observation.images.desk_view/chunk-000/file-000.mp4",
+      "role": "episode_0_desk_view",
+      "sha256": "208c447b5b7d9c6c37ec3bd42dafd2bada912e5d2d853e147bc5a20c4747939c",
+      "size": 203757932
+    },
+    {
+      "path": "videos/observation.images.wrist_left/chunk-000/file-000.mp4",
+      "role": "episode_0_wrist_left",
+      "sha256": "fef866f93720dc3728b8ea15cbf2628f56b5c41cd90a2a70f3859a0bcab4a9c3",
+      "size": 209691813
+    }
+  ],
+  "video_validation": {
+    "desk_view": {
+      "codec": "h264",
+      "duration_seconds": 3893.766666666667,
+      "fps": 30.0,
+      "frames": 116813,
+      "height": 600,
+      "pixel_format": "yuv420p",
+      "segment_from_timestamp": 0.0,
+      "segment_to_timestamp": 18.3,
+      "width": 800
+    },
+    "wrist_left": {
+      "codec": "h264",
+      "duration_seconds": 2534.4,
+      "fps": 30.0,
+      "frames": 76032,
+      "height": 480,
+      "pixel_format": "yuv420p",
+      "segment_from_timestamp": 0.0,
+      "segment_to_timestamp": 18.3,
+      "width": 640
+    }
+  }
+}

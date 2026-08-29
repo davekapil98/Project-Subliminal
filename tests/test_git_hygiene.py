@@ -17,6 +17,7 @@ def test_rejects_secrets_and_training_artifacts() -> None:
         "config/.env.production",
         "production.env",
         "data/raw/episode.jsonl",
+        "data/raw/source/README.md",
         "datasets/lerobot/chunk.parquet",
         "artifacts/runs/model.bin",
         "elsewhere/checkpoint.safetensors",

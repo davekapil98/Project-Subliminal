@@ -1,0 +1,146 @@
+schema_version = 1
+
+[dataset]
+dataset_id = "project_ira_so101_v1"
+repository_id = "Project-IRA/TPSoSe2026_Dataset_Full_Merged_Final_LeRobot_SO101_V1"
+revision = "bf6f568e9ec218fff838fb266e161724ec4f7e2c"
+source_url = "https://huggingface.co/datasets/Project-IRA/TPSoSe2026_Dataset_Full_Merged_Final_LeRobot_SO101_V1"
+card_url = "https://huggingface.co/datasets/Project-IRA/TPSoSe2026_Dataset_Full_Merged_Final_LeRobot_SO101_V1/blob/bf6f568e9ec218fff838fb266e161724ec4f7e2c/README.md"
+license = "CC-BY-SA-4.0"
+license_url = "https://creativecommons.org/licenses/by-sa/4.0/"
+redistribution_terms = "Attribution and CC-BY-SA-4.0 share-alike apply to redistributed adaptations; preserve source attribution and license notices."
+domain = "real"
+robot_id = "so_follower"
+embodiment = "SO-101 single arm, six actuators"
+data_format = "LeRobot v3.0 Parquet plus H.264 MP4"
+collection_method = "SO-101 leader-to-follower teleoperation"
+native_action_semantics = "Absolute calibrated SO-101 position command: five revolute joints in degrees and gripper in normalized 0..100 range."
+priority = "A"
+status = "validated"
+fps = 30.0
+total_episodes = 930
+total_frames = 844208
+total_tasks = 93
+full_repository_bytes = 9329617621
+primary_trajectory_sha256 = "48ec81a4c0977c57f13f85a9dec285de186416eabd873c9bf4cb7bd637805a25"
+modalities = ["rgb", "joint_position", "action", "language"]
+task_families = ["sort_lego_color", "desk_cleanup", "dice_throw", "fetch_ball"]
+camera_names = ["desk_view", "wrist_left"]
+known_limitations = [
+  "Single desk, lighting setup, camera geometry and object collection.",
+  "Teleoperation quality and speed vary; task success and per-episode quality labels are absent.",
+  "Recovery behavior is incidental and uneven rather than deliberately scripted.",
+  "The source publishes only a train split; project splits must be frozen independently.",
+  "Camera intrinsics/extrinsics and a common task-space frame are not published.",
+]
+
+[task_family_ranges]
+desk_cleanup = { first = 0, last = 24 }
+dice_throw = { first = 25, last = 36 }
+fetch_ball = { first = 37, last = 46 }
+sort_lego_color = { first = 47, last = 92 }
+
+[units]
+shoulder_pan = "degree"
+shoulder_lift = "degree"
+elbow_flex = "degree"
+wrist_flex = "degree"
+wrist_roll = "degree"
+gripper = "normalized_percent_0_100"
+timestamp = "second"
+
+[coordinate_frames]
+joint_position = "source-calibrated SO-101 motor-local coordinates"
+task_space = "not provided; no task-space action may be inferred"
+desk_view = "camera-local pixels; calibration not published"
+wrist_left = "camera-local pixels; calibration not published"
+
+[schema]
+state_column = "observation.state"
+action_column = "action"
+timestamp_column = "timestamp"
+frame_index_column = "frame_index"
+episode_index_column = "episode_index"
+task_index_column = "task_index"
+joint_names = ["shoulder_pan.pos", "shoulder_lift.pos", "elbow_flex.pos", "wrist_flex.pos", "wrist_roll.pos", "gripper.pos"]
+
+[cameras.desk_view]
+feature_key = "observation.images.desk_view"
+width = 800
+height = 600
+codec = "h264"
+pixel_format = "yuv420p"
+fps = 30.0
+
+[cameras.wrist_left]
+feature_key = "observation.images.wrist_left"
+width = 640
+height = 480
+codec = "h264"
+pixel_format = "yuv420p"
+fps = 30.0
+
+[qualified_subset]
+episode_indices = [0]
+episode_id_format = "project_ira_so101_v1:{episode_index:06d}"
+trajectory_from_index = 0
+trajectory_to_index_exclusive = 549
+frames = 549
+task_index = 0
+task = "Put all objects from the desk into the bowl"
+local_subset_bytes = 435441545
+
+[evidence]
+dataset_api = "https://huggingface.co/api/datasets/Project-IRA/TPSoSe2026_Dataset_Full_Merged_Final_LeRobot_SO101_V1"
+project_code_revision = "a339b00b09b8438f6feedcc3a3e42bb299a44034"
+project_pipeline_url = "https://github.com/Project-IRA/interactive-robotic-arm/blob/a339b00b09b8438f6feedcc3a3e42bb299a44034/docs/SO101_PIPELINE.md"
+lerobot_revision = "4aaff99be4a1d81568c08c8f0296b41b40c99ec4"
+lerobot_units_url = "https://github.com/huggingface/lerobot/blob/4aaff99be4a1d81568c08c8f0296b41b40c99ec4/src/lerobot/robots/so_follower/so_follower.py"
+
+[[qualified_files]]
+path = "README.md"
+size = 12459
+sha256 = "594b7b96a50137f372b0c95bb4cc5f7556e97b61b979a1d5d9ce9834f3864aeb"
+role = "source_card"
+
+[[qualified_files]]
+path = "meta/info.json"
+size = 3240
+sha256 = "cc85c635462b5df78e158462bc633bc088923cf28e168d1491b8352981515738"
+role = "schema"
+
+[[qualified_files]]
+path = "meta/stats.json"
+size = 13042
+sha256 = "0c2a763f7b62a3e0bf8cd8a9f7b5f13a041fcb325b28b7735b412575b6f36f47"
+role = "source_statistics"
+
+[[qualified_files]]
+path = "meta/tasks.parquet"
+size = 5002
+sha256 = "4ca7f6392f74a219af16fd781de3f202eb095a1092475220ed555b72a47064cb"
+role = "task_index"
+
+[[qualified_files]]
+path = "meta/episodes/chunk-000/file-000.parquet"
+size = 1361114
+sha256 = "6cf43250223555f9be9e90cb1841dbb1c008387b917ea1042545b1cf25943009"
+role = "episode_index"
+
+[[qualified_files]]
+path = "data/chunk-000/file-000.parquet"
+size = 20596943
+sha256 = "48ec81a4c0977c57f13f85a9dec285de186416eabd873c9bf4cb7bd637805a25"
+role = "trajectory_table"
+
+[[qualified_files]]
+path = "videos/observation.images.desk_view/chunk-000/file-000.mp4"
+size = 203757932
+sha256 = "208c447b5b7d9c6c37ec3bd42dafd2bada912e5d2d853e147bc5a20c4747939c"
+role = "episode_0_desk_view"
+
+[[qualified_files]]
+path = "videos/observation.images.wrist_left/chunk-000/file-000.mp4"
+size = 209691813
+sha256 = "fef866f93720dc3728b8ea15cbf2628f56b5c41cd90a2a70f3859a0bcab4a9c3"
+role = "episode_0_wrist_left"
