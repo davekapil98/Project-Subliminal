@@ -1,0 +1,140 @@
+schema_version = 1
+
+[dataset]
+dataset_id = "armnetbench_so101_v01"
+repository_id = "armnet/armnetbench_v01_lerobot_so101"
+revision = "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84"
+release_tag = "v1.0"
+source_url = "https://huggingface.co/datasets/armnet/armnetbench_v01_lerobot_so101"
+card_url = "https://huggingface.co/datasets/armnet/armnetbench_v01_lerobot_so101/blob/2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84/README.md"
+license = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+redistribution_terms = "Preserve the Apache-2.0 license and notices, state material changes, and do not use contributor names or marks to imply endorsement."
+domain = "real"
+robot_id = "so-101"
+embodiment = "SO-101 single arm, six actuators"
+data_format = "LeRobot v3.0 Parquet plus AV1 MP4 with ArmnetBench outcome extensions"
+collection_method = "Human teleoperation reference demonstrations plus physical rollouts from seven learned policy families"
+native_action_semantics = "Absolute calibrated SO-101 position command: five revolute joints in degrees and gripper in normalized 0..100 range."
+priority = "A"
+status = "validated"
+fps = 20.0
+total_episodes = 2499
+total_frames = 1127881
+total_tasks = 8
+full_snapshot_bytes = 60592338170
+hub_used_storage_bytes = 60643574258
+modalities = ["rgb", "joint_position", "action", "language", "outcome", "reward", "done", "source_policy"]
+task_families = ["ring_insert", "tool_insert", "cable_clip", "eye_drops_to_basket", "eye_drops_to_shelf", "cable_unclip", "tool_removal", "block_stack"]
+camera_names = ["front", "top", "wrist"]
+outcome_classes = ["successful", "failure", "suboptimal"]
+policy_types = ["act", "diffusion", "smolvla", "pi0", "pi0.5", "grootn1.7", "molmoact2", "teleoperated"]
+known_limitations = [
+  "Eight fixed benchmark task setups from one arm-farm source do not establish broad environment generalization.",
+  "Teleoperated reference demonstrations are always labelled successful; learned-policy rollouts carry human outcome labels.",
+  "The binary success field maps both failure and suboptimal to zero; consumers must retain success_class for three-way outcome learning.",
+  "Outcome classes are imbalanced: 915 successful, 1532 failure and 52 suboptimal episodes.",
+  "Published meta/stats.json contains stale per-field counts and episode ranges; qualification recomputes integrity from the episode index and all trajectory tables.",
+  "The source publishes only a train split; project splits must be frozen independently.",
+  "Packed video files contain unreferenced time gaps where episodes were dropped before publication; explicit per-episode from/to timestamps are authoritative.",
+  "Camera intrinsics/extrinsics and a common task-space action frame are not published.",
+]
+
+[objects]
+manifest_path = "configs/datasets/registry/armnetbench_so101_v01.objects.json"
+manifest_sha256 = "3488221dfc3268e4eefb60950c787728485cdedacb2c2b4d6781faff717dfa44"
+qualified_objects = 128
+qualified_subset_bytes = 664617401
+trajectory_files = 120
+trajectory_bytes = 53757034
+metadata_bytes = 3903539
+representative_video_bytes = 606956828
+
+[units]
+shoulder_pan = "degree"
+shoulder_lift = "degree"
+elbow_flex = "degree"
+wrist_flex = "degree"
+wrist_roll = "degree"
+gripper = "normalized_percent_0_100"
+timestamp = "second"
+reward = "unitless_binary"
+
+[coordinate_frames]
+joint_position = "source-calibrated SO-101 motor-local coordinates"
+task_space = "not provided; no task-space action may be inferred"
+front = "camera-local pixels; calibration not published"
+top = "camera-local pixels; calibration not published"
+wrist = "camera-local pixels; calibration not published"
+
+[schema]
+state_column = "observation.state"
+action_column = "action"
+timestamp_column = "timestamp"
+frame_index_column = "frame_index"
+episode_index_column = "episode_index"
+task_index_column = "task_index"
+reward_column = "next.reward"
+done_column = "next.done"
+episode_success_column = "success"
+episode_success_class_column = "success_class"
+episode_policy_repo_column = "policy_repo_id"
+episode_policy_type_column = "policy_type"
+joint_names = ["shoulder_pan.pos", "shoulder_lift.pos", "elbow_flex.pos", "wrist_flex.pos", "wrist_roll.pos", "gripper.pos"]
+
+[cameras.front]
+feature_key = "observation.images.front"
+width = 1024
+height = 576
+codec = "av1"
+pixel_format = "yuv420p"
+fps = 20.0
+
+[cameras.top]
+feature_key = "observation.images.top"
+width = 1024
+height = 576
+codec = "av1"
+pixel_format = "yuv420p"
+fps = 20.0
+
+[cameras.wrist]
+feature_key = "observation.images.wrist"
+width = 1280
+height = 720
+codec = "av1"
+pixel_format = "yuv420p"
+fps = 20.0
+
+[outcomes]
+successful = 915
+failure = 1532
+suboptimal = 52
+binary_success_true = 915
+binary_success_false = 1584
+
+[qualified_subset]
+episode_indices = [610, 611, 621]
+episode_labels = ["suboptimal", "failure", "successful"]
+packed_episode_first = 610
+packed_episode_last = 627
+data_file = "data/chunk-000/file-029.parquet"
+front_video_file = "videos/observation.images.front/chunk-000/file-029.mp4"
+top_video_file = "videos/observation.images.top/chunk-000/file-036.mp4"
+wrist_video_file = "videos/observation.images.wrist/chunk-000/file-035.mp4"
+task_index = 1
+task_family = "tool_insert"
+policy_type = "diffusion"
+
+[splitting]
+group_keys = ["task_index", "policy_type"]
+strategy = "Balanced 8x8 task-policy matrix: one distinct policy cell per task in validation and test; the remaining six cells train."
+test_policy_offset = 0
+validation_policy_offset = 1
+
+[evidence]
+dataset_api = "https://huggingface.co/api/datasets/armnet/armnetbench_v01_lerobot_so101/revision/v1.0"
+tree_api = "https://huggingface.co/api/datasets/armnet/armnetbench_v01_lerobot_so101/tree/2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84?recursive=true&limit=1000"
+lerobot_revision = "4aaff99be4a1d81568c08c8f0296b41b40c99ec4"
+lerobot_units_url = "https://github.com/huggingface/lerobot/blob/4aaff99be4a1d81568c08c8f0296b41b40c99ec4/src/lerobot/robots/so_follower/so_follower.py"
+lerobot_config_url = "https://github.com/huggingface/lerobot/blob/4aaff99be4a1d81568c08c8f0296b41b40c99ec4/src/lerobot/robots/so_follower/config_so_follower.py"

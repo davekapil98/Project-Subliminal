@@ -21,3 +21,9 @@ value have been reviewed.
 source-specific cleaning policy, immutable file pins, qualification report and
 prompt-group split complete Stage 1.1 without admitting the source to training
 before the later held-out model-improvement gate.
+
+`armnetbench_so101_v01.toml` is the second validated Priority-A source. Its
+exact 128-object qualification subset, all numeric trajectories, three-camera
+outcome sample, three-way label policy and task-policy split complete Stage 1.2.
+The remaining media and any training mixture stay blocked by the held-out
+target-model-value gate.

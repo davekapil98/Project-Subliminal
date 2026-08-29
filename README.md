@@ -18,13 +18,18 @@ contracts, educational reimplementations, tiny-overfit tests, and a complete
 mocked closed loop. Its purpose is code correctness, not robotic competence.
 
 Stage 1 under v1.3 is **public dataset acquisition, validation and
-canonicalization**. Stage 1.1 is complete: the Priority-A Project IRA SO-101
-source is pinned at an immutable revision, its license/schema and all 844,208
-numeric trajectory rows are validated, one dual-camera episode subset is
-checksum-verified and decoded, and a canonical sample plus leakage-resistant
-prompt-group split is reproducible. The source is `validated`, not yet admitted
-to training; held-out model improvement belongs to the later public-data gate.
-See [`docs/stage1_1_project_ira_report.md`](docs/stage1_1_project_ira_report.md).
+canonicalization**. Stage 1.1 and Stage 1.2 are complete. Project IRA SO-101 is
+pinned and validated across 844,208 numeric rows with a decoded dual-camera
+sample and prompt-group split. ArmnetBench v0.1 SO-101 is pinned and validated
+across 1,127,881 rows; all three outcome classes decode from three AV1 cameras,
+and a task-policy-cell split prevents rollout-family leakage.
+
+Both sources are `validated`, not yet admitted to training. Held-out
+target-model improvement belongs to the later public-data gate, and the
+remaining ArmnetBench media is not authorized for bulk download. See
+[`docs/stage1_1_project_ira_report.md`](docs/stage1_1_project_ira_report.md)
+and
+[`docs/stage1_2_armnetbench_report.md`](docs/stage1_2_armnetbench_report.md).
 
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
@@ -39,11 +44,13 @@ python3 -m venv .venv
 .venv/bin/python scripts/run_stage0_demo.py
 ```
 
-Reproduce the Stage 1.1 qualification (about 435 MB of ignored raw data):
+Reproduce the Stage 1 source qualifications (about 435 MB for Project IRA and
+665 MB for ArmnetBench, all ignored raw data):
 
 ```bash
 .venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/python scripts/qualify_project_ira_so101.py --download
+.venv/bin/python scripts/qualify_armnetbench_so101.py --download
 ```
 
 The demo runs this synthetic path:

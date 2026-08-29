@@ -9,3 +9,11 @@ complete pinned numeric trajectory table, episode/task alignment, source-native
 units and actions, camera segment metadata and real H.264 decoding. It does not
 invent task-space actions, camera calibration, success labels or quality labels
 that the source does not publish.
+
+`armnetbench_so101.py` validates all pinned Parquet shards, three-way outcome
+and policy metadata, terminal reward/done semantics, per-episode camera
+segments, real AV1 decoding and source-native SO-101 position commands. Its
+canonical conversion retains strict success separately from suboptimal and
+failure, records imitation/prediction eligibility, and never infers camera
+calibration or task-space actions. Unreferenced packed-file gaps are audited;
+referenced segment overlap is corruption.

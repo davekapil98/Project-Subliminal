@@ -1,0 +1,61 @@
+schema_version = 1
+dataset_id = "armnetbench_so101_v01"
+source_revision = "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84"
+
+[integrity]
+require_exact_file_size_and_sha256 = true
+require_no_nulls = true
+require_finite_state_action_reward = true
+require_unique_global_index = true
+require_contiguous_episode_ranges = true
+require_monotonic_episode_timestamps = true
+require_frame_index_from_zero = true
+require_task_text_index_agreement = true
+require_binary_success_class_agreement = true
+require_terminal_done = true
+require_sparse_terminal_success_reward = true
+expected_state_width = 6
+expected_action_width = 6
+expected_fps = 20.0
+timestamp_absolute_tolerance_seconds = 0.00001
+
+[published_statistics]
+policy = "audit_only"
+reason = "meta/stats.json has stale per-field counts and episode ranges; recompute evidence from all pinned Parquet tables."
+
+[video]
+require_all_three_cameras = true
+require_av1 = true
+require_yuv420p = true
+require_20_fps = true
+require_segment_duration_coverage = true
+allow_unreferenced_packed_file_gaps = true
+reject_referenced_segment_overlaps = true
+decode_each_outcome_class = true
+
+[native_actions]
+preserve_without_conversion = true
+semantics = "absolute calibrated position command"
+revolute_joint_unit = "degree"
+gripper_unit = "normalized_percent_0_100"
+task_space_conversion = "forbidden until kinematics and camera/world frames are supplied and validated"
+nonfinite_policy = "reject episode"
+outlier_policy = "flag for review; do not invent a physical threshold or silently drop failed/suboptimal behavior"
+
+[outcomes]
+retain_success_class = true
+binary_success_policy = "successful maps to true; failure and suboptimal map to false"
+imitation_weight = "successful and teleoperated may be positive; failure/suboptimal default to zero until model-specific policy is approved"
+prediction_weight = "all structurally valid outcomes remain eligible for body/world/critic/recovery learning"
+
+[canonicalization]
+qdot_method = "finite difference in source-native position units per second"
+previous_command_method = "initial observation state, then previous source action"
+terminal_action_policy = "drop final same-frame action so N observations form N-1 validated transitions"
+quality_mapping = "successful=1.0, suboptimal=0.5, failure=0.0"
+camera_policy = "retain source timestamps and names; decode on demand; do not claim calibration"
+
+[splitting]
+group_keys = ["task_index", "policy_type"]
+strategy = "Hold each task-policy cell wholly in one split; balance every task and policy across validation and test with a deterministic Latin-square assignment."
+reason = "Prevent rollout-family leakage while retaining all tasks, policies and outcome classes in both held-out splits."

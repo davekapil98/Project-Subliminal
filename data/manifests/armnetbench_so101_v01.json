@@ -1,0 +1,70 @@
+{
+  "camera_names": [
+    "front",
+    "top",
+    "wrist"
+  ],
+  "checksum": "sha256:3488221dfc3268e4eefb60950c787728485cdedacb2c2b4d6781faff717dfa44",
+  "coordinate_frames": {
+    "front": "camera-local pixels; calibration not published",
+    "joint_position": "source-calibrated SO-101 motor-local coordinates",
+    "task_space": "not provided; no task-space action may be inferred",
+    "top": "camera-local pixels; calibration not published",
+    "wrist": "camera-local pixels; calibration not published"
+  },
+  "data_format": "LeRobot v3.0 Parquet plus AV1 MP4 with ArmnetBench outcome extensions",
+  "dataset_id": "armnetbench_so101_v01",
+  "domain": "real",
+  "embodiment": "SO-101 single arm, six actuators",
+  "fps": 20.0,
+  "known_limitations": [
+    "Eight fixed benchmark task setups from one arm-farm source do not establish broad environment generalization.",
+    "Teleoperated reference demonstrations are always labelled successful; learned-policy rollouts carry human outcome labels.",
+    "The binary success field maps both failure and suboptimal to zero; consumers must retain success_class for three-way outcome learning.",
+    "Outcome classes are imbalanced: 915 successful, 1532 failure and 52 suboptimal episodes.",
+    "Published meta/stats.json contains stale per-field counts and episode ranges; qualification recomputes integrity from the episode index and all trajectory tables.",
+    "The source publishes only a train split; project splits must be frozen independently.",
+    "Packed video files contain unreferenced time gaps where episodes were dropped before publication; explicit per-episode from/to timestamps are authoritative.",
+    "Camera intrinsics/extrinsics and a common task-space action frame are not published."
+  ],
+  "license": "Apache-2.0",
+  "modalities": [
+    "rgb",
+    "joint_position",
+    "action",
+    "language",
+    "outcome",
+    "reward",
+    "done",
+    "source_policy"
+  ],
+  "native_action_semantics": "Absolute calibrated SO-101 position command: five revolute joints in degrees and gripper in normalized 0..100 range.",
+  "priority": "A",
+  "redistribution_terms": "Preserve the Apache-2.0 license and notices, state material changes, and do not use contributor names or marks to imply endorsement.",
+  "revision": "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84",
+  "robot_id": "so-101",
+  "simulator_family": null,
+  "simulator_version": null,
+  "source_url": "https://huggingface.co/datasets/armnet/armnetbench_v01_lerobot_so101",
+  "status": "validated",
+  "task_families": [
+    "ring_insert",
+    "tool_insert",
+    "cable_clip",
+    "eye_drops_to_basket",
+    "eye_drops_to_shelf",
+    "cable_unclip",
+    "tool_removal",
+    "block_stack"
+  ],
+  "unit_conventions": {
+    "elbow_flex": "degree",
+    "gripper": "normalized_percent_0_100",
+    "reward": "unitless_binary",
+    "shoulder_lift": "degree",
+    "shoulder_pan": "degree",
+    "timestamp": "second",
+    "wrist_flex": "degree",
+    "wrist_roll": "degree"
+  }
+}
