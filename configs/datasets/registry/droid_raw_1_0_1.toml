@@ -1,0 +1,188 @@
+schema_version = 1
+
+[dataset]
+dataset_id = "droid_raw_1_0_1"
+bucket = "gresearch"
+release_prefix = "robotics/droid_raw/1.0.1"
+revision = "1.0.1"
+source_url = "https://droid-dataset.github.io/droid/docs/the-droid-dataset/"
+collection_code_url = "https://github.com/droid-dataset/droid"
+collection_code_revision = "33ae6a67274f36d2e29525b86f23a56616ef43a7"
+license = "CC-BY-4.0"
+license_object = "robotics/droid/1.0.0/CC-BY-4.0"
+license_url = "https://creativecommons.org/licenses/by/4.0/"
+redistribution_terms = "Credit the DROID creators, link CC BY 4.0, indicate changes, and do not imply endorsement. Raw contributor identity fields are not redistributed by Project Subliminal."
+domain = "real"
+robot_id = "franka-panda"
+embodiment = "Franka Panda single arm with seven revolute joints and a parallel gripper"
+data_format = "DROID raw v1.0.1 JSON metadata, HDF5 low-dimensional trajectories and H.264 MP4 camera recordings"
+collection_method = "Human teleoperation across 13 laboratories; operators explicitly marked every retained raw episode success or failure."
+native_action_semantics = "Seven-dimensional normalized controller command: 6D Cartesian translation/rotation velocity-like command plus gripper velocity. The collection controller converts it to bounded per-step Cartesian/joint/gripper deltas and records derived absolute joint/gripper targets separately."
+priority = "B"
+status = "validated"
+nominal_control_hz = 15.0
+indexed_episodes = 74896
+indexed_successes = 59740
+indexed_failures = 15156
+inventory_scanned_at = "2026-08-31"
+full_raw_snapshot_bytes_approx = 8700000000000
+non_stereo_snapshot_bytes_approx = 5600000000000
+modalities = ["rgb", "joint_position", "joint_velocity", "cartesian_position", "cartesian_velocity", "gripper", "action", "language", "outcome", "torque", "camera_extrinsics"]
+camera_names = ["wrist", "exterior_1", "exterior_2"]
+outcome_classes = ["success", "failure"]
+labs = ["AUTOLab", "CLVR", "GuptaLab", "ILIAD", "IPRL", "IRIS", "PennPAL", "RAD", "RAIL", "REAL", "RPL", "TRI", "WEIRD"]
+known_limitations = [
+  "DROID uses a Franka Panda rather than SO-101; native actions and joint states must remain embodiment-specific.",
+  "The raw release is approximately 8.7 TB. Only the pinned 75.74 MB qualification subset is authorized before a held-out value gate.",
+  "The public raw bucket contains contributor names and user identifiers. Adapters must redact user and user_id from derived or committed evidence.",
+  "The raw 1.0.1 prefix does not co-locate a license marker; DROID maintainers identify the CC-BY-4.0 object beside the official RLDS release as the dataset license.",
+  "Public outcome inventory counts are a complete 2026-08-31 pagination of metadata object names, not a provider-published immutable manifest. Qualification objects are independently generation- and checksum-pinned.",
+  "Post-hoc relabelling updates the HDF5 root attributes and success/failure directory but can leave per-step controller_info outcome flags stale.",
+  "Control timestamps use wall-clock milliseconds and can regress. Such episodes are rejected rather than silently retimed.",
+  "Raw MP4 files declare 60 fps while representative files contain one frame per approximately 15 Hz control step; raw video alignment is by frame index, not MP4 playback timestamp.",
+  "Task strings are broad operator categories rather than object-level language annotations for every raw episode.",
+]
+
+[inventory]
+query_url = "https://storage.googleapis.com/storage/v1/b/gresearch/o?prefix=robotics%2Fdroid_raw%2F1.0.1%2F&matchGlob=robotics%2Fdroid_raw%2F1.0.1%2F%2A%2A%2Fmetadata_%2A.json"
+pages = 134
+metadata_bytes = 132872668
+
+[inventory.outcomes]
+success = 59740
+failure = 15156
+
+[inventory.labs.AUTOLab]
+success = 7015
+failure = 3617
+
+[inventory.labs.CLVR]
+success = 4702
+failure = 433
+
+[inventory.labs.GuptaLab]
+success = 1194
+failure = 187
+
+[inventory.labs.ILIAD]
+success = 2079
+failure = 1303
+
+[inventory.labs.IPRL]
+success = 4426
+failure = 1298
+
+[inventory.labs.IRIS]
+success = 4379
+failure = 217
+
+[inventory.labs.PennPAL]
+success = 2953
+failure = 103
+
+[inventory.labs.RAD]
+success = 1000
+failure = 512
+
+[inventory.labs.RAIL]
+success = 5637
+failure = 2961
+
+[inventory.labs.REAL]
+success = 3515
+failure = 1574
+
+[inventory.labs.RPL]
+success = 2054
+failure = 588
+
+[inventory.labs.TRI]
+success = 18367
+failure = 1756
+
+[inventory.labs.WEIRD]
+success = 2419
+failure = 607
+
+[objects]
+manifest_path = "configs/datasets/registry/droid_raw_1_0_1.objects.json"
+manifest_sha256 = "e0f8d51151e78387641f8ae1238d5e181887dd6fbfa15d4eee309eb22f6bc69f"
+qualified_objects = 59
+qualified_subset_bytes = 75738594
+metadata_objects = 26
+trajectory_objects = 26
+video_objects = 6
+license_objects = 1
+qualified_episodes = 26
+
+[units]
+joint_position = "radian"
+joint_velocity = "radian_per_second"
+gripper_position = "normalized_0_open_1_closed"
+cartesian_position_translation = "meter"
+cartesian_position_rotation = "radian_euler_xyz"
+cartesian_velocity_action = "normalized_controller_command"
+gripper_velocity_action = "normalized_controller_command"
+control_timestamp = "unix_millisecond"
+camera_extrinsic_translation = "meter"
+camera_extrinsic_rotation = "radian_euler_xyz"
+
+[coordinate_frames]
+joint_position = "Franka motor-local joint coordinates"
+cartesian_position = "robot base frame"
+camera_extrinsics = "camera-to-robot-base transform published by DROID"
+native_action = "source controller coordinates; not an SO-101 or canonical task-space action"
+
+[schema]
+state_joint_path = "observation/robot_state/joint_positions"
+state_joint_velocity_path = "observation/robot_state/joint_velocities"
+state_gripper_path = "observation/robot_state/gripper_position"
+action_cartesian_velocity_path = "action/cartesian_velocity"
+action_gripper_velocity_path = "action/gripper_velocity"
+command_joint_position_path = "action/joint_position"
+command_gripper_position_path = "action/gripper_position"
+timestamp_path = "observation/timestamp/control/step_start"
+control_start_path = "observation/timestamp/control/control_start"
+skip_action_path = "observation/timestamp/skip_action"
+controller_success_path = "observation/controller_info/success"
+controller_failure_path = "observation/controller_info/failure"
+expected_joint_width = 7
+canonical_state_width = 8
+native_action_width = 7
+
+[cameras.wrist]
+width = 672
+height = 376
+codec = "h264"
+pixel_format = "yuv420p"
+container_fps = 60.0
+
+[cameras.exterior_1]
+width = 1280
+height = 720
+codec = "h264"
+pixel_format = "yuv420p"
+container_fps = 60.0
+
+[cameras.exterior_2]
+width = 1280
+height = 720
+codec = "h264"
+pixel_format = "yuv420p"
+container_fps = 60.0
+
+[splitting]
+group_key = "lab"
+strategy = "Hold complete collection laboratories out to prevent contributor, scene and hardware leakage. Pair labs to keep validation and test sizes and failure rates near each other and near the global outcome rate."
+train_labs = ["AUTOLab", "GuptaLab", "IPRL", "IRIS", "RAD", "RAIL", "RPL", "TRI", "WEIRD"]
+validation_labs = ["CLVR", "ILIAD"]
+test_labs = ["PennPAL", "REAL"]
+
+[evidence]
+dataset_documentation = "https://droid-dataset.github.io/droid/docs/the-droid-dataset/"
+paper = "https://arxiv.org/abs/2403.12945"
+license_issue = "https://github.com/droid-dataset/droid/issues/62"
+schema_url = "https://github.com/droid-dataset/droid/blob/33ae6a67274f36d2e29525b86f23a56616ef43a7/droid/postprocessing/schema.py"
+collector_text_url = "https://github.com/droid-dataset/droid/blob/33ae6a67274f36d2e29525b86f23a56616ef43a7/droid/user_interface/text.py"
+relabel_code_url = "https://github.com/droid-dataset/droid/blob/33ae6a67274f36d2e29525b86f23a56616ef43a7/droid/user_interface/data_collector.py"
+controller_code_url = "https://github.com/droid-dataset/droid/blob/33ae6a67274f36d2e29525b86f23a56616ef43a7/droid/franka/robot.py"

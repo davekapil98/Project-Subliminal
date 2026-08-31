@@ -14,3 +14,7 @@ SO101 MA MultiTask uses contiguous ten-episode source-order blocks within each
 task. One rotating block per task is held for validation, one distinct block
 for test and eight for train. All seven tasks remain in every split and no
 adjacent source block crosses a boundary.
+
+DROID raw holds complete collection laboratories together. Nine labs train,
+two validate and two test; the groups are disjoint, cover all 74,896 inventoried
+episodes and retain both outcomes at closely matched failure rates.

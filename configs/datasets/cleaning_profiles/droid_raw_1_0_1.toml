@@ -1,0 +1,56 @@
+schema_version = 1
+dataset_id = "droid_raw_1_0_1"
+source_revision = "1.0.1"
+
+[integrity]
+require_exact_generation_size_md5_sha256 = true
+require_metadata_hdf5_pair = true
+require_path_metadata_root_outcome_agreement = true
+require_success_xor_failure = true
+require_expected_core_schema = true
+require_equal_dataset_lengths = true
+require_finite_state_and_action = true
+require_strictly_increasing_control_timestamps = true
+require_three_camera_roles = true
+timestamp_regression_policy = "reject_episode"
+nonfinite_policy = "reject_episode"
+missing_label_policy = "reject_episode"
+
+[outcomes]
+authoritative_order = ["bucket_path", "metadata.success", "hdf5_root.success", "hdf5_root.failure"]
+per_step_controller_info_policy = "audit_only"
+per_step_disagreement_reason = "Official post-hoc relabelling changes root attrs and directory but does not rewrite recorded controller_info arrays."
+success_quality = 1.0
+failure_quality = 0.0
+successful_imitation_eligible = true
+failure_imitation_eligible = false
+all_structurally_valid_prediction_eligible = true
+
+[privacy]
+drop_metadata_fields = ["user", "user_id"]
+forbid_committed_raw_metadata = true
+derived_episode_id = "dataset_id:lab:outcome for the one-per-cell qualification subset"
+committed_evidence_policy = "aggregate lab, task and outcome information only; never emit contributor names or source user identifiers"
+
+[canonicalization]
+q = "concatenate seven observation joint positions with gripper position"
+qdot = "finite difference q using validated native control timestamps; copy the first computed derivative into index zero"
+previous_command = "initial q, then previous derived absolute seven-joint plus gripper target"
+native_action = "concatenate six normalized action/cartesian_velocity values with action/gripper_velocity"
+task_space_action = "absent; conversion forbidden across embodiments"
+terminal_action_policy = "drop final same-frame source action so N observations form N-1 transitions"
+skip_action_policy = "preserve transition for prediction but mark observation validity action_executed=false and exclude it from imitation"
+rgb_alignment = "frame index only; MP4 playback timestamps are not control timestamps"
+
+[video]
+require_h264 = true
+require_yuv420p = true
+require_declared_60_fps = true
+require_frame_count_equals_trajectory_length_minus_one = true
+decode_first_middle_last = true
+
+[splitting]
+group_key = "lab"
+require_disjoint_labs = true
+require_both_outcomes_in_every_split = true
+reason = "Prevent scene, operator, camera and robot-instance leakage across collection sites."

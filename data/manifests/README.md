@@ -20,3 +20,9 @@ subset, complete numeric/provenance validation, mixed H.264/AV1 edge cases,
 the source-block split and a matched-update TinyBodyDynamics value result. Its
 source qualification passes, but its separate admission decision is
 `not_admitted` because Project IRA forgetting exceeds the configured limit.
+
+The DROID raw v1.0.1 records bind an immutable 59-object qualification
+inventory, 26 paired JSON/HDF5 episodes across every lab and outcome, six real
+H.264 streams, PII-free canonical samples, and the frozen collection-lab split.
+The source is validated but remains outside training pending a target-model
+value and forgetting gate.

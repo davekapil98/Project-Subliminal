@@ -1,0 +1,93 @@
+{
+  "dataset_id": "droid_raw_1_0_1",
+  "group_key": "lab",
+  "inventory_episode_count": 74896,
+  "inventory_outcome_counts": {
+    "failure": 15156,
+    "success": 59740
+  },
+  "leakage_rule": "A collection lab, its operators, scenes, cameras and robot instance occur in exactly one split.",
+  "schema_version": 1,
+  "source_revision": "1.0.1",
+  "splits": {
+    "test": {
+      "episode_count": 8145,
+      "failure_rate": 0.20589318600368325,
+      "lab_count": 2,
+      "labs": [
+        "PennPAL",
+        "REAL"
+      ],
+      "outcome_counts": {
+        "failure": 1677,
+        "success": 6468
+      },
+      "qualification_cells": [
+        "droid_raw_1_0_1:PennPAL:failure",
+        "droid_raw_1_0_1:PennPAL:success",
+        "droid_raw_1_0_1:REAL:failure",
+        "droid_raw_1_0_1:REAL:success"
+      ]
+    },
+    "train": {
+      "episode_count": 58234,
+      "failure_rate": 0.20165195590205034,
+      "lab_count": 9,
+      "labs": [
+        "AUTOLab",
+        "GuptaLab",
+        "IPRL",
+        "IRIS",
+        "RAD",
+        "RAIL",
+        "RPL",
+        "TRI",
+        "WEIRD"
+      ],
+      "outcome_counts": {
+        "failure": 11743,
+        "success": 46491
+      },
+      "qualification_cells": [
+        "droid_raw_1_0_1:AUTOLab:failure",
+        "droid_raw_1_0_1:AUTOLab:success",
+        "droid_raw_1_0_1:GuptaLab:failure",
+        "droid_raw_1_0_1:GuptaLab:success",
+        "droid_raw_1_0_1:IPRL:failure",
+        "droid_raw_1_0_1:IPRL:success",
+        "droid_raw_1_0_1:IRIS:failure",
+        "droid_raw_1_0_1:IRIS:success",
+        "droid_raw_1_0_1:RAD:failure",
+        "droid_raw_1_0_1:RAD:success",
+        "droid_raw_1_0_1:RAIL:failure",
+        "droid_raw_1_0_1:RAIL:success",
+        "droid_raw_1_0_1:RPL:failure",
+        "droid_raw_1_0_1:RPL:success",
+        "droid_raw_1_0_1:TRI:failure",
+        "droid_raw_1_0_1:TRI:success",
+        "droid_raw_1_0_1:WEIRD:failure",
+        "droid_raw_1_0_1:WEIRD:success"
+      ]
+    },
+    "validation": {
+      "episode_count": 8517,
+      "failure_rate": 0.20382763883996713,
+      "lab_count": 2,
+      "labs": [
+        "CLVR",
+        "ILIAD"
+      ],
+      "outcome_counts": {
+        "failure": 1736,
+        "success": 6781
+      },
+      "qualification_cells": [
+        "droid_raw_1_0_1:CLVR:failure",
+        "droid_raw_1_0_1:CLVR:success",
+        "droid_raw_1_0_1:ILIAD:failure",
+        "droid_raw_1_0_1:ILIAD:success"
+      ]
+    }
+  },
+  "strategy": "Hold complete collection laboratories out; choose validation and test lab pairs with similar sizes and failure rates."
+}

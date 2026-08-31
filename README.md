@@ -18,13 +18,17 @@ contracts, educational reimplementations, tiny-overfit tests, and a complete
 mocked closed loop. Its purpose is code correctness, not robotic competence.
 
 Stage 1 under v1.3 is **public dataset acquisition, validation and
-canonicalization**. Stage 1.1 through Stage 1.3 are complete. Project IRA SO-101 is
+canonicalization**. Stage 1.1 through Stage 1.4 are complete. Project IRA SO-101 is
 pinned and validated across 844,208 numeric rows with a decoded dual-camera
 sample and prompt-group split. ArmnetBench v0.1 SO-101 is pinned and validated
 across 1,127,881 rows; all three outcome classes decode from three AV1 cameras,
 and a task-policy-cell split prevents rollout-family leakage. The SO101 MA
 MultiTask simulation release is pinned and structurally validated across
 358,006 rows with real H.264/AV1 edge-case decoding and a source-block split.
+DROID raw v1.0.1 adds a success-bearing real Franka source: its complete
+74,896-episode metadata namespace is inventoried, while a generation- and
+checksum-pinned 75.74 MB subset validates 26 HDF5 episodes and six H.264
+streams with a collection-lab split and strict identity-field redaction.
 
 All three sources are `validated`, but none is admitted to training. The first
 matched-update value gate improved held-out simulation error by 49.65% while
@@ -36,6 +40,8 @@ and
 [`docs/stage1_2_armnetbench_report.md`](docs/stage1_2_armnetbench_report.md),
 and
 [`docs/stage1_3_so101_ma_multitask_report.md`](docs/stage1_3_so101_ma_multitask_report.md).
+The DROID qualification and its cross-embodiment boundary are documented in
+[`docs/stage1_4_droid_raw_report.md`](docs/stage1_4_droid_raw_report.md).
 
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
@@ -51,15 +57,18 @@ python3 -m venv .venv
 ```
 
 Reproduce the Stage 1 source qualifications (about 435 MB for Project IRA,
-665 MB for ArmnetBench and 568 MB for SO101 MA, all ignored raw data):
+665 MB for ArmnetBench, 568 MB for SO101 MA and 76 MB for DROID, all ignored
+raw data):
 
 ```bash
 .venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/python scripts/qualify_project_ira_so101.py --download
 .venv/bin/python scripts/qualify_armnetbench_so101.py --download
 .venv/bin/python scripts/qualify_so101_ma_multitask_700.py --download
+.venv/bin/python scripts/qualify_droid_raw.py --download
 .venv/bin/python scripts/evaluate_stage1_3_body_value.py
 .venv/bin/python scripts/qualify_so101_ma_multitask_700.py
+.venv/bin/python scripts/qualify_droid_raw.py
 ```
 
 The demo runs this synthetic path:

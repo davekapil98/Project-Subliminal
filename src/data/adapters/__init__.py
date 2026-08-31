@@ -5,6 +5,12 @@ from data.adapters.armnetbench_so101 import (
     ArmnetBenchSourceSpec,
     QualifiedObject,
 )
+from data.adapters.droid_raw import (
+    DROIDCameraSpec,
+    DROIDObject,
+    DROIDRawAdapter,
+    DROIDSourceSpec,
+)
 from data.adapters.project_ira_so101 import (
     CameraSpec,
     ProjectIRASO101Adapter,
@@ -22,6 +28,10 @@ __all__ = [
     "ArmnetBenchSO101Adapter",
     "ArmnetBenchSourceSpec",
     "QualifiedObject",
+    "DROIDCameraSpec",
+    "DROIDObject",
+    "DROIDRawAdapter",
+    "DROIDSourceSpec",
     "CameraSpec",
     "ProjectIRASO101Adapter",
     "ProjectIRASourceSpec",

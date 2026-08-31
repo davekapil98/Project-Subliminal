@@ -34,3 +34,10 @@ mixed-codec edge cases and contiguous source-block split complete Stage 1.3.
 Validation does not imply admission: the matched-update TinyBodyDynamics gate
 failed the real-source forgetting limit, so the source has no admitted training
 use and the remaining media stays blocked.
+
+`droid_raw_1_0_1.toml` is the Stage 1.4 validated Priority-B complementary
+real source. A complete 74,896-episode outcome/lab metadata inventory and an
+exact 59-object, 75,738,594-byte subset establish HDF5 integrity, real H.264
+decoding, PII redaction, native Franka action preservation and a collection-lab
+split. Validation does not admit DROID to training or authorize its remaining
+approximately 8.7 TB raw release.

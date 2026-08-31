@@ -1,0 +1,68 @@
+{
+  "camera_names": [
+    "wrist",
+    "exterior_1",
+    "exterior_2"
+  ],
+  "checksum": "sha256:e0f8d51151e78387641f8ae1238d5e181887dd6fbfa15d4eee309eb22f6bc69f",
+  "coordinate_frames": {
+    "camera_extrinsics": "camera-to-robot-base transform published by DROID",
+    "cartesian_position": "robot base frame",
+    "joint_position": "Franka motor-local joint coordinates",
+    "native_action": "source controller coordinates; not an SO-101 or canonical task-space action"
+  },
+  "data_format": "DROID raw v1.0.1 JSON metadata, HDF5 low-dimensional trajectories and H.264 MP4 camera recordings",
+  "dataset_id": "droid_raw_1_0_1",
+  "domain": "real",
+  "embodiment": "Franka Panda single arm with seven revolute joints and a parallel gripper",
+  "fps": 15.0,
+  "known_limitations": [
+    "DROID uses a Franka Panda rather than SO-101; native actions and joint states must remain embodiment-specific.",
+    "The raw release is approximately 8.7 TB. Only the pinned 75.74 MB qualification subset is authorized before a held-out value gate.",
+    "The public raw bucket contains contributor names and user identifiers. Adapters must redact user and user_id from derived or committed evidence.",
+    "The raw 1.0.1 prefix does not co-locate a license marker; DROID maintainers identify the CC-BY-4.0 object beside the official RLDS release as the dataset license.",
+    "Public outcome inventory counts are a complete 2026-08-31 pagination of metadata object names, not a provider-published immutable manifest. Qualification objects are independently generation- and checksum-pinned.",
+    "Post-hoc relabelling updates the HDF5 root attributes and success/failure directory but can leave per-step controller_info outcome flags stale.",
+    "Control timestamps use wall-clock milliseconds and can regress. Such episodes are rejected rather than silently retimed.",
+    "Raw MP4 files declare 60 fps while representative files contain one frame per approximately 15 Hz control step; raw video alignment is by frame index, not MP4 playback timestamp.",
+    "Task strings are broad operator categories rather than object-level language annotations for every raw episode."
+  ],
+  "license": "CC-BY-4.0",
+  "modalities": [
+    "rgb",
+    "joint_position",
+    "joint_velocity",
+    "cartesian_position",
+    "cartesian_velocity",
+    "gripper",
+    "action",
+    "language",
+    "outcome",
+    "torque",
+    "camera_extrinsics"
+  ],
+  "native_action_semantics": "Seven-dimensional normalized controller command: 6D Cartesian translation/rotation velocity-like command plus gripper velocity. The collection controller converts it to bounded per-step Cartesian/joint/gripper deltas and records derived absolute joint/gripper targets separately.",
+  "priority": "B",
+  "redistribution_terms": "Credit the DROID creators, link CC BY 4.0, indicate changes, and do not imply endorsement. Raw contributor identity fields are not redistributed by Project Subliminal.",
+  "revision": "1.0.1",
+  "robot_id": "franka-panda",
+  "simulator_family": null,
+  "simulator_version": null,
+  "source_url": "https://droid-dataset.github.io/droid/docs/the-droid-dataset/",
+  "status": "validated",
+  "task_families": [
+    "distributed_in_the_wild_manipulation"
+  ],
+  "unit_conventions": {
+    "camera_extrinsic_rotation": "radian_euler_xyz",
+    "camera_extrinsic_translation": "meter",
+    "cartesian_position_rotation": "radian_euler_xyz",
+    "cartesian_position_translation": "meter",
+    "cartesian_velocity_action": "normalized_controller_command",
+    "control_timestamp": "unix_millisecond",
+    "gripper_position": "normalized_0_open_1_closed",
+    "gripper_velocity_action": "normalized_controller_command",
+    "joint_position": "radian",
+    "joint_velocity": "radian_per_second"
+  }
+}
