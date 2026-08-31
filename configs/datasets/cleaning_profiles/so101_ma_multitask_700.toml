@@ -1,0 +1,73 @@
+schema_version = 1
+dataset_id = "so101_ma_multitask_700"
+source_revision = "d4ae15a1044198bced5b7401123888068033451b"
+
+[integrity]
+require_exact_file_size_and_sha256 = true
+require_no_nulls = true
+require_finite_state_action = true
+require_unique_global_index = true
+require_contiguous_episode_ranges = true
+require_monotonic_episode_timestamps = true
+require_frame_index_from_zero = true
+require_task_text_index_agreement = true
+expected_state_width = 6
+expected_action_width = 6
+expected_fps = 10.0
+timestamp_absolute_tolerance_seconds = 0.00001
+
+[task_metadata]
+source_text_column = "__index_level_0__"
+canonical_text_column = "task"
+policy = "explicitly rename in adapter output; never edit immutable raw metadata"
+reject_unknown_or_duplicate_task_text = true
+
+[published_statistics]
+policy = "audit_only"
+reason = "meta/stats.json has stale aggregate counts; recompute evidence from all 358006 pinned trajectory rows."
+
+[video]
+require_both_cameras = true
+allowed_codecs = ["h264", "av1"]
+require_yuv420p = true
+require_10_fps = true
+require_640x480 = true
+require_segment_coverage = true
+reject_referenced_segment_gaps_or_overlaps = true
+extra_frame_episode = 447
+allowed_extra_frames_per_camera = 9
+extra_frame_policy = "decode only trajectory-length timestamps; the final nine frames in the declared interval are unused"
+decode_qualified_episodes = [299, 447, 599]
+
+[native_actions]
+preserve_without_conversion = true
+semantics = "absolute source-calibrated actuator command"
+physical_unit_status = "unpublished"
+task_space_conversion = "forbidden because the merged release drops explicit URDF-radian and end-effector fields"
+nonfinite_policy = "reject episode"
+outlier_policy = "record extrema and step deltas; do not infer joint limits from ranges"
+cross_source_motor_training = "forbidden until a calibration transform is supplied or independently proven"
+
+[labels]
+success = "unknown"
+quality = "unknown"
+imitation_eligibility = "demonstration provenance only; no verified task-success claim"
+prediction_eligibility = "structurally valid episodes remain eligible for source-local body/world learning"
+
+[canonicalization]
+qdot_method = "finite difference in source-native actuator coordinates per second"
+previous_command_method = "initial observation state, then previous source action"
+terminal_action_policy = "drop final same-frame action so N observations form N-1 validated transitions"
+camera_policy = "retain source timestamps and names; decode on demand; do not claim calibration"
+
+[splitting]
+group_keys = ["task_index", "source_episode_block_10"]
+block_size = 10
+strategy = "Rotating held-out contiguous blocks preserve every task while reducing adjacent collection-order leakage."
+
+[value_gate]
+normalization = "training split only, separately pinned per source"
+metric = "normalized next-state mean squared error"
+seeds = [13, 29, 47]
+forgetting_relative_tolerance = 0.10
+decision_policy = "validated source remains not admitted unless median held-out improvement is positive and neither real-source holdout exceeds the forgetting tolerance"

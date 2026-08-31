@@ -9,3 +9,8 @@ ArmnetBench uses a complete 8x8 task-policy matrix: one distinct cell per task
 is held for validation and test, and the remaining six cells train. Every
 rollout sharing an exact task and policy family stays in one split; both
 held-out splits retain all tasks, policies and outcome classes.
+
+SO101 MA MultiTask uses contiguous ten-episode source-order blocks within each
+task. One rotating block per task is held for validation, one distinct block
+for test and eight for train. All seven tasks remain in every split and no
+adjacent source block crosses a boundary.

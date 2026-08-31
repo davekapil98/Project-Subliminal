@@ -1,0 +1,1761 @@
+{
+  "admission_blockers": [
+    "the bounded TinyBodyDynamics improvement/forgetting criterion did not pass",
+    "native actuator calibration and physical units are unpublished; the merged source drops the upstream URDF-radian transform",
+    "no published success, failure, quality or official task-success benchmark labels exist",
+    "the bounded numeric result does not establish value for the 3.8 GB full video source or for JEPA/world/executive modules",
+    "the source-card collection-code URL was unavailable (HTTP 404) at provenance verification"
+  ],
+  "admission_decision": "not_admitted",
+  "canonical_sample": {
+    "actions": 6,
+    "decoded_rgb_frames": 18,
+    "episode_indices": [
+      299,
+      447,
+      599
+    ],
+    "episodes": 3,
+    "observations": 9,
+    "path": "data/cleaned/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/edge_case_samples_first_2_transitions.json",
+    "sha256": "5080b60ca195269c620178a3926db523058d746a15e081ce5b30dccc31e15088"
+  },
+  "comparison_to_real_sources": {
+    "complementary_value": [
+      "direct SO-101 geometry in Isaac simulation",
+      "seven task families with dual-camera synthetic observations",
+      "source-local numeric dynamics for bounded body/world evaluation"
+    ],
+    "restrictions": [
+      "no published success or quality labels",
+      "native calibration and physical action units are not proven",
+      "no cross-source motor targets or task-space actions are allowed",
+      "full video acquisition requires a separate visual-model value result"
+    ],
+    "source_revisions": {
+      "armnetbench_so101_v01": "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84",
+      "project_ira_so101_v1": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+      "so101_ma_multitask_700": "d4ae15a1044198bced5b7401123888068033451b"
+    }
+  },
+  "dataset_id": "so101_ma_multitask_700",
+  "full_tree_bytes": 3822803256,
+  "full_tree_files": 47,
+  "gate": "stage1.3_source_qualification",
+  "hub_used_storage_bytes": 3822779438,
+  "passed": true,
+  "qualified_subset": {
+    "object_manifest_path": "configs/datasets/registry/so101_ma_multitask_700.objects.json",
+    "object_manifest_sha256": "ffc7f040cffb812557bda95aea17604cb6929539bf7a151ccbda3e23fc0b4bc0",
+    "role_bytes": {
+      "camera_remap_h264_left_wrist": 89931757,
+      "camera_remap_h264_top": 78974161,
+      "episode_index": 993865,
+      "extra_frames_h264_left_wrist": 195385025,
+      "extra_frames_h264_top": 189232839,
+      "merge_provenance": 2445,
+      "published_statistics": 12876,
+      "representative_av1_left_wrist": 514344,
+      "representative_av1_top": 250190,
+      "schema": 3240,
+      "source_card": 2753,
+      "task_index": 2387,
+      "trajectory_table": 12540004
+    },
+    "role_counts": {
+      "camera_remap_h264_left_wrist": 1,
+      "camera_remap_h264_top": 1,
+      "episode_index": 1,
+      "extra_frames_h264_left_wrist": 1,
+      "extra_frames_h264_top": 1,
+      "merge_provenance": 1,
+      "published_statistics": 1,
+      "representative_av1_left_wrist": 1,
+      "representative_av1_top": 1,
+      "schema": 1,
+      "source_card": 1,
+      "task_index": 1,
+      "trajectory_table": 1
+    },
+    "verified_bytes": 567845886,
+    "verified_object_count": 13
+  },
+  "schema_version": 1,
+  "source_revision": "d4ae15a1044198bced5b7401123888068033451b",
+  "source_status": "validated",
+  "source_validation": {
+    "action_max": [
+      88.89354705810547,
+      72.5169906616211,
+      99.90908813476562,
+      98.01063537597656,
+      0.5616605877876282,
+      30.0
+    ],
+    "action_min": [
+      -98.9185562133789,
+      -100.0,
+      -77.4173812866211,
+      -98.08836364746094,
+      -0.8058608174324036,
+      -100.0
+    ],
+    "action_width": 6,
+    "episodes": 700,
+    "fps": 10.0,
+    "frames": 358006,
+    "max_abs_action_step": [
+      10.516525268554688,
+      19.06035804748535,
+      23.764141082763672,
+      16.409324645996094,
+      0.390720397233963,
+      13.70464038848877
+    ],
+    "merge_provenance": {
+      "declared_repository_ids": [
+        "CoRL2026-CSI/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+        "CoRL2026-CSI/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+        "CoRL2026-CSI/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+        "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+        "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+        "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+        "CoRL2026-CSI/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps"
+      ],
+      "derivation": "minimal_schema_multitask_merge",
+      "dropped_optional_feature_groups": [
+        "action.radian_urdf0",
+        "observation.ee_pos.robot_xyzrpy",
+        "observation.gripper_binary",
+        "observation.state.radian_urdf0",
+        "skill.*",
+        "subtask.*"
+      ],
+      "resolved_repository_ids": [
+        "Cache-SCA/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+        "Cache-SCA/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+        "Cache-SCA/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+        "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+        "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+        "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+        "Cache-SCA/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps"
+      ],
+      "upstream_source_count": 7
+    },
+    "native_action_physical_units_proven": false,
+    "native_action_semantics": "Absolute source-calibrated SO-101 actuator commands. The merged release drops explicit URDF-radian fields and does not publish the calibration transform; values must remain source-native.",
+    "nonfinite_values": 0,
+    "null_values": 0,
+    "published_statistics_counts": {
+      "action": 420171,
+      "episode_index": 420171,
+      "frame_index": 420171,
+      "index": 420171,
+      "observation.images.left_wrist": 89862,
+      "observation.images.top": 89862,
+      "observation.state": 420171,
+      "task_index": 358006,
+      "timestamp": 420171
+    },
+    "published_statistics_mismatched_counts": {
+      "action": 420171,
+      "episode_index": 420171,
+      "frame_index": 420171,
+      "index": 420171,
+      "observation.images.left_wrist": 89862,
+      "observation.images.top": 89862,
+      "observation.state": 420171,
+      "timestamp": 420171
+    },
+    "published_statistics_trusted": false,
+    "quality_labels": "absent",
+    "state_max": [
+      88.20960998535156,
+      72.7770767211914,
+      99.90908813476562,
+      97.27232360839844,
+      0.5616605877876282,
+      30.0
+    ],
+    "state_min": [
+      -98.2532730102539,
+      -100.0,
+      -73.51473999023438,
+      -96.3924331665039,
+      -0.9035409092903137,
+      -100.0
+    ],
+    "state_width": 6,
+    "success_labels": "absent",
+    "task_episode_counts": {
+      "block_stack": 100,
+      "color_sort": 100,
+      "drawer_open": 100,
+      "multi_object_distribution": 100,
+      "pick_and_place": 100,
+      "pot_lid_place": 100,
+      "spoon_place": 100
+    },
+    "task_frame_counts": {
+      "block_stack": 92197,
+      "color_sort": 81792,
+      "drawer_open": 29063,
+      "multi_object_distribution": 52285,
+      "pick_and_place": 31130,
+      "pot_lid_place": 37669,
+      "spoon_place": 33870
+    },
+    "task_space_conversion_allowed": false,
+    "task_text_normalized": true,
+    "task_text_source_column": "__index_level_0__",
+    "tasks": 7,
+    "video_metadata": {
+      "left_wrist": {
+        "extra_frame_episode": 447,
+        "file_count": 20,
+        "unused_frames": 9,
+        "unused_seconds": 0.9
+      },
+      "top": {
+        "extra_frame_episode": 447,
+        "file_count": 19,
+        "unused_frames": 9,
+        "unused_seconds": 0.9
+      }
+    }
+  },
+  "split_record": {
+    "block_size": 10,
+    "blocks": {
+      "test": [
+        {
+          "source_episode_block_10": 0,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 6
+        }
+      ],
+      "train": [
+        {
+          "source_episode_block_10": 2,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 0,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 1,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 8,
+          "task_index": 6
+        },
+        {
+          "source_episode_block_10": 9,
+          "task_index": 6
+        }
+      ],
+      "validation": [
+        {
+          "source_episode_block_10": 1,
+          "task_index": 0
+        },
+        {
+          "source_episode_block_10": 2,
+          "task_index": 1
+        },
+        {
+          "source_episode_block_10": 3,
+          "task_index": 2
+        },
+        {
+          "source_episode_block_10": 4,
+          "task_index": 3
+        },
+        {
+          "source_episode_block_10": 5,
+          "task_index": 4
+        },
+        {
+          "source_episode_block_10": 6,
+          "task_index": 5
+        },
+        {
+          "source_episode_block_10": 7,
+          "task_index": 6
+        }
+      ]
+    },
+    "dataset_id": "so101_ma_multitask_700",
+    "episode_counts": {
+      "test": 70,
+      "train": 560,
+      "validation": 70
+    },
+    "episode_indices": {
+      "test": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        440,
+        441,
+        442,
+        443,
+        444,
+        445,
+        446,
+        447,
+        448,
+        449,
+        550,
+        551,
+        552,
+        553,
+        554,
+        555,
+        556,
+        557,
+        558,
+        559,
+        660,
+        661,
+        662,
+        663,
+        664,
+        665,
+        666,
+        667,
+        668,
+        669
+      ],
+      "train": [
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        316,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        326,
+        327,
+        328,
+        329,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365,
+        366,
+        367,
+        368,
+        369,
+        370,
+        371,
+        372,
+        373,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383,
+        384,
+        385,
+        386,
+        387,
+        388,
+        389,
+        390,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396,
+        397,
+        398,
+        399,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410,
+        411,
+        412,
+        413,
+        414,
+        415,
+        416,
+        417,
+        418,
+        419,
+        420,
+        421,
+        422,
+        423,
+        424,
+        425,
+        426,
+        427,
+        428,
+        429,
+        430,
+        431,
+        432,
+        433,
+        434,
+        435,
+        436,
+        437,
+        438,
+        439,
+        460,
+        461,
+        462,
+        463,
+        464,
+        465,
+        466,
+        467,
+        468,
+        469,
+        470,
+        471,
+        472,
+        473,
+        474,
+        475,
+        476,
+        477,
+        478,
+        479,
+        480,
+        481,
+        482,
+        483,
+        484,
+        485,
+        486,
+        487,
+        488,
+        489,
+        490,
+        491,
+        492,
+        493,
+        494,
+        495,
+        496,
+        497,
+        498,
+        499,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512,
+        513,
+        514,
+        515,
+        516,
+        517,
+        518,
+        519,
+        520,
+        521,
+        522,
+        523,
+        524,
+        525,
+        526,
+        527,
+        528,
+        529,
+        530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        544,
+        545,
+        546,
+        547,
+        548,
+        549,
+        570,
+        571,
+        572,
+        573,
+        574,
+        575,
+        576,
+        577,
+        578,
+        579,
+        580,
+        581,
+        582,
+        583,
+        584,
+        585,
+        586,
+        587,
+        588,
+        589,
+        590,
+        591,
+        592,
+        593,
+        594,
+        595,
+        596,
+        597,
+        598,
+        599,
+        600,
+        601,
+        602,
+        603,
+        604,
+        605,
+        606,
+        607,
+        608,
+        609,
+        610,
+        611,
+        612,
+        613,
+        614,
+        615,
+        616,
+        617,
+        618,
+        619,
+        620,
+        621,
+        622,
+        623,
+        624,
+        625,
+        626,
+        627,
+        628,
+        629,
+        630,
+        631,
+        632,
+        633,
+        634,
+        635,
+        636,
+        637,
+        638,
+        639,
+        640,
+        641,
+        642,
+        643,
+        644,
+        645,
+        646,
+        647,
+        648,
+        649,
+        650,
+        651,
+        652,
+        653,
+        654,
+        655,
+        656,
+        657,
+        658,
+        659,
+        680,
+        681,
+        682,
+        683,
+        684,
+        685,
+        686,
+        687,
+        688,
+        689,
+        690,
+        691,
+        692,
+        693,
+        694,
+        695,
+        696,
+        697,
+        698,
+        699
+      ],
+      "validation": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        340,
+        341,
+        342,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        450,
+        451,
+        452,
+        453,
+        454,
+        455,
+        456,
+        457,
+        458,
+        459,
+        560,
+        561,
+        562,
+        563,
+        564,
+        565,
+        566,
+        567,
+        568,
+        569,
+        670,
+        671,
+        672,
+        673,
+        674,
+        675,
+        676,
+        677,
+        678,
+        679
+      ]
+    },
+    "frame_counts": {
+      "test": 34989,
+      "train": 287520,
+      "validation": 35497
+    },
+    "group_keys": [
+      "task_index",
+      "source_episode_block_10"
+    ],
+    "leakage_rule": "all ten adjacent episodes in a source-order block remain in one split",
+    "offsets": {
+      "test": 0,
+      "validation": 1
+    },
+    "schema_version": 1,
+    "source_revision": "d4ae15a1044198bced5b7401123888068033451b",
+    "strategy": "rotating held-out contiguous ten-episode blocks within each upstream task source",
+    "task_episode_counts": {
+      "test": {
+        "block_stack": 10,
+        "color_sort": 10,
+        "drawer_open": 10,
+        "multi_object_distribution": 10,
+        "pick_and_place": 10,
+        "pot_lid_place": 10,
+        "spoon_place": 10
+      },
+      "train": {
+        "block_stack": 80,
+        "color_sort": 80,
+        "drawer_open": 80,
+        "multi_object_distribution": 80,
+        "pick_and_place": 80,
+        "pot_lid_place": 80,
+        "spoon_place": 80
+      },
+      "validation": {
+        "block_stack": 10,
+        "color_sort": 10,
+        "drawer_open": 10,
+        "multi_object_distribution": 10,
+        "pick_and_place": 10,
+        "pot_lid_place": 10,
+        "spoon_place": 10
+      }
+    },
+    "task_family_order": [
+      "block_stack",
+      "color_sort",
+      "multi_object_distribution",
+      "drawer_open",
+      "pot_lid_place",
+      "pick_and_place",
+      "spoon_place"
+    ],
+    "task_frame_counts": {
+      "test": {
+        "block_stack": 8243,
+        "color_sort": 8122,
+        "drawer_open": 2902,
+        "multi_object_distribution": 5493,
+        "pick_and_place": 3144,
+        "pot_lid_place": 3687,
+        "spoon_place": 3398
+      },
+      "train": {
+        "block_stack": 74827,
+        "color_sort": 65588,
+        "drawer_open": 23281,
+        "multi_object_distribution": 41577,
+        "pick_and_place": 24895,
+        "pot_lid_place": 30258,
+        "spoon_place": 27094
+      },
+      "validation": {
+        "block_stack": 9127,
+        "color_sort": 8082,
+        "drawer_open": 2880,
+        "multi_object_distribution": 5215,
+        "pick_and_place": 3091,
+        "pot_lid_place": 3724,
+        "spoon_place": 3378
+      }
+    },
+    "task_order": [
+      "ma_stack_RGBblock_on_bluedish",
+      "ma_sort_RGBblock_to_matchingplate",
+      "ma_distribute_chocolate_pie_each_plate",
+      "cap_open_topdrawer",
+      "cap_close_pot",
+      "cap_pnp_100ep_baseline",
+      "cap_place_spoon_between_bread_and_cereal"
+    ]
+  },
+  "upstream_sources": [
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+      "episodes": 100,
+      "frames": 92197,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+      "revision": "ff28bedc9b5b006a10ca3a20dce439bdb1b374dc",
+      "task_index": 0
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+      "episodes": 100,
+      "frames": 81792,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+      "revision": "e0ff9ba6b39b818ccb5929b5bb17575b75f8a9ab",
+      "task_index": 1
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+      "episodes": 100,
+      "frames": 52285,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+      "revision": "0e2d24121f8276b9bf999ad0b0a44475a823b61b",
+      "task_index": 2
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+      "episodes": 100,
+      "frames": 29063,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+      "revision": "b570f8e4aaf843af24f3e982c4d7bb209451b0cf",
+      "task_index": 3
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+      "episodes": 100,
+      "frames": 37669,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+      "revision": "11b5eff5bf0057cf63ee10787b6d516c1ea36729",
+      "task_index": 4
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+      "episodes": 100,
+      "frames": 31130,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+      "revision": "b0414a1f5be7462cd79e6ff9bb751f5e66eff476",
+      "task_index": 5
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps",
+      "episodes": 100,
+      "frames": 33870,
+      "license": "Apache-2.0",
+      "resolved_repository_id": "Cache-SCA/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps",
+      "revision": "33d81cdc1753212c94823b9a1ed706acf6348197",
+      "task_index": 6
+    }
+  ],
+  "value_gate": {
+    "admission_blockers": [
+      "the bounded TinyBodyDynamics improvement/forgetting criterion did not pass",
+      "native actuator calibration and physical units are unpublished; the merged source drops the upstream URDF-radian transform",
+      "no published success, failure, quality or official task-success benchmark labels exist",
+      "the bounded numeric result does not establish value for the 3.8 GB full video source or for JEPA/world/executive modules",
+      "the source-card collection-code URL was unavailable (HTTP 404) at provenance verification"
+    ],
+    "admission_decision": "not_admitted",
+    "admitted_uses": [],
+    "aggregate": {
+      "criterion": "median simulation improvement must be positive and median forgetting on each real source must be <= 0.10",
+      "median_real_source_relative_forgetting": {
+        "armnetbench_so101_v01": 0.08795182062011321,
+        "project_ira_so101_v1": 0.12896160946354743
+      },
+      "median_simulation_relative_improvement": 0.4964684841366769
+    },
+    "body_value_gate_passed": false,
+    "configuration": {
+      "baseline_source_schedule": [
+        "project_ira_so101_v1",
+        "armnetbench_so101_v01"
+      ],
+      "batch_size": 192,
+      "common_pretraining_learning_rate": 0.0003,
+      "common_pretraining_steps": 240,
+      "deterministic_algorithms": true,
+      "evaluation_transition_cap": 12000,
+      "forgetting_relative_tolerance": 0.1,
+      "matched_comparison_learning_rate": 0.0002,
+      "matched_comparison_steps_per_branch": 180,
+      "model": "TinyBodyDynamics",
+      "model_parameters": {
+        "control_hz": 1.0,
+        "d_model": 32,
+        "depth": 1,
+        "joints": 6,
+        "num_heads": 4
+      },
+      "seeds": [
+        13,
+        29,
+        47
+      ],
+      "treatment_source_schedule": [
+        "so101_ma_multitask_700",
+        "project_ira_so101_v1",
+        "armnetbench_so101_v01"
+      ]
+    },
+    "gate": "stage1.3_tiny_body_dynamics_value_and_forgetting",
+    "input_evidence": {
+      "frozen_real_splits_sha256": {
+        "data/splits/armnetbench_so101_v01.json": "ae3632251aca51b2fb92a40337acf808326fca40a4b458becee8c03eb1c693c5",
+        "data/splits/project_ira_so101_v1.json": "dda7a92c1e9b74667f873dd7b2c9c6243e279343edf5d68c171e78e8a7ebfd59"
+      },
+      "registries_sha256": {
+        "configs/datasets/registry/armnetbench_so101_v01.toml": "a21f065020840055fe6d90387a159f9014cff959f1219311ed964040ad4d33b9",
+        "configs/datasets/registry/project_ira_so101_v1.toml": "98eb020ae7fc12fa83c219b071c1992106910f3d815027a84329761c6c0fae75",
+        "configs/datasets/registry/so101_ma_multitask_700.toml": "f839ea88f7a494d63639f22046a07140dac3981e6cda00c1738833e1f5cbb47c"
+      },
+      "sources": {
+        "armnetbench_so101_v01": {
+          "dataset_id": "armnetbench_so101_v01",
+          "evaluated_test_transitions": 12000,
+          "normalization": {
+            "fit_scope": "all rows from the frozen training episodes only",
+            "q_mean": [
+              -3.9944941997528076,
+              -14.376035690307617,
+              31.05482292175293,
+              59.68655776977539,
+              15.046358108520508,
+              9.838603019714355
+            ],
+            "q_std": [
+              17.480844497680664,
+              40.04143142700195,
+              38.432518005371094,
+              21.142940521240234,
+              42.841224670410156,
+              9.6651611328125
+            ]
+          },
+          "revision": "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84",
+          "rows": 1127881,
+          "test_episodes": 290,
+          "test_transitions": 119024,
+          "train_episodes": 1889,
+          "train_transitions": 863329
+        },
+        "project_ira_so101_v1": {
+          "dataset_id": "project_ira_so101_v1",
+          "evaluated_test_transitions": 12000,
+          "normalization": {
+            "fit_scope": "all rows from the frozen training episodes only",
+            "q_mean": [
+              1.8673182725906372,
+              -25.032854080200195,
+              29.373266220092773,
+              50.91600799560547,
+              -87.48456573486328,
+              23.491291046142578
+            ],
+            "q_std": [
+              42.99408721923828,
+              54.14866638183594,
+              44.520938873291016,
+              39.98655700683594,
+              23.1092586517334,
+              16.953994750976562
+            ]
+          },
+          "revision": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+          "rows": 844208,
+          "test_episodes": 90,
+          "test_transitions": 78912,
+          "train_episodes": 750,
+          "train_transitions": 682888
+        },
+        "so101_ma_multitask_700": {
+          "dataset_id": "so101_ma_multitask_700",
+          "evaluated_test_transitions": 12000,
+          "normalization": {
+            "fit_scope": "all rows from the frozen training episodes only",
+            "q_mean": [
+              -4.180318832397461,
+              -21.74661636352539,
+              44.22788619995117,
+              20.088682174682617,
+              -0.40914106369018555,
+              9.248261451721191
+            ],
+            "q_std": [
+              31.0083065032959,
+              34.69135665893555,
+              24.2624454498291,
+              30.024959564208984,
+              0.197352796792984,
+              20.00040054321289
+            ]
+          },
+          "revision": "d4ae15a1044198bced5b7401123888068033451b",
+          "rows": 358006,
+          "test_episodes": 70,
+          "test_transitions": 34919,
+          "train_episodes": 560,
+          "train_transitions": 286960
+        }
+      }
+    },
+    "methodology": {
+      "baseline": "after common real-source pretraining, continue for the matched comparison budget on alternating Project IRA and ArmnetBench batches",
+      "coordinate_policy": "absolute source action minus current source state, scaled by the source training-state standard deviation",
+      "fairness_control": "baseline and treatment start from an identical checkpoint and receive equal update counts, batch sizes and learning rates",
+      "normalization_policy": "fit q mean/std on each source's frozen training split only; apply those source-local statistics to its test split",
+      "scope": "bounded diagnostic of reusable normalized numeric dynamics; not evidence of physical cross-source motor equivalence",
+      "selection": "all training transitions are sampleable; test evaluation uses at most 12000 evenly spaced transitions per frozen test split",
+      "treatment": "from the identical common checkpoint, continue for the same number of updates with deterministic 1:1:1 SO101-MA:Project-IRA:ArmnetBench replay"
+    },
+    "metric": "source-normalized one-step next-state mean squared error",
+    "next_eligible_work": [
+      "obtain or prove an exact native-to-URDF calibration before any cross-source motor-target use",
+      "qualify a success-bearing label source before imitation/executive supervision",
+      "run a separate held-out visual/world-model value gate before acquiring the remaining packed videos"
+    ],
+    "per_seed": [
+      {
+        "baseline_training_loss_first_last": [
+          0.0002477689413353801,
+          0.001151199801824987
+        ],
+        "common_pretraining_loss_first_last": [
+          0.015722934156656265,
+          0.001361733302474022
+        ],
+        "normalized_next_state_mse": {
+          "baseline": {
+            "armnetbench_so101_v01": 0.0017511977950731912,
+            "project_ira_so101_v1": 0.00011245746641523308,
+            "so101_ma_multitask_700": 0.0035057140986124676
+          },
+          "treatment": {
+            "armnetbench_so101_v01": 0.001984405800700188,
+            "project_ira_so101_v1": 0.00012696016228033437,
+            "so101_ma_multitask_700": 0.0017011845873461829
+          }
+        },
+        "real_source_relative_forgetting": {
+          "armnetbench_so101_v01": 0.13317056832934723,
+          "project_ira_so101_v1": 0.12896160946354743
+        },
+        "seed": 13,
+        "simulation_relative_improvement": 0.5147394968632789,
+        "treatment_training_loss_first_last": [
+          0.0046226889826357365,
+          0.0036242555361241102
+        ]
+      },
+      {
+        "baseline_training_loss_first_last": [
+          0.00020076244254596531,
+          0.003158600302413106
+        ],
+        "common_pretraining_loss_first_last": [
+          0.012253843247890472,
+          0.006706016603857279
+        ],
+        "normalized_next_state_mse": {
+          "baseline": {
+            "armnetbench_so101_v01": 0.0019244652837514878,
+            "project_ira_so101_v1": 0.00013081769448601539,
+            "so101_ma_multitask_700": 0.003113768564330207
+          },
+          "treatment": {
+            "armnetbench_so101_v01": 0.002030273331536187,
+            "project_ira_so101_v1": 0.00014571774337026808,
+            "so101_ma_multitask_700": 0.0016182517773575254
+          }
+        },
+        "real_source_relative_forgetting": {
+          "armnetbench_so101_v01": 0.0549804918166362,
+          "project_ira_so101_v1": 0.11389933863912831
+        },
+        "seed": 29,
+        "simulation_relative_improvement": 0.48029156826380176,
+        "treatment_training_loss_first_last": [
+          0.0032704120967537165,
+          0.0011911789188161492
+        ]
+      },
+      {
+        "baseline_training_loss_first_last": [
+          0.0003667633282020688,
+          0.00728057324886322
+        ],
+        "common_pretraining_loss_first_last": [
+          0.011719400994479656,
+          0.007715047337114811
+        ],
+        "normalized_next_state_mse": {
+          "baseline": {
+            "armnetbench_so101_v01": 0.0018899009144968456,
+            "project_ira_so101_v1": 0.00012461248102287452,
+            "so101_ma_multitask_700": 0.0032893644587861167
+          },
+          "treatment": {
+            "armnetbench_so101_v01": 0.00205612114071846,
+            "project_ira_so101_v1": 0.000151867155606548,
+            "so101_ma_multitask_700": 0.0016562986721595128
+          }
+        },
+        "real_source_relative_forgetting": {
+          "armnetbench_so101_v01": 0.08795182062011321,
+          "project_ira_so101_v1": 0.2187154477621745
+        },
+        "seed": 47,
+        "simulation_relative_improvement": 0.4964684841366769,
+        "treatment_training_loss_first_last": [
+          0.0033479908015578985,
+          0.0016844059573486447
+        ]
+      }
+    ],
+    "schema_version": 1
+  },
+  "video_validation": {
+    "299": {
+      "left_wrist": {
+        "aligned_frames": 325,
+        "aligned_to_timestamp": 1591.6000000000004,
+        "codec": "h264",
+        "declared_to_timestamp": 1591.6000000000004,
+        "decoder": "h264",
+        "duration_seconds": 1591.6,
+        "fps": 10.0,
+        "frames": 15916,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.left_wrist/chunk-000/file-007.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 1559.1000000000004,
+        "unused_frames": 0,
+        "width": 640
+      },
+      "top": {
+        "aligned_frames": 325,
+        "aligned_to_timestamp": 1453.6000000000004,
+        "codec": "h264",
+        "declared_to_timestamp": 1453.6000000000004,
+        "decoder": "h264",
+        "duration_seconds": 1453.6,
+        "fps": 10.0,
+        "frames": 14536,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.top/chunk-000/file-006.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 1421.1000000000004,
+        "unused_frames": 0,
+        "width": 640
+      }
+    },
+    "447": {
+      "left_wrist": {
+        "aligned_frames": 362,
+        "aligned_to_timestamp": 1805.5000000000002,
+        "codec": "h264",
+        "declared_to_timestamp": 1806.4,
+        "decoder": "h264",
+        "duration_seconds": 3183.7,
+        "fps": 10.0,
+        "frames": 31837,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.left_wrist/chunk-000/file-010.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 1769.3000000000002,
+        "unused_frames": 9,
+        "width": 640
+      },
+      "top": {
+        "aligned_frames": 362,
+        "aligned_to_timestamp": 1805.5000000000002,
+        "codec": "h264",
+        "declared_to_timestamp": 1806.4,
+        "decoder": "h264",
+        "duration_seconds": 3183.7,
+        "fps": 10.0,
+        "frames": 31837,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.top/chunk-000/file-009.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 1769.3000000000002,
+        "unused_frames": 9,
+        "width": 640
+      }
+    },
+    "599": {
+      "left_wrist": {
+        "aligned_frames": 319,
+        "aligned_to_timestamp": 31.9,
+        "codec": "av1",
+        "declared_to_timestamp": 31.9,
+        "decoder": "libdav1d",
+        "duration_seconds": 31.9,
+        "fps": 10.0,
+        "frames": 319,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.left_wrist/chunk-000/file-017.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 0.0,
+        "unused_frames": 0,
+        "width": 640
+      },
+      "top": {
+        "aligned_frames": 319,
+        "aligned_to_timestamp": 31.9,
+        "codec": "av1",
+        "declared_to_timestamp": 31.9,
+        "decoder": "libdav1d",
+        "duration_seconds": 31.9,
+        "fps": 10.0,
+        "frames": 319,
+        "height": 480,
+        "path": "data/raw/public_sim/so101_ma_multitask_700/d4ae15a1044198bced5b7401123888068033451b/videos/observation.images.top/chunk-000/file-016.mp4",
+        "pixel_format": "yuv420p",
+        "segment_from_timestamp": 0.0,
+        "unused_frames": 0,
+        "width": 640
+      }
+    }
+  }
+}

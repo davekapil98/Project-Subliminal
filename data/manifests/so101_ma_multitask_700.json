@@ -1,0 +1,66 @@
+{
+  "camera_names": [
+    "top",
+    "left_wrist"
+  ],
+  "checksum": "sha256:ffc7f040cffb812557bda95aea17604cb6929539bf7a151ccbda3e23fc0b4bc0",
+  "coordinate_frames": {
+    "joint_position": "source-calibrated simulated SO-101 motor-local coordinates",
+    "left_wrist": "camera-local pixels; calibration not published",
+    "task_space": "upstream end-effector fields were dropped; no task-space action may be inferred",
+    "top": "camera-local pixels; calibration not published",
+    "urdf_joint": "explicit upstream URDF-radian fields were dropped by the merge"
+  },
+  "data_format": "LeRobot v3.0 Parquet plus mixed H.264/AV1 MP4",
+  "dataset_id": "so101_ma_multitask_700",
+  "domain": "sim",
+  "embodiment": "SO-101 single arm, six source actuators in Isaac simulation",
+  "fps": 10.0,
+  "known_limitations": [
+    "No success, failure, quality or benchmark success-rate labels are published; demonstration status must not be converted into a success label.",
+    "meta/tasks.parquet stores task text in the nonstandard __index_level_0__ column rather than the LeRobot v3 task column; the adapter normalizes it explicitly.",
+    "The merge drops upstream URDF-radian, end-effector, gripper-helper, skill and subtask fields, preventing a proven task-space conversion and discarding useful supervision.",
+    "The exact native actuator calibration/units are not published; upstream evidence proves an affine relation to explicit URDF radians for one source, but that transform is absent from the merge.",
+    "Four declared upstream repository names currently resolve to Cache-SCA mirrors; declared and resolved IDs plus immutable revisions are pinned.",
+    "The SCRAPE-IsaacLab collection-code URL referenced by source cards returned HTTP 404 on 31 August 2026, so collection-code reproducibility cannot be independently verified.",
+    "Published meta/stats.json contains stale aggregate counts (420171 or 89862 for most fields instead of 358006); qualification recomputes statistics from the trajectory table.",
+    "Video codecs are mixed per packed file; at least one upstream card describes H.264 while the merged task also contains AV1 files.",
+    "Close-pot episode 447 includes nine unused video frames in each camera interval; only the first trajectory-length frames are aligned and eligible.",
+    "The source publishes only a train split and has no session/seed identifier beyond task and episode order."
+  ],
+  "license": "Apache-2.0",
+  "modalities": [
+    "rgb",
+    "joint_position",
+    "action",
+    "language",
+    "simulation_provenance"
+  ],
+  "native_action_semantics": "Absolute source-calibrated SO-101 actuator commands. The merged release drops explicit URDF-radian fields and does not publish the calibration transform; values must remain source-native.",
+  "priority": "A",
+  "redistribution_terms": "Preserve the Apache-2.0 license and notices, state material changes, and do not use contributor names or marks to imply endorsement.",
+  "revision": "d4ae15a1044198bced5b7401123888068033451b",
+  "robot_id": "so101_follower",
+  "simulator_family": "Isaac Sim / Isaac Lab",
+  "simulator_version": "Mixed upstream provenance; documented MA sources use Isaac Sim 5.1 and IsaacLab 2.3.2, while CAP cards omit exact versions.",
+  "source_url": "https://huggingface.co/datasets/CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps",
+  "status": "validated",
+  "task_families": [
+    "block_stack",
+    "color_sort",
+    "multi_object_distribution",
+    "drawer_open",
+    "pot_lid_place",
+    "pick_and_place",
+    "spoon_place"
+  ],
+  "unit_conventions": {
+    "elbow_flex": "source_calibrated_motor_coordinate; exact physical unit unpublished",
+    "gripper": "source_calibrated_motor_coordinate; observed range is not the physical 0..100 convention",
+    "shoulder_lift": "source_calibrated_motor_coordinate; exact physical unit unpublished",
+    "shoulder_pan": "source_calibrated_motor_coordinate; exact physical unit unpublished",
+    "timestamp": "second",
+    "wrist_flex": "source_calibrated_motor_coordinate; exact physical unit unpublished",
+    "wrist_roll": "source_calibrated_motor_coordinate; exact physical unit unpublished"
+  }
+}

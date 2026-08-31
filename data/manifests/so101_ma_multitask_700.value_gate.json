@@ -1,0 +1,267 @@
+{
+  "admission_blockers": [
+    "the bounded TinyBodyDynamics improvement/forgetting criterion did not pass",
+    "native actuator calibration and physical units are unpublished; the merged source drops the upstream URDF-radian transform",
+    "no published success, failure, quality or official task-success benchmark labels exist",
+    "the bounded numeric result does not establish value for the 3.8 GB full video source or for JEPA/world/executive modules",
+    "the source-card collection-code URL was unavailable (HTTP 404) at provenance verification"
+  ],
+  "admission_decision": "not_admitted",
+  "admitted_uses": [],
+  "aggregate": {
+    "criterion": "median simulation improvement must be positive and median forgetting on each real source must be <= 0.10",
+    "median_real_source_relative_forgetting": {
+      "armnetbench_so101_v01": 0.08795182062011321,
+      "project_ira_so101_v1": 0.12896160946354743
+    },
+    "median_simulation_relative_improvement": 0.4964684841366769
+  },
+  "body_value_gate_passed": false,
+  "configuration": {
+    "baseline_source_schedule": [
+      "project_ira_so101_v1",
+      "armnetbench_so101_v01"
+    ],
+    "batch_size": 192,
+    "common_pretraining_learning_rate": 0.0003,
+    "common_pretraining_steps": 240,
+    "deterministic_algorithms": true,
+    "evaluation_transition_cap": 12000,
+    "forgetting_relative_tolerance": 0.1,
+    "matched_comparison_learning_rate": 0.0002,
+    "matched_comparison_steps_per_branch": 180,
+    "model": "TinyBodyDynamics",
+    "model_parameters": {
+      "control_hz": 1.0,
+      "d_model": 32,
+      "depth": 1,
+      "joints": 6,
+      "num_heads": 4
+    },
+    "seeds": [
+      13,
+      29,
+      47
+    ],
+    "treatment_source_schedule": [
+      "so101_ma_multitask_700",
+      "project_ira_so101_v1",
+      "armnetbench_so101_v01"
+    ]
+  },
+  "gate": "stage1.3_tiny_body_dynamics_value_and_forgetting",
+  "input_evidence": {
+    "frozen_real_splits_sha256": {
+      "data/splits/armnetbench_so101_v01.json": "ae3632251aca51b2fb92a40337acf808326fca40a4b458becee8c03eb1c693c5",
+      "data/splits/project_ira_so101_v1.json": "dda7a92c1e9b74667f873dd7b2c9c6243e279343edf5d68c171e78e8a7ebfd59"
+    },
+    "registries_sha256": {
+      "configs/datasets/registry/armnetbench_so101_v01.toml": "a21f065020840055fe6d90387a159f9014cff959f1219311ed964040ad4d33b9",
+      "configs/datasets/registry/project_ira_so101_v1.toml": "98eb020ae7fc12fa83c219b071c1992106910f3d815027a84329761c6c0fae75",
+      "configs/datasets/registry/so101_ma_multitask_700.toml": "f839ea88f7a494d63639f22046a07140dac3981e6cda00c1738833e1f5cbb47c"
+    },
+    "sources": {
+      "armnetbench_so101_v01": {
+        "dataset_id": "armnetbench_so101_v01",
+        "evaluated_test_transitions": 12000,
+        "normalization": {
+          "fit_scope": "all rows from the frozen training episodes only",
+          "q_mean": [
+            -3.9944941997528076,
+            -14.376035690307617,
+            31.05482292175293,
+            59.68655776977539,
+            15.046358108520508,
+            9.838603019714355
+          ],
+          "q_std": [
+            17.480844497680664,
+            40.04143142700195,
+            38.432518005371094,
+            21.142940521240234,
+            42.841224670410156,
+            9.6651611328125
+          ]
+        },
+        "revision": "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84",
+        "rows": 1127881,
+        "test_episodes": 290,
+        "test_transitions": 119024,
+        "train_episodes": 1889,
+        "train_transitions": 863329
+      },
+      "project_ira_so101_v1": {
+        "dataset_id": "project_ira_so101_v1",
+        "evaluated_test_transitions": 12000,
+        "normalization": {
+          "fit_scope": "all rows from the frozen training episodes only",
+          "q_mean": [
+            1.8673182725906372,
+            -25.032854080200195,
+            29.373266220092773,
+            50.91600799560547,
+            -87.48456573486328,
+            23.491291046142578
+          ],
+          "q_std": [
+            42.99408721923828,
+            54.14866638183594,
+            44.520938873291016,
+            39.98655700683594,
+            23.1092586517334,
+            16.953994750976562
+          ]
+        },
+        "revision": "bf6f568e9ec218fff838fb266e161724ec4f7e2c",
+        "rows": 844208,
+        "test_episodes": 90,
+        "test_transitions": 78912,
+        "train_episodes": 750,
+        "train_transitions": 682888
+      },
+      "so101_ma_multitask_700": {
+        "dataset_id": "so101_ma_multitask_700",
+        "evaluated_test_transitions": 12000,
+        "normalization": {
+          "fit_scope": "all rows from the frozen training episodes only",
+          "q_mean": [
+            -4.180318832397461,
+            -21.74661636352539,
+            44.22788619995117,
+            20.088682174682617,
+            -0.40914106369018555,
+            9.248261451721191
+          ],
+          "q_std": [
+            31.0083065032959,
+            34.69135665893555,
+            24.2624454498291,
+            30.024959564208984,
+            0.197352796792984,
+            20.00040054321289
+          ]
+        },
+        "revision": "d4ae15a1044198bced5b7401123888068033451b",
+        "rows": 358006,
+        "test_episodes": 70,
+        "test_transitions": 34919,
+        "train_episodes": 560,
+        "train_transitions": 286960
+      }
+    }
+  },
+  "methodology": {
+    "baseline": "after common real-source pretraining, continue for the matched comparison budget on alternating Project IRA and ArmnetBench batches",
+    "coordinate_policy": "absolute source action minus current source state, scaled by the source training-state standard deviation",
+    "fairness_control": "baseline and treatment start from an identical checkpoint and receive equal update counts, batch sizes and learning rates",
+    "normalization_policy": "fit q mean/std on each source's frozen training split only; apply those source-local statistics to its test split",
+    "scope": "bounded diagnostic of reusable normalized numeric dynamics; not evidence of physical cross-source motor equivalence",
+    "selection": "all training transitions are sampleable; test evaluation uses at most 12000 evenly spaced transitions per frozen test split",
+    "treatment": "from the identical common checkpoint, continue for the same number of updates with deterministic 1:1:1 SO101-MA:Project-IRA:ArmnetBench replay"
+  },
+  "metric": "source-normalized one-step next-state mean squared error",
+  "next_eligible_work": [
+    "obtain or prove an exact native-to-URDF calibration before any cross-source motor-target use",
+    "qualify a success-bearing label source before imitation/executive supervision",
+    "run a separate held-out visual/world-model value gate before acquiring the remaining packed videos"
+  ],
+  "per_seed": [
+    {
+      "baseline_training_loss_first_last": [
+        0.0002477689413353801,
+        0.001151199801824987
+      ],
+      "common_pretraining_loss_first_last": [
+        0.015722934156656265,
+        0.001361733302474022
+      ],
+      "normalized_next_state_mse": {
+        "baseline": {
+          "armnetbench_so101_v01": 0.0017511977950731912,
+          "project_ira_so101_v1": 0.00011245746641523308,
+          "so101_ma_multitask_700": 0.0035057140986124676
+        },
+        "treatment": {
+          "armnetbench_so101_v01": 0.001984405800700188,
+          "project_ira_so101_v1": 0.00012696016228033437,
+          "so101_ma_multitask_700": 0.0017011845873461829
+        }
+      },
+      "real_source_relative_forgetting": {
+        "armnetbench_so101_v01": 0.13317056832934723,
+        "project_ira_so101_v1": 0.12896160946354743
+      },
+      "seed": 13,
+      "simulation_relative_improvement": 0.5147394968632789,
+      "treatment_training_loss_first_last": [
+        0.0046226889826357365,
+        0.0036242555361241102
+      ]
+    },
+    {
+      "baseline_training_loss_first_last": [
+        0.00020076244254596531,
+        0.003158600302413106
+      ],
+      "common_pretraining_loss_first_last": [
+        0.012253843247890472,
+        0.006706016603857279
+      ],
+      "normalized_next_state_mse": {
+        "baseline": {
+          "armnetbench_so101_v01": 0.0019244652837514878,
+          "project_ira_so101_v1": 0.00013081769448601539,
+          "so101_ma_multitask_700": 0.003113768564330207
+        },
+        "treatment": {
+          "armnetbench_so101_v01": 0.002030273331536187,
+          "project_ira_so101_v1": 0.00014571774337026808,
+          "so101_ma_multitask_700": 0.0016182517773575254
+        }
+      },
+      "real_source_relative_forgetting": {
+        "armnetbench_so101_v01": 0.0549804918166362,
+        "project_ira_so101_v1": 0.11389933863912831
+      },
+      "seed": 29,
+      "simulation_relative_improvement": 0.48029156826380176,
+      "treatment_training_loss_first_last": [
+        0.0032704120967537165,
+        0.0011911789188161492
+      ]
+    },
+    {
+      "baseline_training_loss_first_last": [
+        0.0003667633282020688,
+        0.00728057324886322
+      ],
+      "common_pretraining_loss_first_last": [
+        0.011719400994479656,
+        0.007715047337114811
+      ],
+      "normalized_next_state_mse": {
+        "baseline": {
+          "armnetbench_so101_v01": 0.0018899009144968456,
+          "project_ira_so101_v1": 0.00012461248102287452,
+          "so101_ma_multitask_700": 0.0032893644587861167
+        },
+        "treatment": {
+          "armnetbench_so101_v01": 0.00205612114071846,
+          "project_ira_so101_v1": 0.000151867155606548,
+          "so101_ma_multitask_700": 0.0016562986721595128
+        }
+      },
+      "real_source_relative_forgetting": {
+        "armnetbench_so101_v01": 0.08795182062011321,
+        "project_ira_so101_v1": 0.2187154477621745
+      },
+      "seed": 47,
+      "simulation_relative_improvement": 0.4964684841366769,
+      "treatment_training_loss_first_last": [
+        0.0033479908015578985,
+        0.0016844059573486447
+      ]
+    }
+  ],
+  "schema_version": 1
+}

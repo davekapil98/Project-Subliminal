@@ -1,0 +1,166 @@
+{
+  "dataset_id": "so101_ma_multitask_700",
+  "repository_id": "CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps",
+  "revision": "d4ae15a1044198bced5b7401123888068033451b",
+  "verified_at_utc": "2026-08-31T00:00:00Z",
+  "full_tree": {
+    "file_count": 47,
+    "file_bytes": 3822803256,
+    "hub_used_storage_bytes": 3822779438
+  },
+  "selection": {
+    "policy": "All source metadata and numeric trajectories plus exact mixed-codec packs for the camera-remap, extra-frame and AV1 edge cases.",
+    "qualified_episode_indices": [
+      299,
+      447,
+      599
+    ],
+    "qualified_object_count": 13,
+    "qualified_subset_bytes": 567845886
+  },
+  "upstream_sources": [
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_stack_RGBblock_on_bluedish_10fps",
+      "revision": "ff28bedc9b5b006a10ca3a20dce439bdb1b374dc",
+      "license": "Apache-2.0",
+      "task_index": 0,
+      "episodes": 100,
+      "frames": 92197
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_sort_RGBblock_to_matchingplate_10fps",
+      "revision": "e0ff9ba6b39b818ccb5929b5bb17575b75f8a9ab",
+      "license": "Apache-2.0",
+      "task_index": 1,
+      "episodes": 100,
+      "frames": 81792
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+      "resolved_repository_id": "Cache-SCA/SO101-ma_distribute_chocolate_pie_each_plate_10fps",
+      "revision": "0e2d24121f8276b9bf999ad0b0a44475a823b61b",
+      "license": "Apache-2.0",
+      "task_index": 2,
+      "episodes": 100,
+      "frames": 52285
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_open_topdrawer_10fps",
+      "revision": "b570f8e4aaf843af24f3e982c4d7bb209451b0cf",
+      "license": "Apache-2.0",
+      "task_index": 3,
+      "episodes": 100,
+      "frames": 29063
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_close_pot_10fps",
+      "revision": "11b5eff5bf0057cf63ee10787b6d516c1ea36729",
+      "license": "Apache-2.0",
+      "task_index": 4,
+      "episodes": 100,
+      "frames": 37669
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+      "resolved_repository_id": "CoRL2026-CSI/SO101-cap_pnp_100ep_baseline_10fps",
+      "revision": "b0414a1f5be7462cd79e6ff9bb751f5e66eff476",
+      "license": "Apache-2.0",
+      "task_index": 5,
+      "episodes": 100,
+      "frames": 31130
+    },
+    {
+      "declared_repository_id": "CoRL2026-CSI/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps",
+      "resolved_repository_id": "Cache-SCA/SO101-cap_place_spoon_between_bread_and_cereal_100epi_10fps",
+      "revision": "33d81cdc1753212c94823b9a1ed706acf6348197",
+      "license": "Apache-2.0",
+      "task_index": 6,
+      "episodes": 100,
+      "frames": 33870
+    }
+  ],
+  "objects": [
+    {
+      "path": "README.md",
+      "size": 2753,
+      "sha256": "374840ca1ea173b8d3602d7b3333c2246e3ddb2d38c792a66810db05ef5aa3b3",
+      "role": "source_card"
+    },
+    {
+      "path": "data/chunk-000/file-000.parquet",
+      "size": 12540004,
+      "sha256": "16157dba5d6cdd48dedccd618e58abe30473d69ca04d0044dfa3de8d7ac7b50b",
+      "role": "trajectory_table"
+    },
+    {
+      "path": "meta/episodes/chunk-000/file-000.parquet",
+      "size": 993865,
+      "sha256": "9e20107e7b8d211d050687ece5c9992f291e4ad27649043e2ef37dfb05727a70",
+      "role": "episode_index"
+    },
+    {
+      "path": "meta/info.json",
+      "size": 3240,
+      "sha256": "afe4a602846c3bb8449ae4dbf204192ac7420580c16fb4f7f7346dc13be32500",
+      "role": "schema"
+    },
+    {
+      "path": "meta/scrape_collection_manifest.json",
+      "size": 2445,
+      "sha256": "3f8cf717c1c012a12e74199a4aadd257f7f84232f7e831b95a3a867ed20217d7",
+      "role": "merge_provenance"
+    },
+    {
+      "path": "meta/stats.json",
+      "size": 12876,
+      "sha256": "08b9dff4a259424a2a8f2c3ca7d7c3e60c2829adf52712823bc3ca058baa908c",
+      "role": "published_statistics"
+    },
+    {
+      "path": "meta/tasks.parquet",
+      "size": 2387,
+      "sha256": "54d4159fcb443b9938484a9ab6044b59ed728814a126e8abd5d0d9c2b3148a9c",
+      "role": "task_index"
+    },
+    {
+      "path": "videos/observation.images.top/chunk-000/file-006.mp4",
+      "size": 78974161,
+      "sha256": "3c5a97875420436d7424b66e34806024438be8432556b9f79e59c093441dac06",
+      "role": "camera_remap_h264_top"
+    },
+    {
+      "path": "videos/observation.images.left_wrist/chunk-000/file-007.mp4",
+      "size": 89931757,
+      "sha256": "a2b2a880e8c98f4f4c2bd2e31eb37a7548a4f033f22223eb5c80788756b4251f",
+      "role": "camera_remap_h264_left_wrist"
+    },
+    {
+      "path": "videos/observation.images.top/chunk-000/file-009.mp4",
+      "size": 189232839,
+      "sha256": "2b543e1440ce5fbb042a348936f1e5d8703414007cb090f32163cde659e7668a",
+      "role": "extra_frames_h264_top"
+    },
+    {
+      "path": "videos/observation.images.left_wrist/chunk-000/file-010.mp4",
+      "size": 195385025,
+      "sha256": "4e7066a8db86a9bb75a280b8f007b61227505e4a6be7f02c2df28cc78c3cd045",
+      "role": "extra_frames_h264_left_wrist"
+    },
+    {
+      "path": "videos/observation.images.top/chunk-000/file-016.mp4",
+      "size": 250190,
+      "sha256": "f927161d336ed38a10624a3fd74fd0cae746f9a4f4f6a1d1d7ea5362af825427",
+      "role": "representative_av1_top"
+    },
+    {
+      "path": "videos/observation.images.left_wrist/chunk-000/file-017.mp4",
+      "size": 514344,
+      "sha256": "75ad0895d2057ae809ea3e5e737160fb05ef38a5ef35b05e2ebeded542400c4c",
+      "role": "representative_av1_left_wrist"
+    }
+  ]
+}

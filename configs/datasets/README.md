@@ -27,3 +27,10 @@ exact 128-object qualification subset, all numeric trajectories, three-camera
 outcome sample, three-way label policy and task-policy split complete Stage 1.2.
 The remaining media and any training mixture stay blocked by the held-out
 target-model-value gate.
+
+`so101_ma_multitask_700.toml` is the third validated Priority-A source. Its
+seven upstream pins, exact 13-object subset, full numeric validation,
+mixed-codec edge cases and contiguous source-block split complete Stage 1.3.
+Validation does not imply admission: the matched-update TinyBodyDynamics gate
+failed the real-source forgetting limit, so the source has no admitted training
+use and the remaining media stays blocked.

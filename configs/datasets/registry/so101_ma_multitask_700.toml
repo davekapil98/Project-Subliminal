@@ -1,0 +1,123 @@
+schema_version = 1
+
+[dataset]
+dataset_id = "so101_ma_multitask_700"
+repository_id = "CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps"
+revision = "d4ae15a1044198bced5b7401123888068033451b"
+source_url = "https://huggingface.co/datasets/CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps"
+card_url = "https://huggingface.co/datasets/CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps/blob/d4ae15a1044198bced5b7401123888068033451b/README.md"
+license = "Apache-2.0"
+license_url = "https://www.apache.org/licenses/LICENSE-2.0"
+redistribution_terms = "Preserve the Apache-2.0 license and notices, state material changes, and do not use contributor names or marks to imply endorsement."
+domain = "sim"
+robot_id = "so101_follower"
+embodiment = "SO-101 single arm, six source actuators in Isaac simulation"
+simulator_family = "Isaac Sim / Isaac Lab"
+simulator_version = "Mixed upstream provenance; documented MA sources use Isaac Sim 5.1 and IsaacLab 2.3.2, while CAP cards omit exact versions."
+data_format = "LeRobot v3.0 Parquet plus mixed H.264/AV1 MP4"
+collection_method = "Merged fixed public simulation demonstrations; documented sources use Code-as-Policies replay through SCRAPE-IsaacLab."
+native_action_semantics = "Absolute source-calibrated SO-101 actuator commands. The merged release drops explicit URDF-radian fields and does not publish the calibration transform; values must remain source-native."
+priority = "A"
+status = "validated"
+fps = 10.0
+total_episodes = 700
+total_frames = 358006
+total_tasks = 7
+full_tree_files = 47
+full_tree_bytes = 3822803256
+hub_used_storage_bytes = 3822779438
+modalities = ["rgb", "joint_position", "action", "language", "simulation_provenance"]
+task_families = ["block_stack", "color_sort", "multi_object_distribution", "drawer_open", "pot_lid_place", "pick_and_place", "spoon_place"]
+task_labels = ["ma_stack_RGBblock_on_bluedish", "ma_sort_RGBblock_to_matchingplate", "ma_distribute_chocolate_pie_each_plate", "cap_open_topdrawer", "cap_close_pot", "cap_pnp_100ep_baseline", "cap_place_spoon_between_bread_and_cereal"]
+camera_names = ["top", "left_wrist"]
+known_limitations = [
+  "No success, failure, quality or benchmark success-rate labels are published; demonstration status must not be converted into a success label.",
+  "meta/tasks.parquet stores task text in the nonstandard __index_level_0__ column rather than the LeRobot v3 task column; the adapter normalizes it explicitly.",
+  "The merge drops upstream URDF-radian, end-effector, gripper-helper, skill and subtask fields, preventing a proven task-space conversion and discarding useful supervision.",
+  "The exact native actuator calibration/units are not published; upstream evidence proves an affine relation to explicit URDF radians for one source, but that transform is absent from the merge.",
+  "Four declared upstream repository names currently resolve to Cache-SCA mirrors; declared and resolved IDs plus immutable revisions are pinned.",
+  "The SCRAPE-IsaacLab collection-code URL referenced by source cards returned HTTP 404 on 31 August 2026, so collection-code reproducibility cannot be independently verified.",
+  "Published meta/stats.json contains stale aggregate counts (420171 or 89862 for most fields instead of 358006); qualification recomputes statistics from the trajectory table.",
+  "Video codecs are mixed per packed file; at least one upstream card describes H.264 while the merged task also contains AV1 files.",
+  "Close-pot episode 447 includes nine unused video frames in each camera interval; only the first trajectory-length frames are aligned and eligible.",
+  "The source publishes only a train split and has no session/seed identifier beyond task and episode order.",
+]
+
+[objects]
+manifest_path = "configs/datasets/registry/so101_ma_multitask_700.objects.json"
+manifest_sha256 = "ffc7f040cffb812557bda95aea17604cb6929539bf7a151ccbda3e23fc0b4bc0"
+qualified_objects = 13
+qualified_subset_bytes = 567845886
+metadata_and_trajectory_bytes = 13557570
+representative_video_bytes = 554288316
+
+[units]
+shoulder_pan = "source_calibrated_motor_coordinate; exact physical unit unpublished"
+shoulder_lift = "source_calibrated_motor_coordinate; exact physical unit unpublished"
+elbow_flex = "source_calibrated_motor_coordinate; exact physical unit unpublished"
+wrist_flex = "source_calibrated_motor_coordinate; exact physical unit unpublished"
+wrist_roll = "source_calibrated_motor_coordinate; exact physical unit unpublished"
+gripper = "source_calibrated_motor_coordinate; observed range is not the physical 0..100 convention"
+timestamp = "second"
+
+[coordinate_frames]
+joint_position = "source-calibrated simulated SO-101 motor-local coordinates"
+urdf_joint = "explicit upstream URDF-radian fields were dropped by the merge"
+task_space = "upstream end-effector fields were dropped; no task-space action may be inferred"
+top = "camera-local pixels; calibration not published"
+left_wrist = "camera-local pixels; calibration not published"
+
+[schema]
+state_column = "observation.state"
+action_column = "action"
+timestamp_column = "timestamp"
+frame_index_column = "frame_index"
+episode_index_column = "episode_index"
+global_index_column = "index"
+task_index_column = "task_index"
+task_text_source_column = "__index_level_0__"
+joint_names = ["shoulder_pan.pos", "shoulder_lift.pos", "elbow_flex.pos", "wrist_flex.pos", "wrist_roll.pos", "gripper.pos"]
+
+[cameras.top]
+feature_key = "observation.images.top"
+width = 640
+height = 480
+allowed_codecs = ["h264", "av1"]
+pixel_format = "yuv420p"
+fps = 10.0
+
+[cameras.left_wrist]
+feature_key = "observation.images.left_wrist"
+width = 640
+height = 480
+allowed_codecs = ["h264", "av1"]
+pixel_format = "yuv420p"
+fps = 10.0
+
+[qualified_subset]
+episode_indices = [299, 447, 599]
+edge_cases = ["source camera-key remap with H.264", "nine unused close-pot frames with H.264", "small packed AV1 files"]
+expected_codecs = ["h264", "h264", "av1"]
+extra_video_episode = 447
+extra_video_frames_per_camera = 9
+
+[splitting]
+group_keys = ["task_index", "source_episode_block_10"]
+source_episode_block_size = 10
+test_block_offset = 0
+validation_block_offset = 1
+strategy = "Keep each contiguous ten-episode collection block intact; assign one rotating block per task to test, one distinct rotating block to validation and eight blocks to train."
+
+[value_gate]
+target_model = "TinyBodyDynamics"
+baseline_sources = ["project_ira_so101_v1", "armnetbench_so101_v01"]
+treatment_addition = "so101_ma_multitask_700"
+held_out_source = "so101_ma_multitask_700:test"
+forgetting_sources = ["project_ira_so101_v1:test", "armnetbench_so101_v01:test"]
+admission_rule = "Treatment must improve held-out source-normalized next-state error and must not cause more than the configured relative forgetting tolerance on either real SO-101 holdout."
+
+[evidence]
+dataset_api = "https://huggingface.co/api/datasets/CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps"
+tree_api = "https://huggingface.co/api/datasets/CoRL2026-CSI/SO101-MA-MultiTask-700epi_10fps/tree/d4ae15a1044198bced5b7401123888068033451b?recursive=true&limit=1000"
+collection_code_url = "https://github.com/vpraise00/SCRAPE-IsaacLab"
+collection_code_status_at_verification = "HTTP 404"
