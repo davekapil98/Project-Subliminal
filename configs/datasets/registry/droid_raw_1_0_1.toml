@@ -131,6 +131,7 @@ camera_extrinsic_rotation = "radian_euler_xyz"
 joint_position = "Franka motor-local joint coordinates"
 cartesian_position = "robot base frame"
 camera_extrinsics = "camera-to-robot-base transform published by DROID"
+camera_extrinsics_vector = "[x, y, z, Euler-Rx, Euler-Ry, Euler-Rz] for the published left stereo camera; translation in meters and Euler xyz rotation in radians"
 native_action = "source controller coordinates; not an SO-101 or canonical task-space action"
 
 [schema]
@@ -146,6 +147,8 @@ control_start_path = "observation/timestamp/control/control_start"
 skip_action_path = "observation/timestamp/skip_action"
 controller_success_path = "observation/controller_info/success"
 controller_failure_path = "observation/controller_info/failure"
+camera_type_group = "observation/camera_type"
+camera_extrinsics_group = "observation/camera_extrinsics"
 expected_joint_width = 7
 canonical_state_width = 8
 native_action_width = 7

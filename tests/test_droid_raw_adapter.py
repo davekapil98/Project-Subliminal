@@ -29,11 +29,15 @@ def _fixture_adapter(
                 "lab": "IPRL",
                 "success": False,
                 "trajectory_length": 3,
+                "uuid": "fixture-uuid",
                 "current_task": "Move object",
                 "hdf5_path": "failure/fixture/trajectory.h5",
                 "wrist_cam_serial": "wrist",
                 "ext1_cam_serial": "exterior-one",
                 "ext2_cam_serial": "exterior-two",
+                "wrist_cam_extrinsics": [0.0, 0.1, 0.2, 0.3, 0.4, 0.5],
+                "ext1_cam_extrinsics": [1.0, 1.1, 1.2, 1.3, 1.4, 1.5],
+                "ext2_cam_extrinsics": [2.0, 2.1, 2.2, 2.3, 2.4, 2.5],
                 "user": "must not escape",
                 "user_id": "must not escape either",
             }
@@ -89,9 +93,23 @@ def _fixture_adapter(
             "observation/controller_info/failure",
             data=np.array([False, False, not terminal_success]),
         )
-        for serial in ("wrist", "exterior-one", "exterior-two"):
+        camera_fixtures = (
+            ("wrist", 0, [0.0, 0.1, 0.2, 0.3, 0.4, 0.5]),
+            ("exterior-one", 1, [1.0, 1.1, 1.2, 1.3, 1.4, 1.5]),
+            ("exterior-two", 1, [2.0, 2.1, 2.2, 2.3, 2.4, 2.5]),
+        )
+        for serial, camera_type, extrinsics in camera_fixtures:
             handle.create_dataset(
-                f"observation/camera_type/{serial}", data=np.ones(3, dtype=np.int64)
+                f"observation/camera_type/{serial}",
+                data=np.full(3, camera_type, dtype=np.int64),
+            )
+            handle.create_dataset(
+                f"observation/camera_extrinsics/{serial}_left",
+                data=np.tile(np.asarray(extrinsics), (3, 1)),
+            )
+            handle.create_dataset(
+                f"observation/timestamp/cameras/{serial}_estimated_capture",
+                data=np.array([990, 1_090, 1_190], dtype=np.int64),
             )
 
     base_spec = DROIDSourceSpec.from_toml(REGISTRY)
@@ -165,10 +183,38 @@ def test_integrity_redaction_stale_label_audit_and_canonicalization(
     assert episode.metadata.quality == 0.0
     assert episode.metadata.extra["imitation_eligible"] is False
     assert episode.metadata.extra["prediction_eligible"] is True
+    assert episode.metadata.extra["imitation_weight"] == 0.0
+    assert episode.metadata.extra["prediction_weight"] == 1.0
+    assert episode.language == ("Move object",)
     assert len(episode.observations) == 3
     assert len(episode.actions) == 2
     assert episode.observations[0].q.shape == (8,)
     assert episode.actions[0].native.shape == (7,)
+    assert len(episode.scene_metadata) == 3
+    assert set(episode.scene_metadata[0]["camera_extrinsics"]) == {
+        "wrist",
+        "exterior_1",
+        "exterior_2",
+    }
+    assert episode.scene_metadata[0]["camera_extrinsics"]["wrist"] == {
+        "translation_m": [0.0, 0.1, 0.2],
+        "rotation_euler_xyz_rad": [0.3, 0.4, 0.5],
+        "source_eye": "left",
+        "target_frame": "robot_base",
+    }
+    assert episode.scene_metadata[0]["source_timestamps"] == {
+        "control_step_start_unix_ms": 1000,
+        "control_start_unix_ms": 1001,
+        "camera_estimated_capture_unix_ms": {
+            "wrist": 990,
+            "exterior_1": 990,
+            "exterior_2": 990,
+        },
+    }
+    assert episode.scene_metadata[0]["source_recorded_joint_velocity_rad_s"] == [
+        1.0
+    ] * 7
+    torch.testing.assert_close(episode.observations[0].qdot[:7], torch.ones(7))
     torch.testing.assert_close(
         episode.observations[0].previous_command, episode.observations[0].q
     )

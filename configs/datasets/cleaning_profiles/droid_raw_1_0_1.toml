@@ -12,6 +12,9 @@ require_equal_dataset_lengths = true
 require_finite_state_and_action = true
 require_strictly_increasing_control_timestamps = true
 require_three_camera_roles = true
+require_three_left_camera_extrinsics = true
+require_metadata_extrinsics_match_first_hdf5_frame = true
+require_unique_episode_uuid = true
 timestamp_regression_policy = "reject_episode"
 nonfinite_policy = "reject_episode"
 missing_label_policy = "reject_episode"
@@ -34,13 +37,15 @@ committed_evidence_policy = "aggregate lab, task and outcome information only; n
 
 [canonicalization]
 q = "concatenate seven observation joint positions with gripper position"
-qdot = "finite difference q using validated native control timestamps; copy the first computed derivative into index zero"
+qdot = "preserve the seven published joint velocities; finite-difference only gripper position using validated native control timestamps and copy its first derivative into index zero"
 previous_command = "initial q, then previous derived absolute seven-joint plus gripper target"
 native_action = "concatenate six normalized action/cartesian_velocity values with action/gripper_velocity"
 task_space_action = "absent; conversion forbidden across embodiments"
 terminal_action_policy = "drop final same-frame source action so N observations form N-1 transitions"
 skip_action_policy = "preserve transition for prediction but mark observation validity action_executed=false and exclude it from imitation"
 rgb_alignment = "frame index only; MP4 playback timestamps are not control timestamps"
+camera_extrinsics = "preserve every observation's published left-camera [xyz meters, Euler xyz radians] transform for wrist, exterior_1 and exterior_2 in scene_metadata"
+source_timestamps = "preserve original control step-start/control-start and per-camera estimated-capture Unix-millisecond values in scene_metadata; canonical timestamp remains episode-relative seconds"
 
 [video]
 require_h264 = true

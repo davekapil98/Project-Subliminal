@@ -159,6 +159,7 @@ def canonical_sample_payload(episode: Any) -> dict[str, Any]:
     return {
         "metadata": asdict(episode.metadata),
         "language": list(episode.language),
+        "scene_metadata": list(episode.scene_metadata),
         "observations": [
             {
                 "timestamp": observation.timestamp,
@@ -315,6 +316,18 @@ def qualify(*, download: bool) -> dict[str, Any]:
                 ),
                 "state_width": episode.observations[0].q.numel(),
                 "native_action_width": episode.actions[0].native.numel(),
+                "language_annotations": len(episode.language),
+                "scene_metadata_records": len(episode.scene_metadata),
+                "camera_calibration_roles": sorted(
+                    episode.scene_metadata[0]["camera_extrinsics"]
+                ),
+                "original_timestamps_preserved": all(
+                    "source_timestamps" in item for item in episode.scene_metadata
+                ),
+                "recorded_joint_velocity_preserved": all(
+                    "source_recorded_joint_velocity_rad_s" in item
+                    for item in episode.scene_metadata
+                ),
             }
         )
 

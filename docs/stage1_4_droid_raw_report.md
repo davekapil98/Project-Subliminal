@@ -73,7 +73,10 @@ All 26 trajectories pass strict validation, covering 7,817 source frames and
 - required 7D joint, scalar gripper, 6D Cartesian command and derived-command
   shapes are exact and contain no NaN or Inf;
 - all three camera serial roles agree between JSON and HDF5;
+- the published left-eye camera extrinsics are finite `[N,6]` arrays, agree
+  with JSON calibration at frame zero and are preserved for every observation;
 - native control timestamps are finite and strictly increasing; and
+- all 26 source UUIDs are present and unique;
 - skip-action transitions are preserved for source-local prediction but marked
   ineligible as executed imitation actions.
 
@@ -87,10 +90,21 @@ silently repaired.
 ## Canonical conversion
 
 Canonical `q` is width eight: seven observed joint positions plus gripper.
-`qdot` is recomputed from strict native timestamps. `previous_command` begins
-at the first observed state, then uses the prior derived absolute seven-joint
-plus gripper target. The native action remains width seven: six normalized
-Cartesian controller values plus gripper velocity.
+`qdot` preserves DROID's seven published joint velocities and derives only the
+missing gripper velocity from strict native timestamps. `previous_command`
+begins at the first observed state, then uses the prior derived absolute
+seven-joint plus gripper target. The native action remains width seven: six
+normalized Cartesian controller values plus gripper velocity.
+
+Every observation also retains the published wrist and two exterior left-eye
+extrinsics as translation in meters plus Euler-xyz rotation in radians, with
+the robot base as target frame. Camera serial identifiers are not copied into
+canonical or committed evidence. The `current_task` annotation is preserved in
+both episode metadata and the canonical language tuple.
+Original control step-start, control-start and per-camera estimated-capture
+Unix-millisecond timestamps are retained per observation alongside canonical
+episode-relative seconds. The published joint-velocity array is also retained;
+source values are not destroyed by canonicalization.
 
 No task-space conversion is emitted. In particular, DROID Franka actions are
 not reinterpreted through the SO-101 calibrated URDF. That URDF defines the

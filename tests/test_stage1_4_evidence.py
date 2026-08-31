@@ -67,10 +67,21 @@ def test_hdf5_video_canonical_and_privacy_evidence_is_complete() -> None:
     assert source["labs"] == 13
     assert source["outcomes"] == {"failure": 13, "success": 13}
     assert source["null_values"] == source["nonfinite_values"] == 0
+    assert source["duplicate_episodes"] == 0
     assert source["stale_controller_terminal_labels"] == 2
     assert source["state_width"] == 8
     assert source["native_action_width"] == 7
     assert source["task_space_conversion_allowed"] is False
+    assert source["camera_calibration"] == {
+        "per_observation": True,
+        "preserved": True,
+        "roles": ["wrist", "exterior_1", "exterior_2"],
+        "rotation_unit": "radian_euler_xyz",
+        "source_eye": "left",
+        "target_frame": "robot_base",
+        "translation_unit": "meter",
+        "vector": "[x, y, z, Euler-Rx, Euler-Ry, Euler-Rz]",
+    }
 
     video = report["video_validation"]
     assert video["validated_streams"] == 6
@@ -88,6 +99,18 @@ def test_hdf5_video_canonical_and_privacy_evidence_is_complete() -> None:
     assert sum(sample["decoded_rgb_frames"] for sample in report["canonical_samples"]) == 12
     assert {sample["state_width"] for sample in report["canonical_samples"]} == {8}
     assert {sample["native_action_width"] for sample in report["canonical_samples"]} == {7}
+    assert {sample["language_annotations"] for sample in report["canonical_samples"]} == {1}
+    assert {sample["scene_metadata_records"] for sample in report["canonical_samples"]} == {3}
+    assert all(
+        sample["camera_calibration_roles"]
+        == ["exterior_1", "exterior_2", "wrist"]
+        for sample in report["canonical_samples"]
+    )
+    assert all(sample["original_timestamps_preserved"] for sample in report["canonical_samples"])
+    assert all(
+        sample["recorded_joint_velocity_preserved"]
+        for sample in report["canonical_samples"]
+    )
 
     assert report["privacy"]["committed_evidence_contains_identity_values"] is False
     assert not {"user", "user_id"}.intersection(_all_keys(report))

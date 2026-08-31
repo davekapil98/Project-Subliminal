@@ -276,7 +276,16 @@ class DROIDRawAdapter:
         metadata_path, trajectory_path = self._episode_files(lab, outcome)
         metadata = self._metadata(lab, outcome)
         expected_success = outcome == "success"
-        safe_required = ("lab", "success", "trajectory_length", "current_task", "hdf5_path")
+        safe_required = (
+            "lab",
+            "success",
+            "trajectory_length",
+            "current_task",
+            "hdf5_path",
+            "wrist_cam_extrinsics",
+            "ext1_cam_extrinsics",
+            "ext2_cam_extrinsics",
+        )
         if any(key not in metadata for key in safe_required):
             raise ValueError(f"{lab}/{outcome} metadata lacks a required field")
         if metadata["lab"] != lab or bool(metadata["success"]) != expected_success:
@@ -352,6 +361,32 @@ class DROIDRawAdapter:
             camera_group = handle["observation/camera_type"]
             if set(camera_group.keys()) != set(serials):
                 raise ValueError(f"{lab}/{outcome} camera serials differ between metadata and HDF5")
+            camera_roles = (
+                ("wrist", serials[0], "wrist_cam_extrinsics", 0),
+                ("exterior_1", serials[1], "ext1_cam_extrinsics", 1),
+                ("exterior_2", serials[2], "ext2_cam_extrinsics", 1),
+            )
+            camera_extrinsics: dict[str, np.ndarray[Any, Any]] = {}
+            for role, serial, metadata_key, expected_type in camera_roles:
+                camera_types = np.asarray(camera_group[serial], dtype=np.int64)
+                if not np.all(camera_types == expected_type):
+                    raise ValueError(f"{lab}/{outcome} {role} camera type is inconsistent")
+                extrinsics_path = (
+                    f"{schema['camera_extrinsics_group']}/{serial}_left"
+                )
+                if extrinsics_path not in handle:
+                    raise ValueError(f"{lab}/{outcome} lacks {role} left-camera extrinsics")
+                extrinsics = np.asarray(handle[extrinsics_path], dtype=np.float64)
+                metadata_extrinsics = np.asarray(metadata[metadata_key], dtype=np.float64)
+                if extrinsics.shape != (length, 6) or metadata_extrinsics.shape != (6,):
+                    raise ValueError(f"{lab}/{outcome} {role} extrinsics must be [N,6]")
+                if not np.isfinite(extrinsics).all() or not np.isfinite(metadata_extrinsics).all():
+                    raise ValueError(f"{lab}/{outcome} {role} extrinsics are non-finite")
+                if not np.allclose(metadata_extrinsics, extrinsics[0], rtol=0.0, atol=1e-9):
+                    raise ValueError(
+                        f"{lab}/{outcome} {role} metadata extrinsics differ from HDF5"
+                    )
+                camera_extrinsics[role] = extrinsics
             controller_success = np.asarray(handle[schema["controller_success_path"]], dtype=bool)
             controller_failure = np.asarray(handle[schema["controller_failure_path"]], dtype=bool)
             if np.any(controller_success & controller_failure):
@@ -383,9 +418,26 @@ class DROIDRawAdapter:
                 "native_action_max": native_action.max(axis=0).tolist(),
                 "derived_command_min": command.min(axis=0).tolist(),
                 "derived_command_max": command.max(axis=0).tolist(),
+                "camera_extrinsics_min": {
+                    role: values.min(axis=0).tolist()
+                    for role, values in camera_extrinsics.items()
+                },
+                "camera_extrinsics_max": {
+                    role: values.max(axis=0).tolist()
+                    for role, values in camera_extrinsics.items()
+                },
             }
 
     def validate_source(self) -> dict[str, Any]:
+        episode_uuids = [
+            str(self._metadata(lab, outcome).get("uuid", "")).strip()
+            for lab in self.spec.labs
+            for outcome in OUTCOMES
+        ]
+        if any(not value for value in episode_uuids):
+            raise ValueError("a DROID qualification episode lacks its source UUID")
+        if len(set(episode_uuids)) != len(episode_uuids):
+            raise ValueError("the DROID qualification subset contains duplicate episodes")
         cells = [self._inspect_cell(lab, outcome) for lab in self.spec.labs for outcome in OUTCOMES]
         frames = sum(int(cell["frames"]) for cell in cells)
         transitions = sum(int(cell["transitions"]) for cell in cells)
@@ -420,11 +472,22 @@ class DROIDRawAdapter:
             "dt_seconds_max": max(dts_max),
             "null_values": 0,
             "nonfinite_values": 0,
+            "duplicate_episodes": 0,
             "redacted_fields": sorted(PRIVATE_METADATA_FIELDS),
             "authoritative_outcome_sources": [
                 "bucket_path", "metadata.success", "hdf5_root.success", "hdf5_root.failure"
             ],
             "controller_info_policy": "audit_only",
+            "camera_calibration": {
+                "preserved": True,
+                "roles": list(self.spec.camera_names),
+                "source_eye": "left",
+                "vector": "[x, y, z, Euler-Rx, Euler-Ry, Euler-Rz]",
+                "translation_unit": "meter",
+                "rotation_unit": "radian_euler_xyz",
+                "target_frame": "robot_base",
+                "per_observation": True,
+            },
             "native_action_semantics": self.spec.native_action_semantics,
             "task_space_conversion_allowed": False,
             "cells": cells,
@@ -514,16 +577,30 @@ class DROIDRawAdapter:
             raise ValueError("canonicalization requires at least one transition")
         count = transitions + 1
         schema = self.spec.schema
+        metadata = self._metadata(lab, outcome)
+        serial_by_role = {
+            "wrist": str(metadata["wrist_cam_serial"]),
+            "exterior_1": str(metadata["ext1_cam_serial"]),
+            "exterior_2": str(metadata["ext2_cam_serial"]),
+        }
         with h5py.File(trajectory_path, "r") as handle:
             q = np.column_stack((
                 np.asarray(handle[schema["state_joint_path"]][:count], dtype=np.float64),
                 np.asarray(handle[schema["state_gripper_path"]][:count], dtype=np.float64),
             ))
+            source_joint_velocities = np.asarray(
+                handle[schema["state_joint_velocity_path"]][:count],
+                dtype=np.float64,
+            )
             timestamps_ms = np.asarray(handle[schema["timestamp_path"]][:count], dtype=np.float64)
+            control_start_ms = np.asarray(
+                handle[schema["control_start_path"]][:count], dtype=np.int64
+            )
             timestamps = (timestamps_ms - timestamps_ms[0]) / 1000.0
-            qdot = np.empty_like(q)
-            qdot[1:] = np.diff(q, axis=0) / np.diff(timestamps)[:, None]
-            qdot[0] = qdot[1]
+            gripper_velocity = np.empty(count, dtype=np.float64)
+            gripper_velocity[1:] = np.diff(q[:, -1]) / np.diff(timestamps)
+            gripper_velocity[0] = gripper_velocity[1]
+            qdot = np.column_stack((source_joint_velocities, gripper_velocity))
             commands = np.column_stack((
                 np.asarray(handle[schema["command_joint_position_path"]][:count], dtype=np.float64),
                 np.asarray(handle[schema["command_gripper_position_path"]][:count], dtype=np.float64),
@@ -536,6 +613,24 @@ class DROIDRawAdapter:
                 np.asarray(handle[schema["action_gripper_velocity_path"]][:transitions], dtype=np.float64),
             ))
             skipped = np.asarray(handle[schema["skip_action_path"]][:transitions], dtype=bool)
+            camera_extrinsics = {
+                role: np.asarray(
+                    handle[
+                        f"{schema['camera_extrinsics_group']}/{serial}_left"
+                    ][:count],
+                    dtype=np.float64,
+                )
+                for role, serial in serial_by_role.items()
+            }
+            camera_capture_ms = {
+                role: np.asarray(
+                    handle[
+                        f"observation/timestamp/cameras/{serial}_estimated_capture"
+                    ][:count],
+                    dtype=np.int64,
+                )
+                for role, serial in serial_by_role.items()
+            }
 
         rgb_by_observation: list[dict[str, torch.Tensor]] = [dict() for _ in range(count)]
         if include_rgb:
@@ -600,7 +695,17 @@ class DROIDRawAdapter:
                         cell["controller_terminal_matches_authoritative"]
                     ),
                     "imitation_eligible": success,
+                    "imitation_weight": 1.0 if success else 0.0,
                     "prediction_eligible": True,
+                    "prediction_weight": 1.0,
+                    "eligible_modules": [
+                        "jepa_encoder",
+                        "jepa_world",
+                        "executive",
+                        "language",
+                        "universal_action_pretraining",
+                    ],
+                    "language_annotation_source": "metadata.current_task",
                     "unit_conventions": self.spec.units,
                     "coordinate_frames": self.spec.coordinate_frames,
                 },
@@ -608,6 +713,32 @@ class DROIDRawAdapter:
             observations=observations,
             actions=actions,
             language=(str(cell["task"]),),
+            scene_metadata=tuple(
+                {
+                    "source_frame_index": index,
+                    "source_timestamps": {
+                        "control_step_start_unix_ms": int(timestamps_ms[index]),
+                        "control_start_unix_ms": int(control_start_ms[index]),
+                        "camera_estimated_capture_unix_ms": {
+                            role: int(values[index])
+                            for role, values in camera_capture_ms.items()
+                        },
+                    },
+                    "source_recorded_joint_velocity_rad_s": source_joint_velocities[
+                        index
+                    ].tolist(),
+                    "camera_extrinsics": {
+                        role: {
+                            "translation_m": values[index, :3].tolist(),
+                            "rotation_euler_xyz_rad": values[index, 3:].tolist(),
+                            "source_eye": "left",
+                            "target_frame": "robot_base",
+                        }
+                        for role, values in camera_extrinsics.items()
+                    }
+                }
+                for index in range(count)
+            ),
         )
         episode.validate()
         return episode

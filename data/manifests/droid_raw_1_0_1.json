@@ -7,6 +7,7 @@
   "checksum": "sha256:e0f8d51151e78387641f8ae1238d5e181887dd6fbfa15d4eee309eb22f6bc69f",
   "coordinate_frames": {
     "camera_extrinsics": "camera-to-robot-base transform published by DROID",
+    "camera_extrinsics_vector": "[x, y, z, Euler-Rx, Euler-Ry, Euler-Rz] for the published left stereo camera; translation in meters and Euler xyz rotation in radians",
     "cartesian_position": "robot base frame",
     "joint_position": "Franka motor-local joint coordinates",
     "native_action": "source controller coordinates; not an SO-101 or canonical task-space action"
