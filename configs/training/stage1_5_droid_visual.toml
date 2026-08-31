@@ -1,0 +1,204 @@
+schema_version = 1
+stage = "1.5"
+status = "frozen_before_acquisition"
+frozen_at = "2026-08-31"
+gate = "stage1.5_action_free_visual_jepa_value_and_forgetting"
+purpose = "Test whether bounded DROID real-Franka video improves action-free temporal visual prediction without degrading frozen real SO-101 visual holdouts."
+
+[scope]
+admission_candidate = "jepa_encoder_action_free_temporal_pretraining"
+explicitly_excluded_uses = [
+  "SO-101 motor targets",
+  "SO-101 body dynamics",
+  "cross-embodiment native-action mixing",
+  "action-conditioned JEPA World admission",
+  "Executive admission",
+  "Language admission",
+]
+reason = "DROID native actions and joints are Franka-specific. This first gate tests only source-agnostic visual temporal representation value."
+
+[acquisition]
+cap_bytes = 20000000000
+minimum_free_reserve_bytes = 5000000000
+cap_policy = "The sum of every raw object used by the Stage 1.5 gate, including already-local SO-101 video packs, must be <= cap_bytes. Abort before download otherwise."
+raw_policy = "Download immutable objects only; never overwrite; keep raw and prepared caches Git-ignored."
+metadata_policy = "Acquire metadata only for selected DROID episodes. The complete 74,896-object metadata namespace is already inventoried; bulk identity-bearing JSON adds no value to this visual gate."
+max_workers = 4
+
+[acquisition.pinned_support]
+droid_object_manifest = "configs/datasets/registry/droid_raw_1_0_1.objects.json"
+droid_object_manifest_sha256 = "e0f8d51151e78387641f8ae1238d5e181887dd6fbfa15d4eee309eb22f6bc69f"
+project_ira_registry = "configs/datasets/registry/project_ira_so101_v1.toml"
+project_ira_registry_sha256 = "98eb020ae7fc12fa83c219b071c1992106910f3d815027a84329761c6c0fae75"
+armnetbench_object_manifest = "configs/datasets/registry/armnetbench_so101_v01.objects.json"
+armnetbench_object_manifest_sha256 = "3488221dfc3268e4eefb60950c787728485cdedacb2c2b4d6781faff717dfa44"
+policy = "Count the already-pinned license, metadata, episode indices and trajectory tables required to interpret selected video. Deduplicate selected video objects by dataset and path."
+
+[selection.droid]
+dataset_id = "droid_raw_1_0_1"
+revision = "1.0.1"
+algorithm = "Within every frozen lab/outcome cell, exclude Stage 1.4 episodes, require one metadata JSON, one HDF5 trajectory and exactly three non-stereo MP4 cameras, then SHA-256 rank eligible episodes by dataset_id:stage1.5:lab:outcome:source_episode_prefix and select the first quota_per_lab_outcome."
+quota_per_lab_outcome = 16
+expected_labs = 13
+expected_outcomes = ["failure", "success"]
+expected_episodes = 416
+objects_per_episode = 5
+required_objects = ["metadata JSON", "trajectory HDF5", "three non-stereo MP4 cameras"]
+stereo_policy = "exclude"
+split_key = "collection lab"
+samples_per_episode = 8
+temporal_horizon_seconds = 0.5
+
+[selection.project_ira]
+dataset_id = "project_ira_so101_v1"
+revision = "bf6f568e9ec218fff838fb266e161724ec4f7e2c"
+train_episode_first = 0
+train_episode_last = 89
+test_episode_first = 880
+test_episode_last = 889
+samples_per_episode = 8
+train_group = "frozen train task groups; existing packed files"
+test_group = "frozen test task group; newly pinned packed files"
+
+[selection.armnetbench]
+dataset_id = "armnetbench_so101_v01"
+revision = "2e5e89aee0e7f081078d9d6ab3b279fc4b83ea84"
+train_episode_first = 1549
+train_episode_last = 1598
+test_episode_first = 610
+test_episode_last = 627
+samples_per_episode = 8
+train_group = "frozen train task-policy cells; newly pinned packed files"
+test_group = "frozen test task-policy cells; existing packed files"
+
+[[so101_video_objects]]
+dataset_id = "project_ira_so101_v1"
+split_role = "train"
+path = "videos/observation.images.desk_view/chunk-000/file-000.mp4"
+size = 203757932
+sha256 = "208c447b5b7d9c6c37ec3bd42dafd2bada912e5d2d853e147bc5a20c4747939c"
+local = true
+
+[[so101_video_objects]]
+dataset_id = "project_ira_so101_v1"
+split_role = "train"
+path = "videos/observation.images.wrist_left/chunk-000/file-000.mp4"
+size = 209691813
+sha256 = "fef866f93720dc3728b8ea15cbf2628f56b5c41cd90a2a70f3859a0bcab4a9c3"
+local = true
+
+[[so101_video_objects]]
+dataset_id = "project_ira_so101_v1"
+split_role = "test"
+path = "videos/observation.images.desk_view/chunk-000/file-023.mp4"
+size = 170266671
+sha256 = "80192961e8e31b35b1de7ed91fd873d7a8adf7574012324efa4fb209fe2fccca"
+local = false
+
+[[so101_video_objects]]
+dataset_id = "project_ira_so101_v1"
+split_role = "test"
+path = "videos/observation.images.wrist_left/chunk-000/file-027.mp4"
+size = 173623914
+sha256 = "eb6c6dc58cddcef53d1f408244696f327b08c0f4afae2ed9dcf4d4f80447ab8a"
+local = false
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "train"
+path = "videos/observation.images.front/chunk-000/file-079.mp4"
+size = 164235644
+sha256 = "b5e8e4c4cb6846014dd47b8f1875695423545e729fead4ed19db52ce6c71327f"
+local = false
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "train"
+path = "videos/observation.images.top/chunk-000/file-105.mp4"
+size = 155966937
+sha256 = "8cfddf52872ff7518c23e5912f9b27782cdf31351d92ab22d7d73ba863c370c0"
+local = false
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "train"
+path = "videos/observation.images.wrist/chunk-000/file-109.mp4"
+size = 186001763
+sha256 = "e42a495c67fa9bcb546c6f1ba2c445d80cfaed5c8ffba476820d04c3e5177124"
+local = false
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "test"
+path = "videos/observation.images.front/chunk-000/file-029.mp4"
+size = 193398601
+sha256 = "ded2bfe4fafb32df0eb41461019f355c6491ab864aea91d250f666a1bca5e5dc"
+local = true
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "test"
+path = "videos/observation.images.top/chunk-000/file-036.mp4"
+size = 206825764
+sha256 = "d7059947f8b1de9cf16593477265070aa6e2cdd646b3baf04c29aca8b454aae2"
+local = true
+
+[[so101_video_objects]]
+dataset_id = "armnetbench_so101_v01"
+split_role = "test"
+path = "videos/observation.images.wrist/chunk-000/file-035.mp4"
+size = 206732463
+sha256 = "7edb2c264281fd36d31d9685da10d6013c98ea168639613b50b0d0541b1da9ad"
+local = true
+
+[representation]
+view_order = ["exterior_primary", "exterior_secondary", "wrist"]
+image_size = 64
+target_pool_size = 16
+image_range = "float32_0_1"
+camera_mask = true
+proprio_width = 24
+embodiment_token_width = 3
+model_proprio_width = 27
+proprio_policy = "Pad SO-101 q/qdot/previous_command from 18 to 24, retain DROID width 24, fit normalization on each source training split only, append one-hot dataset/embodiment token."
+target_policy = "Frozen seeded random projection of future multi-view 16x16 RGB into four 16D target tokens; no learned target encoder and therefore no collapse shortcut."
+target_projection_seed = 1515
+action_policy = "No action input. Native Franka and SO-101 actions remain excluded from the shared gate."
+
+[model]
+encoder = "TinyJEPAEncoder"
+predictor = "JEPALatentPredictor"
+image_size = 64
+patch_size = 8
+max_views = 3
+proprio_dim = 27
+d_model = 32
+depth = 1
+num_heads = 4
+world_tokens = 4
+bus_dim = 16
+predictor_depth = 1
+
+[training]
+device = "auto"
+seeds = [13, 29, 47]
+deterministic_algorithms = true
+common_pretraining_steps = 300
+matched_comparison_steps_per_branch = 240
+batch_size = 32
+common_pretraining_learning_rate = 0.0003
+matched_comparison_learning_rate = 0.0002
+gradient_clip_norm = 1.0
+baseline_schedule = ["project_ira_so101_v1", "armnetbench_so101_v01"]
+treatment_schedule = ["droid_raw_1_0_1", "project_ira_so101_v1", "armnetbench_so101_v01"]
+fairness_control = "Branches start from the identical common checkpoint and receive equal updates, batch size, optimizer, learning rate and deterministic sampling budget."
+
+[evaluation]
+metric = "source-training-normalized future fixed-target mean squared error"
+droid_heldout_split = "test labs: PennPAL and REAL"
+diagnostic_droid_split = "validation labs: CLVR and ILIAD"
+forgetting_sources = ["project_ira_so101_v1:test", "armnetbench_so101_v01:test"]
+forgetting_relative_tolerance = 0.10
+minimum_positive_seed_count = 2
+admission_rule = "Median DROID test relative improvement must be positive, at least two of three seeds must improve DROID test error, and median relative forgetting on each SO-101 holdout must be <= 0.10."
+decision_scope = "A pass admits only action-free DROID visual temporal pretraining for the JEPA encoder. Every other DROID use remains blocked."

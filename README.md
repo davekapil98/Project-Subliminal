@@ -43,6 +43,13 @@ and
 The DROID qualification and its cross-embodiment boundary are documented in
 [`docs/stage1_4_droid_raw_report.md`](docs/stage1_4_droid_raw_report.md).
 
+Stage 1.5 is frozen before acquisition as an action-free DROID visual
+value/forgetting gate. The exact 416-episode, 12.69 GB DROID/SO-101 selection
+is 7.31 GB below its 20 GB cap; no DROID Franka action is used as an SO-101
+target. The pre-declared comparison, seeds, thresholds, and exact object pins
+are documented in
+[`docs/stage1_5_droid_visual_predeclaration.md`](docs/stage1_5_droid_visual_predeclaration.md).
+
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
 [`docs/legacy_v12_isaac.md`](docs/legacy_v12_isaac.md).
