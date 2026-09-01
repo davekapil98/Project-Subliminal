@@ -18,7 +18,7 @@ contracts, educational reimplementations, tiny-overfit tests, and a complete
 mocked closed loop. Its purpose is code correctness, not robotic competence.
 
 Stage 1 under v1.3 is **public dataset acquisition, validation and
-canonicalization**. Stage 1.1 through Stage 1.4 are complete. Project IRA SO-101 is
+canonicalization**. Stage 1.1 through Stage 1.5 are complete. Project IRA SO-101 is
 pinned and validated across 844,208 numeric rows with a decoded dual-camera
 sample and prompt-group split. ArmnetBench v0.1 SO-101 is pinned and validated
 across 1,127,881 rows; all three outcome classes decode from three AV1 cameras,
@@ -43,12 +43,15 @@ and
 The DROID qualification and its cross-embodiment boundary are documented in
 [`docs/stage1_4_droid_raw_report.md`](docs/stage1_4_droid_raw_report.md).
 
-Stage 1.5 is frozen before acquisition as an action-free DROID visual
-value/forgetting gate. The active 416-episode, 12.94 GB DROID/SO-101 selection
-is 7.06 GB below its 20 GB cap; no DROID Franka action is used as an SO-101
-target. The pre-declared comparison, seeds, thresholds, and exact object pins
-are documented in
-[`docs/stage1_5_droid_visual_predeclaration.md`](docs/stage1_5_droid_visual_predeclaration.md).
+Stage 1.5 completed its frozen action-free DROID visual value/forgetting gate.
+The active 416-episode, 12.94 GB DROID/SO-101 selection is 7.06 GB below its
+20 GB cap. DROID replay improved held-out DROID fixed-target error by 7.17%
+median across three positive seeds, with 0.56% Project IRA and 0.43%
+ArmnetBench median forgetting. The result admits only action-free temporal
+visual pretraining for the JEPA encoder; no DROID Franka action is used as an
+SO-101 target, and all broader DROID uses remain excluded. See the
+[`predeclaration`](docs/stage1_5_droid_visual_predeclaration.md) and
+[`final report`](docs/stage1_5_droid_visual_report.md).
 
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
@@ -76,6 +79,9 @@ raw data):
 .venv/bin/python scripts/evaluate_stage1_3_body_value.py
 .venv/bin/python scripts/qualify_so101_ma_multitask_700.py
 .venv/bin/python scripts/qualify_droid_raw.py
+.venv/bin/python scripts/prepare_stage1_5_visual_subset.py --verify
+.venv/bin/python scripts/build_stage1_5_visual_cache.py
+.venv/bin/python scripts/evaluate_stage1_5_droid_visual.py
 ```
 
 The demo runs this synthetic path:
