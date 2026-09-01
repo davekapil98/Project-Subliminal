@@ -1,0 +1,30 @@
+schema_version = 1
+stage = "1.5"
+protocol_revision = 3
+status = "frozen_before_training"
+frozen_at = "2026-09-01"
+supersedes_protocol_commit = "dc4831a"
+revision_reason = "Eight selected WEIRD episodes contain multi-second control timestamp gaps. Restrict every source pair to a shared short-term window of 0.50 through 0.60 seconds; all frozen episodes still provide eight distinct pairs."
+
+[base]
+config_path = "configs/training/stage1_5_droid_visual.toml"
+config_sha256 = "a4ad782f695ae684af0a69c334bb568e9d40442553e46d0493f52d4e5bc3ed32"
+object_manifest_path = "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
+object_manifest_sha256 = "3b4539d7e731281607fd3bee2495505ac4539ad46179f0a7ab515566e8cd7b64"
+
+[sampling]
+minimum_temporal_horizon_seconds = 0.5
+maximum_temporal_horizon_seconds = 0.6
+distinct_samples_per_episode = 8
+shared_camera_range_required = true
+selection_policy = "For each episode, take the first frame at or after 0.5 seconds only when its actual timestamp delta is at most 0.6 seconds, restrict targets to the shared declared range of all selected cameras, then choose eight distinct contexts uniformly from eligible positions."
+
+[unchanged]
+selection = "Protocol revision 2 exact objects and lab/outcome cells"
+model = "Protocol revision 2"
+seeds = [13, 29, 47]
+common_pretraining_steps = 300
+matched_comparison_steps_per_branch = 240
+forgetting_relative_tolerance = 0.10
+minimum_positive_seed_count = 2
+action_policy = "No current action input or action target; previous command remains observed proprioceptive history exactly as frozen in revision 2."

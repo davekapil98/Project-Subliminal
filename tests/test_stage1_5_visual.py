@@ -106,9 +106,27 @@ def test_uniform_temporal_pairs_choose_first_frame_at_or_after_horizon() -> None
     context, future = builder.uniform_temporal_pairs(
         timestamps,
         horizon_seconds=0.5,
+        maximum_horizon_seconds=0.6,
         sample_count=8,
         maximum_video_index=28,
     )
     assert len(np.unique(context)) == 8
     assert np.allclose(timestamps[future] - timestamps[context], 0.5)
     assert future[-1] <= 28
+
+
+def test_uniform_temporal_pairs_exclude_source_timestamp_gaps() -> None:
+    builder = _cache_builder()
+    timestamps = np.concatenate(
+        (np.arange(20, dtype=np.float64) / 10.0, 10 + np.arange(20) / 10.0)
+    )
+    context, future = builder.uniform_temporal_pairs(
+        timestamps,
+        horizon_seconds=0.5,
+        maximum_horizon_seconds=0.6,
+        sample_count=8,
+        maximum_video_index=38,
+    )
+    deltas = timestamps[future] - timestamps[context]
+    assert np.all(deltas >= 0.5 - 1e-9)
+    assert np.all(deltas <= 0.6 + 1e-9)

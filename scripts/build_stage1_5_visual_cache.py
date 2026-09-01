@@ -29,6 +29,9 @@ from data.dataloaders.stage1_5_visual import Stage15VisualSamples
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = PROJECT_ROOT / "configs/training/stage1_5_droid_visual.toml"
+ACTIVE_PROTOCOL_PATH = (
+    PROJECT_ROOT / "configs/training/stage1_5_droid_visual_protocol_v3.toml"
+)
 OBJECTS_PATH = (
     PROJECT_ROOT
     / "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
@@ -120,6 +123,7 @@ def uniform_temporal_pairs(
     timestamps_seconds: np.ndarray[Any, np.dtype[np.float64]],
     *,
     horizon_seconds: float,
+    maximum_horizon_seconds: float,
     sample_count: int,
     maximum_video_index: int,
 ) -> tuple[np.ndarray[Any, np.dtype[np.int64]], np.ndarray[Any, np.dtype[np.int64]]]:
@@ -137,7 +141,12 @@ def uniform_temporal_pairs(
         timestamps_seconds + horizon_seconds,
         side="left",
     ).astype(np.int64)
-    valid = indices[(future < len(indices)) & (future <= maximum_video_index)]
+    candidate = (future < len(indices)) & (future <= maximum_video_index)
+    deltas = np.full(len(indices), np.inf, dtype=np.float64)
+    deltas[candidate] = (
+        timestamps_seconds[future[candidate]] - timestamps_seconds[candidate]
+    )
+    valid = indices[candidate & (deltas <= maximum_horizon_seconds + 1e-9)]
     if len(valid) < sample_count:
         raise ValueError(
             f"episode has only {len(valid)} valid temporal contexts for {sample_count} samples"
@@ -151,6 +160,11 @@ def uniform_temporal_pairs(
         raise ValueError("uniform temporal sampling produced duplicate/non-future pairs")
     if np.any(timestamps_seconds[target] - timestamps_seconds[context] < horizon_seconds - 1e-9):
         raise ValueError("sampled temporal pair is below the frozen horizon")
+    if np.any(
+        timestamps_seconds[target] - timestamps_seconds[context]
+        > maximum_horizon_seconds + 1e-9
+    ):
+        raise ValueError("sampled temporal pair exceeds the frozen maximum horizon")
     return context, target
 
 
@@ -185,6 +199,15 @@ def decode_video_indices(
     if missing:
         raise ValueError(f"{path} lacks requested frames {sorted(missing)}")
     return result
+
+
+def declared_video_frames(path: Path) -> int:
+    av = _video()
+    with av.open(str(path), mode="r") as container:
+        frames = int(container.streams.video[0].frames or 0)
+    if frames < 1:
+        raise ValueError(f"{path} does not declare a positive video frame count")
+    return frames
 
 
 def _empty_sample_arrays(count: int, image_size: int) -> dict[str, np.ndarray[Any, Any]]:
@@ -225,6 +248,7 @@ def _build_droid_episode(
     schema: dict[str, Any],
     image_size: int,
     horizon_seconds: float,
+    maximum_horizon_seconds: float,
     sample_count: int,
 ) -> dict[str, np.ndarray[Any, Any]]:
     roles: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -284,11 +308,19 @@ def _build_droid_episode(
     if not all(expected_shapes) or length != int(metadata["trajectory_length"]):
         raise ValueError("DROID trajectory arrays differ from the selected metadata contract")
     timestamps = (timestamps_ms - timestamps_ms[0]) / 1000.0
+    declared_frames = {
+        serial: declared_video_frames(path) for serial, path in video_by_serial.items()
+    }
+    shared_maximum_video_index = min(
+        length - 2,
+        min(declared_frames.values()) - 1,
+    )
     context, future = uniform_temporal_pairs(
         timestamps,
         horizon_seconds=horizon_seconds,
+        maximum_horizon_seconds=maximum_horizon_seconds,
         sample_count=sample_count,
-        maximum_video_index=length - 2,
+        maximum_video_index=shared_maximum_video_index,
     )
     q = np.column_stack((q_joint, q_gripper)).astype(np.float32)
     gripper_velocity = np.empty(length, dtype=np.float32)
@@ -336,6 +368,7 @@ def build_droid_caches(
     selection = config["selection"]["droid"]
     image_size = int(config["representation"]["image_size"])
     horizon = float(selection["temporal_horizon_seconds"])
+    maximum_horizon = float(selection["maximum_temporal_horizon_seconds"])
     samples = int(selection["samples_per_episode"])
     objects_by_episode: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for item in plan["objects"]:
@@ -365,6 +398,7 @@ def build_droid_caches(
                     schema=schema,
                     image_size=image_size,
                     horizon_seconds=horizon,
+                    maximum_horizon_seconds=maximum_horizon,
                     sample_count=samples,
                 ): index
                 for index, episode in enumerate(selected)
@@ -428,6 +462,7 @@ def _so101_episode_arrays(
     *,
     sample_count: int,
     horizon_seconds: float,
+    maximum_horizon_seconds: float,
     image_size: int,
 ) -> tuple[dict[str, np.ndarray[Any, Any]], dict[str, Any]]:
     record = adapter.episode_record(episode_index)
@@ -442,6 +477,7 @@ def _so101_episode_arrays(
     context, future = uniform_temporal_pairs(
         timestamps,
         horizon_seconds=horizon_seconds,
+        maximum_horizon_seconds=maximum_horizon_seconds,
         sample_count=sample_count,
         maximum_video_index=length - 1,
     )
@@ -480,6 +516,7 @@ def build_so101_cache(
     allowed_video_paths: set[Path],
     sample_count: int,
     horizon_seconds: float,
+    maximum_horizon_seconds: float,
     image_size: int,
 ) -> dict[str, np.ndarray[Any, Any]]:
     episode_arrays: list[dict[str, np.ndarray[Any, Any]]] = []
@@ -491,6 +528,7 @@ def build_so101_cache(
             episode_index,
             sample_count=sample_count,
             horizon_seconds=horizon_seconds,
+            maximum_horizon_seconds=maximum_horizon_seconds,
             image_size=image_size,
         )
         episode_arrays.append(arrays)
@@ -604,6 +642,9 @@ def build_so101_caches(
                 ),
                 sample_count=int(selection["samples_per_episode"]),
                 horizon_seconds=float(config["selection"]["droid"]["temporal_horizon_seconds"]),
+                maximum_horizon_seconds=float(
+                    config["selection"]["droid"]["maximum_temporal_horizon_seconds"]
+                ),
                 image_size=image_size,
             )
             print(
@@ -639,7 +680,15 @@ def _cache_evidence(path: Path, samples: Stage15VisualSamples) -> dict[str, Any]
 
 def build(*, smoke: bool) -> dict[str, Any]:
     config = _toml(CONFIG_PATH)
+    active_protocol = _toml(ACTIVE_PROTOCOL_PATH)
     plan = _json(OBJECTS_PATH)
+    if sha256_file(CONFIG_PATH) != active_protocol["base"]["config_sha256"]:
+        raise ValueError("Stage 1.5 base config differs from the active protocol pin")
+    if sha256_file(OBJECTS_PATH) != active_protocol["base"]["object_manifest_sha256"]:
+        raise ValueError("Stage 1.5 object manifest differs from the active protocol pin")
+    config["selection"]["droid"]["maximum_temporal_horizon_seconds"] = float(
+        active_protocol["sampling"]["maximum_temporal_horizon_seconds"]
+    )
     if plan["config_sha256"] != sha256_file(CONFIG_PATH):
         raise ValueError("Stage 1.5 object plan differs from the frozen config")
     if plan["acquisition"]["selected_bytes"] > config["acquisition"]["cap_bytes"]:
@@ -674,6 +723,9 @@ def build(*, smoke: bool) -> dict[str, Any]:
         cache_records[f"{dataset_id}:{split}"] = _cache_evidence(path, samples)
     manifest = {
         "schema_version": 1,
+        "protocol_revision": int(active_protocol["protocol_revision"]),
+        "active_protocol_path": ACTIVE_PROTOCOL_PATH.relative_to(PROJECT_ROOT).as_posix(),
+        "active_protocol_sha256": sha256_file(ACTIVE_PROTOCOL_PATH),
         "gate": config["gate"],
         "config_sha256": sha256_file(CONFIG_PATH),
         "object_manifest_sha256": sha256_file(OBJECTS_PATH),
@@ -681,6 +733,9 @@ def build(*, smoke: bool) -> dict[str, Any]:
         "image_size": int(config["representation"]["image_size"]),
         "temporal_horizon_seconds": float(
             config["selection"]["droid"]["temporal_horizon_seconds"]
+        ),
+        "maximum_temporal_horizon_seconds": float(
+            config["selection"]["droid"]["maximum_temporal_horizon_seconds"]
         ),
         "action_fields_included": False,
         "privacy": {

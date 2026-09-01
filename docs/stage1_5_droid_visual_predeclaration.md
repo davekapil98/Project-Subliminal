@@ -5,6 +5,20 @@ Initial protocol frozen: 31 August 2026 (`05fbbc7`)
 Active protocol revision: 2, frozen 1 September 2026 before replacement
 acquisition and before any model training.
 
+Protocol revision 3 is the active training protocol, frozen 1 September 2026
+before any decision-bearing model run. It references revision 2's unchanged
+config and object hashes.
+
+## Revision 3 maximum horizon
+
+The first successful full cache decode revealed multi-second pauses in eight
+WEIRD train timestamp sequences; a naïve first-frame-at-or-after rule produced
+a maximum 9.668-second selected pair. All 416 episodes retain at least eight
+distinct pairs when constrained to an actual timestamp delta of 0.50–0.60
+seconds. Revision 3 adds that upper bound and changes no source object, split,
+quota, model, seed, update budget, action boundary, or decision threshold. The
+superseded cache is ignored generated data and is not decision evidence.
+
 ## Revision 2 duration eligibility
 
 The first full cache build found four selected DROID episodes—three train and
@@ -64,7 +78,13 @@ prefixes are ranked by SHA-256 of
 
 Complete collection labs retain the frozen Stage 1.4 partition: nine train,
 CLVR/ILIAD validation, and PennPAL/REAL test. Eight temporal samples are chosen
-per episode at a 0.5-second future horizon.
+per episode at a 0.5-second future horizon. Sampling is restricted to the
+shared declared frame range of all three cameras. Fourteen selected train
+episodes have provider-level count variation: six RAIL episodes publish one
+extra frame in every camera, and eight WEIRD episodes have one camera one frame
+short. All 416 revision-2 episodes still provide at least eight distinct
+shared-range pairs, so no padding, repeated context, or horizon relaxation is
+used.
 
 For matched SO-101 forgetting measurements:
 

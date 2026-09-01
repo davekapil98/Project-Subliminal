@@ -10,6 +10,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs/training/stage1_5_droid_visual.toml"
+ACTIVE_PROTOCOL_PATH = (
+    ROOT / "configs/training/stage1_5_droid_visual_protocol_v3.toml"
+)
 OBJECTS_PATH = (
     ROOT / "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
 )
@@ -55,9 +58,17 @@ def _all_keys(value: Any) -> list[str]:
 def test_protocol_is_frozen_action_free_and_matched() -> None:
     with CONFIG_PATH.open("rb") as handle:
         config = tomllib.load(handle)
+    with ACTIVE_PROTOCOL_PATH.open("rb") as handle:
+        active = tomllib.load(handle)
 
     assert config["stage"] == "1.5"
     assert config["protocol_revision"] == 2
+    assert active["protocol_revision"] == 3
+    assert active["status"] == "frozen_before_training"
+    assert active["base"]["config_sha256"] == _sha256(CONFIG_PATH)
+    assert active["base"]["object_manifest_sha256"] == _sha256(OBJECTS_PATH)
+    assert active["sampling"]["minimum_temporal_horizon_seconds"] == 0.5
+    assert active["sampling"]["maximum_temporal_horizon_seconds"] == 0.6
     assert config["status"] == "frozen_before_acquisition"
     assert config["acquisition"]["cap_bytes"] == 20_000_000_000
     assert config["acquisition"]["minimum_free_reserve_bytes"] == 5_000_000_000

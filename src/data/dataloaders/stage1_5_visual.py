@@ -15,6 +15,8 @@ from torch.nn import functional as F
 VIEW_COUNT = 3
 IMAGE_CHANNELS = 3
 PROPRIO_WIDTH = 24
+MINIMUM_HORIZON_SECONDS = 0.5
+MAXIMUM_HORIZON_SECONDS = 0.6
 ALLOWED_CACHE_KEYS = frozenset(
     {
         "context_rgb",
@@ -89,8 +91,10 @@ class Stage15VisualSamples:
         if not np.all(self.future_index > self.context_index):
             raise ValueError("every future frame index must follow its context index")
         horizon = self.future_time_seconds - self.context_time_seconds
-        if np.any(horizon < 0.5 - 1e-9):
+        if np.any(horizon < MINIMUM_HORIZON_SECONDS - 1e-9):
             raise ValueError("future samples violate the frozen 0.5-second horizon")
+        if np.any(horizon > MAXIMUM_HORIZON_SECONDS + 1e-9):
+            raise ValueError("future samples exceed the frozen 0.6-second horizon")
         invalid = ~self.camera_valid
         if np.any(self.context_rgb[invalid]) or np.any(self.future_rgb[invalid]):
             raise ValueError("invalid camera slots must be exactly zero-filled")
