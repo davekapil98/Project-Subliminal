@@ -1,7 +1,10 @@
 schema_version = 1
 stage = "1.5"
+protocol_revision = 2
 status = "frozen_before_acquisition"
-frozen_at = "2026-08-31"
+frozen_at = "2026-09-01"
+supersedes_protocol_commit = "05fbbc7"
+revision_reason = "Four v1-selected DROID episodes had fewer than eight distinct contexts with a decodable future at the frozen 0.5-second horizon, and one IPRL failure-path metadata record declared success. Require path-consistent metadata and at least 22 source trajectory frames before SHA-256 ranking."
 gate = "stage1.5_action_free_visual_jepa_value_and_forgetting"
 purpose = "Test whether bounded DROID real-Franka video improves action-free temporal visual prediction without degrading frozen real SO-101 visual holdouts."
 
@@ -37,8 +40,9 @@ policy = "Count the already-pinned license, metadata, episode indices and trajec
 [selection.droid]
 dataset_id = "droid_raw_1_0_1"
 revision = "1.0.1"
-algorithm = "Within every frozen lab/outcome cell, exclude Stage 1.4 episodes, require one metadata JSON, one HDF5 trajectory and exactly three non-stereo MP4 cameras, then SHA-256 rank eligible episodes by dataset_id:stage1.5:lab:outcome:source_episode_prefix and select the first quota_per_lab_outcome."
+algorithm = "Within every frozen lab/outcome cell, exclude Stage 1.4 episodes, require one metadata JSON agreeing with the path lab/outcome and declaring at least minimum_trajectory_frames, one HDF5 trajectory and exactly three non-stereo MP4 cameras, then SHA-256 rank eligible episodes by dataset_id:stage1.5:lab:outcome:source_episode_prefix and select the first quota_per_lab_outcome."
 quota_per_lab_outcome = 16
+minimum_trajectory_frames = 22
 expected_labs = 13
 expected_outcomes = ["failure", "success"]
 expected_episodes = 416

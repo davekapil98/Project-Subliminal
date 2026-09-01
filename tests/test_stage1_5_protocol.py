@@ -11,7 +11,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs/training/stage1_5_droid_visual.toml"
 OBJECTS_PATH = (
-    ROOT / "configs/datasets/registry/stage1_5_visual_subset.objects.json"
+    ROOT / "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
 )
 DROID_STAGE1_4_OBJECTS_PATH = (
     ROOT / "configs/datasets/registry/droid_raw_1_0_1.objects.json"
@@ -57,11 +57,13 @@ def test_protocol_is_frozen_action_free_and_matched() -> None:
         config = tomllib.load(handle)
 
     assert config["stage"] == "1.5"
+    assert config["protocol_revision"] == 2
     assert config["status"] == "frozen_before_acquisition"
     assert config["acquisition"]["cap_bytes"] == 20_000_000_000
     assert config["acquisition"]["minimum_free_reserve_bytes"] == 5_000_000_000
     assert config["selection"]["droid"]["expected_episodes"] == 416
     assert config["selection"]["droid"]["quota_per_lab_outcome"] == 16
+    assert config["selection"]["droid"]["minimum_trajectory_frames"] == 22
     assert config["selection"]["droid"]["samples_per_episode"] == 8
     assert config["representation"]["action_policy"].startswith("No action input")
     assert config["training"]["seeds"] == [13, 29, 47]
@@ -125,9 +127,15 @@ def test_exact_object_plan_is_under_cap_complete_and_pii_local() -> None:
     assert plan["status"] == "frozen_before_acquisition"
     assert plan["config_sha256"] == _sha256(CONFIG_PATH)
     assert plan["selection"]["droid_episode_count"] == 416
+    assert plan["protocol_revision"] == 2
+    assert all(
+        episode["trajectory_frames"] >= 22
+        for episode in plan["selection"]["droid_episodes"]
+    )
     assert plan["selection"]["stage1_4_episode_prefixes_excluded"] == 26
     acquisition = plan["acquisition"]
     assert acquisition["cap_bytes"] == 20_000_000_000
+    assert acquisition["selected_bytes"] == 12_939_284_289
     assert acquisition["selected_bytes"] < acquisition["cap_bytes"]
     assert acquisition["headroom_bytes"] == (
         acquisition["cap_bytes"] - acquisition["selected_bytes"]

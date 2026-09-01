@@ -1,6 +1,26 @@
 # Stage 1.5 pre-declaration — bounded DROID visual value gate
 
-Date frozen: 31 August 2026
+Initial protocol frozen: 31 August 2026 (`05fbbc7`)
+
+Active protocol revision: 2, frozen 1 September 2026 before replacement
+acquisition and before any model training.
+
+## Revision 2 duration eligibility
+
+The first full cache build found four selected DROID episodes—three train and
+one validation—with fewer than eight distinct contexts that have a decodable
+future at least 0.5 seconds later. Two had no valid future pair. No cache or
+model result was produced. Revision 2 retains every original split, quota,
+seed, update budget, model setting, threshold, and action exclusion, but adds
+two pre-ranking eligibility conditions: metadata must agree with its bucket
+lab/outcome, and `trajectory_length >= 22`. Twenty-two is the shortest
+trajectory length among all v1-selected episodes that supports at least eight
+distinct frozen-horizon contexts. The rank audit also found one IPRL episode
+under the failure path whose metadata declared success. The four short
+episodes and this outcome-mismatched episode are replaced by the next
+SHA-256-ranked eligible episode in the same lab/outcome cell. Exact v2 object
+pins and measured cap usage are frozen before the 25 replacement objects are
+acquired.
 
 ## Question and boundary
 
@@ -23,18 +43,22 @@ trajectory tables, and every selected video pack. Raw files and derived
 caches remain Git-ignored. The committed object manifest contains public
 provider paths and integrity pins, never raw metadata values.
 
-The resolved selection is 12,687,618,078 bytes across 2,222 objects, leaving
-7,312,381,922 bytes of cap headroom. DROID contributes 10,737,464,203 bytes,
+The active revision-2 selection is 12,939,284,289 bytes across 2,222 objects,
+leaving 7,060,715,711 bytes of cap headroom. DROID contributes
+10,989,130,414 bytes,
 Project IRA 779,332,130 bytes, and ArmnetBench 1,170,821,745 bytes. The public
 inventory contained one high-ranked IRIS success episode with three videos but
 without the full five-object contract; the selector deterministically skipped
 it and admitted the next eligible rank. This was detected before acquisition
-and before the protocol freeze commit.
+and before each protocol freeze commit. The superseded revision-1 selection
+remains archived in `stage1_5_visual_subset.objects.json`; revision 2 is pinned
+in `stage1_5_visual_subset_v2.objects.json`.
 
 DROID selection is frozen at 16 episodes from each of 13 labs and both
 success/failure outcomes: 416 episodes total. Within each cell, eligible
 episodes have exactly three non-stereo MP4 streams, one metadata JSON, and one
-trajectory HDF5. The 26 Stage 1.4 qualification episodes are excluded. Episode
+trajectory HDF5; metadata must agree with the path and declare at least 22
+frames. The 26 Stage 1.4 qualification episodes are excluded. Episode
 prefixes are ranked by SHA-256 of
 `droid_raw_1_0_1:stage1.5:{lab}:{outcome}:{source_episode_prefix}`.
 

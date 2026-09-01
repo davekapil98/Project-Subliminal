@@ -31,7 +31,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = PROJECT_ROOT / "configs/training/stage1_5_droid_visual.toml"
 PLAN_PATH = (
     PROJECT_ROOT
-    / "configs/datasets/registry/stage1_5_visual_subset.objects.json"
+    / "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
 )
 DROID_SPLIT_PATH = PROJECT_ROOT / "data/splits/droid_raw_1_0_1.json"
 
@@ -287,6 +287,7 @@ def _selected_episode_objects(
     outcome: str,
     split_role: str,
     episode_prefix: str,
+    minimum_trajectory_frames: int,
 ) -> tuple[dict[str, Any], list[SourceObject]]:
     listed = gcs_list(prefix=f"{episode_prefix}/")
     metadata = [
@@ -312,6 +313,24 @@ def _selected_episode_objects(
         raise ValueError(
             f"selected episode {episode_prefix} does not have exactly 1 metadata, "
             f"1 trajectory, and 3 non-stereo video objects"
+        )
+
+    metadata_item = metadata[0]
+    metadata_url = (
+        "https://storage.googleapis.com/download/storage/v1/b/gresearch/o/"
+        f"{quote(str(metadata_item['name']), safe='')}?alt=media&generation="
+        f"{metadata_item['generation']}"
+    )
+    metadata_record = _request_json(metadata_url)
+    trajectory_frames = int(metadata_record.get("trajectory_length", 0))
+    if metadata_record.get("lab") != lab:
+        raise ValueError("selected DROID metadata lab differs from its bucket path")
+    if bool(metadata_record.get("success")) != (outcome == "success"):
+        raise ValueError("selected DROID metadata outcome differs from its bucket path")
+    if trajectory_frames < minimum_trajectory_frames:
+        raise ValueError(
+            f"selected DROID episode has {trajectory_frames} frames, below "
+            f"minimum {minimum_trajectory_frames}"
         )
 
     selector = hashlib.sha256(
@@ -353,6 +372,7 @@ def _selected_episode_objects(
         "split_role": split_role,
         "bytes": sum(item.size for item in selected),
         "objects": len(selected),
+        "trajectory_frames": trajectory_frames,
     }
     return episode, selected
 
@@ -373,6 +393,7 @@ def _droid_objects(
     labs = tuple(str(value) for value in dataset["labs"])
     outcomes = tuple(str(value) for value in selection["expected_outcomes"])
     quota = int(selection["quota_per_lab_outcome"])
+    minimum_trajectory_frames = int(selection["minimum_trajectory_frames"])
     if len(labs) != int(selection["expected_labs"]):
         raise ValueError("DROID lab count differs from frozen Stage 1.5 contract")
     excluded = _excluded_droid_prefixes(config)
@@ -430,6 +451,7 @@ def _droid_objects(
                 outcome=outcome,
                 split_role=split_by_lab[lab],
                 episode_prefix=candidates[cell][index],
+                minimum_trajectory_frames=minimum_trajectory_frames,
             )
             futures[future] = cell
 
@@ -465,7 +487,7 @@ def _droid_objects(
         raise ValueError("DROID object count differs from frozen contract")
     inventory = {
         f"{lab}:{outcome}": values
-        | {"rejected_missing_required_objects": rejected[(lab, outcome)]}
+        | {"rejected_ineligible_required_contract": rejected[(lab, outcome)]}
         for lab, outcome, _, values in cell_results
     }
     return episodes, objects, inventory
@@ -636,7 +658,8 @@ def build_plan(config: dict[str, Any], *, max_workers: int) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "gate": str(config["gate"]),
-        "status": "frozen_before_acquisition",
+        "status": str(config["status"]),
+        "protocol_revision": int(config["protocol_revision"]),
         "frozen_at": str(config["frozen_at"]),
         "config_path": CONFIG_PATH.relative_to(PROJECT_ROOT).as_posix(),
         "config_sha256": sha256_file(CONFIG_PATH),
