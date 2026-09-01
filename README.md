@@ -53,6 +53,16 @@ SO-101 target, and all broader DROID uses remain excluded. See the
 [`predeclaration`](docs/stage1_5_droid_visual_predeclaration.md) and
 [`final report`](docs/stage1_5_droid_visual_report.md).
 
+Stage 2A has now started with an admitted-real, action-free JEPA encoder
+bootstrap. Its committed laptop preflight verified the production data,
+shared-view/fusion model, balanced sampler, camera dropout, EMA temporal
+objective, atomic checkpoint and exact resume paths. The full 255.46M-parameter
+encoder profile is not yet authorized for long training: the next required
+step is its frozen throughput/memory benchmark on the RTX 3060 12 GB machine.
+See the
+[`Stage 2A predeclaration`](docs/stage2a_jepa_real_bootstrap_predeclaration.md)
+and [`preflight report`](docs/stage2a_jepa_real_bootstrap_preflight_report.md).
+
 The former v1.2 GB100/Isaac generator is retained only as excluded historical
 reference. Its launch entry points are deliberately disabled; see
 [`docs/legacy_v12_isaac.md`](docs/legacy_v12_isaac.md).
@@ -82,6 +92,9 @@ raw data):
 .venv/bin/python scripts/prepare_stage1_5_visual_subset.py --verify
 .venv/bin/python scripts/build_stage1_5_visual_cache.py
 .venv/bin/python scripts/evaluate_stage1_5_droid_visual.py
+.venv/bin/python scripts/train_stage2a_jepa_real_bootstrap.py --preflight
+# Run this full-profile benchmark on the RTX 3060 12 GB machine:
+.venv/bin/python scripts/train_stage2a_jepa_real_bootstrap.py --benchmark
 ```
 
 The demo runs this synthetic path:

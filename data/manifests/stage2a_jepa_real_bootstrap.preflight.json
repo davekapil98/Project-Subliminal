@@ -1,0 +1,98 @@
+{
+  "admission_evidence": {
+    "admitted_use": "jepa_encoder_action_free_temporal_pretraining",
+    "path": "data/manifests/stage1_5_droid_visual.value_gate.json",
+    "sha256": "cfce089053ab55f041da71684487fa12599079b0ec4eaa00e755daece45c1a19"
+  },
+  "cache_manifest": {
+    "path": "data/cache/stage1_5_visual/cache_manifest.json",
+    "sha256": "6d27b974f3abb764fd33c2e570c191091179b2ff72cf17d6d91289f59673517b"
+  },
+  "camera_views_dropped": 14,
+  "checkpoint": {
+    "artifact_paths_committed": false,
+    "final_optimizer_step": 9,
+    "format_version": 2,
+    "resumed_at_optimizer_step": 4,
+    "round_trip_model_sha256": "76ba9699f0bb510718baf21ef86aed33c8d4745ba070533b721ea6af5fa0ca25"
+  },
+  "config": {
+    "path": "configs/training/stage2a_jepa_real_bootstrap.toml",
+    "sha256": "95b47e8e34f3b045136628b13a009127d56a43e225b87e0b56d0a8b3c7eeb82b"
+  },
+  "criteria": {
+    "action_fields_excluded": true,
+    "camera_dropout_retained_valid_view": true,
+    "checkpoint_model_optimizer_sampler_rng_round_trip": true,
+    "droid_validation_completed_without_locked_tests": true,
+    "equal_source_optimizer_steps": true,
+    "finite_loss_gradients_and_metrics": true,
+    "frozen_inputs_verified": true
+  },
+  "droid_validation": {
+    "future_latent_smooth_l1": 0.11377082951366901,
+    "prediction_feature_std": 0.01817765907617286,
+    "sensor_drop_future_latent_smooth_l1": 0.11435999860987067,
+    "sensor_drop_relative_degradation": 0.005178560257670201,
+    "target_feature_std": 0.06275790277868509
+  },
+  "git_commit": "3e40124efbefb0d371fd7f7dd46c088220f0c20b",
+  "gradient_accumulation_steps": 2,
+  "kind": "nondecision_engineering_preflight",
+  "locked_test_splits_accessed": [],
+  "long_run_authorized": false,
+  "microbatch_size": 2,
+  "next_required_action": "run the frozen full-profile throughput/memory benchmark on the RTX 3060 12 GB machine",
+  "optimizer_steps": 9,
+  "parameter_counts": {
+    "preflight": {
+      "checkpoint_total": 425358,
+      "ema_target": 185943,
+      "encoder": 185943,
+      "predictor": 53472,
+      "trainable": 239415
+    },
+    "rtx3060_benchmark": {
+      "checkpoint_total": 554579246,
+      "ema_target": 255459991,
+      "encoder": 255459991,
+      "predictor": 43659264,
+      "trainable": 299119255
+    }
+  },
+  "passed": true,
+  "precision": "fp32",
+  "profile": "preflight",
+  "resolved_device_type": "cpu",
+  "round": "admitted_real_action_free_bootstrap",
+  "schema_version": 1,
+  "scope": "Engineering readiness only; it neither promotes a checkpoint nor broadens Stage 1.5 admission.",
+  "source_optimizer_steps": {
+    "armnetbench_so101_v01": 3,
+    "droid_raw_1_0_1": 3,
+    "project_ira_so101_v1": 3
+  },
+  "stage": "2A",
+  "training": {
+    "after_resume": {
+      "gradient_norm_max": 2.4157116413116455,
+      "loss_first_last": [
+        0.2886414974927902,
+        0.1290346346795559
+      ],
+      "loss_mean": 0.2121574468910694,
+      "prediction_feature_std_mean": 0.01977181653492153,
+      "target_feature_std_mean": 0.05316167064011097
+    },
+    "before_checkpoint": {
+      "gradient_norm_max": 5.100307941436768,
+      "loss_first_last": [
+        0.7131337225437164,
+        0.36710555851459503
+      ],
+      "loss_mean": 0.4957738444209099,
+      "prediction_feature_std_mean": 0.0158586137695238,
+      "target_feature_std_mean": 0.03442184650339186
+    }
+  }
+}
