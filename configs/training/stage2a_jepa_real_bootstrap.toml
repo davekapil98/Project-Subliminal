@@ -1,0 +1,168 @@
+schema_version = 1
+stage = "2A"
+round = "admitted_real_action_free_bootstrap"
+status = "frozen_before_nondecision_preflight"
+frozen_at = "2026-09-01"
+purpose = "Start the admitted Stage 2A JEPA Encoder path with domain-balanced real DROID and SO-101 temporal replay, without actions or any broader module admission."
+
+[admission]
+gate = "stage1.5_action_free_visual_jepa_value_and_forgetting"
+evidence_path = "data/manifests/stage1_5_droid_visual.value_gate.json"
+evidence_sha256 = "cfce089053ab55f041da71684487fa12599079b0ec4eaa00e755daece45c1a19"
+required_decision = "admitted"
+required_use = "jepa_encoder_action_free_temporal_pretraining"
+still_excluded_uses = [
+  "SO-101 motor targets",
+  "SO-101 body dynamics",
+  "cross-embodiment native-action mixing",
+  "action-conditioned JEPA World admission",
+  "Executive admission",
+  "Language admission",
+]
+
+[data]
+cache_manifest_path = "data/cache/stage1_5_visual/cache_manifest.json"
+cache_manifest_sha256 = "6d27b974f3abb764fd33c2e570c191091179b2ff72cf17d6d91289f59673517b"
+object_manifest_path = "configs/datasets/registry/stage1_5_visual_subset_v2.objects.json"
+object_manifest_sha256 = "3b4539d7e731281607fd3bee2495505ac4539ad46179f0a7ab515566e8cd7b64"
+sources = ["droid_raw_1_0_1", "project_ira_so101_v1", "armnetbench_so101_v01"]
+source_schedule = ["droid_raw_1_0_1", "project_ira_so101_v1", "armnetbench_so101_v01"]
+source_weights = [1.0, 1.0, 1.0]
+balance_policy = "One optimizer step per source in deterministic round-robin order; never weight by frame count."
+train_samples = 3424
+droid_validation_samples = 512
+locked_test_samples = 736
+image_size = 64
+view_order = ["exterior_primary", "exterior_secondary", "wrist"]
+proprio_width = 24
+source_token_width = 3
+model_proprio_width = 27
+normalization = "Reuse the gate-pinned source-training-only proprio mean/std and store it in every checkpoint."
+action_fields_allowed = false
+raw_and_cache_policy = "Raw video, prepared caches, checkpoints and logs remain Git-ignored."
+
+[objective]
+name = "ema_action_free_temporal_jepa"
+minimum_horizon_seconds = 0.5
+maximum_horizon_seconds = 0.6
+target_encoder = "EMA copy of the online MultimodalJEPAEncoder"
+target_proprio = "all zeros; stopped-gradient target is determined by future RGB and camera availability"
+target_layer_normalization = true
+pixel_reconstruction = false
+ema_momentum = 0.996
+camera_dropout_probability = 0.15
+camera_dropout_policy = "Drop only provider-valid context/future camera pairs and always retain at least one valid view."
+loss = "smooth_l1 on normalized future target tokens"
+collapse_monitors = ["target_feature_std", "prediction_feature_std"]
+
+[profiles.preflight.encoder]
+image_size = 64
+patch_size = 8
+max_views = 3
+proprio_dim = 27
+d_model = 64
+visual_depth = 2
+fusion_depth = 1
+num_heads = 4
+world_tokens = 4
+bus_dim = 32
+num_object_classes = 16
+activation_checkpointing = true
+
+[profiles.preflight.predictor]
+bus_dim = 32
+d_model = 64
+depth = 1
+num_heads = 4
+
+[profiles.preflight.training]
+device = "auto"
+precision = "fp32"
+seed = 2026
+optimizer_steps = 9
+microbatch_size = 2
+gradient_accumulation_steps = 2
+learning_rate = 0.0003
+weight_decay = 0.01
+gradient_clip_norm = 1.0
+
+[profiles.rtx3060_benchmark.encoder]
+image_size = 64
+patch_size = 8
+max_views = 3
+proprio_dim = 27
+d_model = 896
+visual_depth = 20
+fusion_depth = 6
+num_heads = 14
+world_tokens = 32
+bus_dim = 768
+num_object_classes = 16
+activation_checkpointing = true
+
+[profiles.rtx3060_benchmark.predictor]
+bus_dim = 768
+d_model = 768
+depth = 6
+num_heads = 12
+
+[profiles.rtx3060_benchmark.training]
+device = "cuda"
+precision = "fp16"
+seed = 2026
+warmup_optimizer_steps = 2
+measured_optimizer_steps = 8
+microbatch_size = 1
+gradient_accumulation_steps = 16
+learning_rate = 0.0001
+weight_decay = 0.05
+gradient_clip_norm = 1.0
+minimum_gpu_memory_bytes = 11000000000
+
+[long_run]
+authorized = false
+optimizer_steps = 0
+reason = "The v1.3 master spec requires an RTX 3060 throughput/memory benchmark before a long dense run. Freeze a revision-2 config only after that benchmark records feasible peak memory and throughput."
+
+[evaluation]
+during_training_split = "droid_raw_1_0_1:validation"
+locked_until_final_evaluation = [
+  "droid_raw_1_0_1:test",
+  "project_ira_so101_v1:test",
+  "armnetbench_so101_v01:test",
+]
+metrics = [
+  "future_latent_smooth_l1",
+  "temporal_consistency",
+  "sensor_drop_robustness",
+  "target_feature_std",
+  "prediction_feature_std",
+]
+promotion_rule = "No checkpoint promotion is authorized by this revision. A revision-2 long-run config must predeclare temporal, sensor-drop, DROID value and SO-101 forgetting thresholds after the RTX 3060 benchmark."
+
+[checkpoint]
+format_version = 2
+root = "artifacts/runs/jepa_encoder/stage2a_real_bootstrap"
+required_contents = [
+  "online encoder, predictor and EMA target state",
+  "optimizer and mixed-precision scaler state",
+  "optimizer step and deterministic sampler state",
+  "CPU/CUDA RNG state",
+  "full config and SHA-256",
+  "dataset/cache manifest and SHA-256",
+  "source-training normalization",
+  "precision mode and Git commit",
+]
+atomic_write = true
+
+[preflight_acceptance]
+requirements = [
+  "every frozen input checksum verifies before model construction",
+  "all three sources contribute equal optimizer-step counts",
+  "no action field is loaded or accepted by the model",
+  "loss and gradients remain finite",
+  "camera dropout never removes every valid view",
+  "format-v2 checkpoint round-trip restores model, optimizer, sampler and RNG state",
+  "DROID validation temporal and sensor-drop metrics are finite",
+]
+decision_scope = "Engineering readiness only; it neither promotes a checkpoint nor broadens Stage 1.5 admission."
